@@ -22,24 +22,4 @@
 		</dependency>		
 	</dependencies>
 	
-<!-- 	<build>
-		<plugins>
-			<plugin>
-				<groupId>io.github.u2ware</groupId>
-				<artifactId>spring-xd-u2ware-module-plugin</artifactId>
-				<version>1.0.0</version>
-		<executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>moduleUpload</goal>
-            </goals>
-          </execution>
-        </executions>
-        				
-				
-			</plugin>
-		</plugins>
-	</build>
- -->
 </project>
