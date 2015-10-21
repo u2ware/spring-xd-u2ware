@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-u2ware-modbus="http://u2ware.github.io/schema/integration/modbus"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration 
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://u2ware.github.io/schema/integration/modbus 
+		http://u2ware.github.io/schema/integration/modbus/spring-integration-modbus.xsd">
+
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpMessageChannelAdapter">
+		<property name="port" value="${httpPort}"/>
+		<property name="sendChannel" ref="httpRequest"/>
+		<property name="receiveChannel" ref="httpResponse"/>
+		<property name="messagingTimeout" value="${httpTimeout}"/>
+	</bean>
+
+	<int:channel id="httpRequest"/>
+
+	<int:json-to-object-transformer 
+		input-channel="httpRequest" 
+		output-channel="modbusRequest"
+    	type="io.github.u2ware.integration.modbus.core.ModbusRequest"/>
+
+
+	<int:channel id="modbusRequest"/>
+
+	<int-u2ware-modbus:outbound-gateway id="modbusOutboundGateway" 
+			host="${host}"
+			port="${port}"
+			request-channel="modbusRequest"
+			reply-channel="modbusResponse"/>
+
+	<int:channel id="modbusResponse"/>
+
+	<int:object-to-json-transformer 
+		input-channel="modbusResponse" 
+		output-channel="httpResponse" 
+		content-type="application/json" />
+
+	<int:channel id="httpResponse">
+		<int:queue/>
+	</int:channel>
+
+</beans>
