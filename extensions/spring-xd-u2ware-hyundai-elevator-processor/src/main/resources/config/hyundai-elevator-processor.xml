@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration 
+		http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	<int:channel id="input"/>
+
+	<int:channel id="output"/>
+	
+	<int:channel id="elevatorRequest">
+		<int:queue/>
+	</int:channel>
+	
+	<bean class="io.github.u2ware.xd.netty.HyundaiElevatorChannelAdapter">
+		<property name="host" value="${host}"/>
+		<property name="port" value="${port}"/>
+		<property name="idleTimeout" value="0"/>
+		<property name="receiveChannel" ref="elevatorRequest"/>
+		<property name="sendChannel" ref="elevatorResponse"/>
+	</bean>
+	
+	<int:channel id="elevatorResponse"/>
+
+	<beans profile="use_json_input">
+		<int:payload-type-router input-channel="input">
+		    <int:mapping type="java.lang.String" channel="jsonRequest" />
+		    <int:mapping type="io.github.u2ware.xd.netty.HyundaiElevatorRequest" channel="elevatorRequest" />
+		</int:payload-type-router>
+	
+		<int:json-to-object-transformer 
+			input-channel="jsonRequest" 
+			output-channel="elevatorRequest"
+	    	type="io.github.u2ware.xd.netty.HyundaiElevatorRequest"/>
+	</beans>
+	<beans profile="dont_use_json_input">
+		<int:bridge input-channel="input" output-channel="elevatorRequest"/>
+	</beans>
+
+	
+	<beans profile="use_splitter">
+		<int:splitter input-channel="elevatorResponse" output-channel="outputResponse"/>
+	</beans>
+	<beans profile="dont_use_splitter">
+		<int:bridge input-channel="elevatorResponse" output-channel="outputResponse"/>
+	</beans>
+
+	<beans profile="use_json_output">
+		<int:object-to-json-transformer input-channel="outputResponse" output-channel="output" content-type="application/json" />
+	</beans>
+	<beans profile="dont_use_json_output">
+		<int:bridge input-channel="outputResponse" output-channel="output"/>
+	</beans>
+	
+</beans>
