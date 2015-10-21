@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.github.u2ware</groupId>
+	<artifactId>spring-xd-u2ware</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.xd</groupId>
+		<artifactId>spring-xd-module-parent</artifactId>
+		<version>1.2.1.RELEASE</version>
+	</parent>
+
+	<properties>
+		<java.version>1.7</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<github.global.server>github</github.global.server>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+		
+	</properties>
+	
+	<distributionManagement>
+	    <repository>
+	        <id>internal.repo</id>
+	        <name>Temporary Staging Repository</name>
+	        <url>file://${u2ware-mvn-repo}</url>
+	    </repository>
+	</distributionManagement>
+	
+	<repositories>
+		<repository>
+			<id>jcenter</id>
+			<url>http://jcenter.bintray.com</url>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-release</id>
+			<name>Spring Releases</name>
+			<url>http://repo.spring.io/libs-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	    <repository>
+	        <id>u2ware-mvn-repo</id>
+	        <url>https://raw.github.com/u2ware/u2ware.github.com/mvn-repo/</url>
+	    </repository>
+		
+	</repositories>
+
+	<dependencies>
+
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <scope>test</scope>
+        </dependency>
+ 	
+	</dependencies>
+<!--  
+	<properties>
+		
+		<spring.xd.custom-modules.processor>../../xd/custom-modules/processor</spring.xd.custom-modules.processor>
+		<spring.xd.custom-modules.sink>../../xd/custom-modules/sink</spring.xd.custom-modules.sink>
+		<spring.xd.custom-modules.source>../../xd/custom-modules/source</spring.xd.custom-modules.source>
+	</properties>
+
+
+	<build>
+	  <plugins>
+	    <plugin>
+	      <artifactId>maven-antrun-plugin</artifactId>
+	      <executions>
+	        <execution>
+	          <phase>package</phase>
+	          <goals>
+	            <goal>run</goal>
+	          </goals>
+	          <configuration>
+	            <tasks>
+					  <copy todir="${spring.xd.custom-modules.processor}">
+					    <fileset dir="target/">
+					      <include name="*.jar"/>
+					    </fileset>
+					  </copy>
+  	            </tasks>
+	          </configuration>
+	        </execution>
+	      </executions>
+	    </plugin>
+	  </plugins>
+	</build>
+ --> 
+</project>
