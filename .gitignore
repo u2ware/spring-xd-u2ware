@@ -21,7 +21,4 @@ target/
 recycle/
 mvn-repo/
 
-*.log
-data/
-logs/
 
