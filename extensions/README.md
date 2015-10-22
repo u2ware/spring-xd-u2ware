@@ -1,6 +1,6 @@
 # Custom Modules
 
-추가된 custom module 은 다음과 같습니다.
+추가된 [Custom Modules](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 은 다음과 같습니다.
 
 |description|source|processor|sink|
 |--------------------------|------|---------|----|

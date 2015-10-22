@@ -2,7 +2,7 @@ Spring XD U2ware
 =================================================
 # Introduction
 
-각종 custom module 이 설치된 [spring-xd-1.2.1.RELEASE](https://repo.spring.io/libs-release/org/springframework/xd/spring-xd/1.2.1.RELEASE/spring-xd-1.2.1.RELEASE-dist.zip) 기준의 재배포판입니다.
+각종 Custom Module 이 설치된 [spring-xd-1.2.1.RELEASE](https://repo.spring.io/libs-release/org/springframework/xd/spring-xd/1.2.1.RELEASE/spring-xd-1.2.1.RELEASE-dist.zip) 기준의 재배포판입니다.
 Spring XD 에 대해서는 [가이드](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#_install_spring_xd)를 참조합니다.
  
 
@@ -96,7 +96,7 @@ xd:>module list
 # Usage
 
 [Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 을 등록(register)하고 배포(deploy)합니다.
-추가된 custom modules 은 [다음](extensions/)을 참고합니다.
+추가된 Custom Modules 은 [다음](extensions/)을 참고합니다.
 
 
 
