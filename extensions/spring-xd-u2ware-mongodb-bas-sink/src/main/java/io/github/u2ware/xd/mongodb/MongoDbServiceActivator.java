@@ -38,62 +38,54 @@ public class MongoDbServiceActivator implements InitializingBean{
 
 	public void execute(Message<?> request) throws Exception{
 		
-		try{
+		Object payload = request.getPayload();
+		
+		BeanWrapper wrapper = new BeanWrapperImpl(payload);
+		Object id = wrapper.getPropertyValue("id");
+		Object value = wrapper.getPropertyValue("value");		
+		long timestamp = request.getHeaders().get(MessageHeaders.TIMESTAMP, Long.class);
 
-//			BuildingAutomationSystemData payload = (BuildingAutomationSystemData)request.getPayload();
-//			String id = payload.getId();
-//			Object value = payload.getValue();
+		if(id == null || value == null) return;
+		
+//		logger.debug("payload: "+payload);
+//		logger.debug("id: "+id);
+//		logger.debug("presentValue: "+presentValue);
+//		logger.debug("timestamp: "+timestamp);
+//		logger.debug("mongoTemplate: "+mongoTemplate);
+//		logger.debug("collectionName: "+collectionName);
+		
+		DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
+//		logger.debug("past : "+past);
+		
+		if(past != null){
 
-			Object payload = request.getPayload();
-			BeanWrapper wrapper = new BeanWrapperImpl(payload);
-			String id = (String)wrapper.getPropertyValue("id");
-			Object value = wrapper.getPropertyValue("value");		
-			long timestamp = request.getHeaders().get(MessageHeaders.TIMESTAMP, Long.class);
-
-//			logger.debug("payload: "+payload);
-//			logger.debug("id: "+id);
-//			logger.debug("presentValue: "+presentValue);
-//			logger.debug("timestamp: "+timestamp);
-//			logger.debug("mongoTemplate: "+mongoTemplate);
-//			logger.debug("collectionName: "+collectionName);
+			Object pastValue = past.get("value");
 			
-			DBObject past = mongoTemplate.getCollection(id).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
-//			logger.debug("past : "+past);
-			
-			if(past != null){
-
-				Object pastValue = past.get("value");
+			if(! value.equals(pastValue)){
 				
-				if(! value.equals(pastValue)){
-					
-					BasicDBObject objectToSave = new BasicDBObject();
-					objectToSave.put("_id", timestamp);
-					objectToSave.put("value", value);
-					objectToSave.put("timestamp", timestamp);
-					objectToSave.put("payload", payload);
-					mongoTemplate.save(objectToSave, id);
-				}
-
-			}else{
 				BasicDBObject objectToSave = new BasicDBObject();
 				objectToSave.put("_id", timestamp);
 				objectToSave.put("value", value);
 				objectToSave.put("timestamp", timestamp);
 				objectToSave.put("payload", payload);
-				mongoTemplate.save(objectToSave, id);
+				mongoTemplate.save(objectToSave, id.toString());
 			}
 
+		}else{
 			BasicDBObject objectToSave = new BasicDBObject();
-			objectToSave.put("_id", id);
+			objectToSave.put("_id", timestamp);
 			objectToSave.put("value", value);
 			objectToSave.put("timestamp", timestamp);
 			objectToSave.put("payload", payload);
-			mongoTemplate.save(objectToSave, collectionName);
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
+			mongoTemplate.save(objectToSave, id.toString());
 		}
+
+		BasicDBObject objectToSave = new BasicDBObject();
+		objectToSave.put("_id", id);
+		objectToSave.put("value", value);
+		objectToSave.put("timestamp", timestamp);
+		objectToSave.put("payload", payload);
+		mongoTemplate.save(objectToSave, collectionName);
 	}
 
 }
