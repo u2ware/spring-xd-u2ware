@@ -1,8 +1,8 @@
 package io.github.u2ware.xd.netty;
 
-import io.github.u2ware.integration.common.BuildingAutomationSystemData;
+import java.io.Serializable;
 
-public class HyundaiElevatorResponse implements BuildingAutomationSystemData{
+public class HyundaiElevatorResponse implements Serializable{
 
 	private static final long serialVersionUID = 1325956282725736704L;
 
