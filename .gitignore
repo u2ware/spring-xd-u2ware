@@ -25,4 +25,7 @@ mvn-repo/
 data/
 logs/
 
+spring-xd-u2ware-hyundai-elevator/
+spring-xd-u2ware-siemens-fireview/
+
 
