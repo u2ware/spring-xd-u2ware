@@ -1,20 +1,29 @@
 package io.github.u2ware.xd.mongodb;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.integration.expression.ExpressionUtils;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class MongoDbServiceActivator implements InitializingBean{
+public class MongoDbServiceActivator implements InitializingBean, BeanFactoryAware{
 
 //	private Log logger = LogFactory.getLog(getClass());
+
+	private BeanFactory beanFactory;
+	private volatile StandardEvaluationContext evaluationContext;
+	private volatile Expression idExpression;
+	private volatile Expression valueExpression;
 	
 	private MongoDbFactory mongoDbFactory;
 	private MongoTemplate mongoTemplate;
@@ -31,25 +40,47 @@ public class MongoDbServiceActivator implements InitializingBean{
 	public void setMongoConverter(MongoConverter mongoConverter) {
 		this.mongoConverter = mongoConverter;
 	}
+	public Expression getIdExpression() {
+		return idExpression;
+	}
+	public void setIdExpression(Expression idExpression) {
+		this.idExpression = idExpression;
+	}
+	public Expression getValueExpression() {
+		return valueExpression;
+	}
+	public void setValueExpression(Expression valueExpression) {
+		this.valueExpression = valueExpression;
+	}
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		this.evaluationContext = ExpressionUtils.createStandardEvaluationContext(this.beanFactory);
 		this.mongoTemplate = new MongoTemplate(mongoDbFactory, mongoConverter);
 	}
 
-	public void execute(Message<?> request) throws Exception{
+	public void execute(Message<?> requestMessage) throws Exception{
 		
-		Object payload = request.getPayload();
+		Object payload = requestMessage.getPayload();
 		
-		BeanWrapper wrapper = new BeanWrapperImpl(payload);
-		Object id = wrapper.getPropertyValue("id");
-		Object value = wrapper.getPropertyValue("value");		
-		long timestamp = request.getHeaders().get(MessageHeaders.TIMESTAMP, Long.class);
+		Object id = this.idExpression != null 
+				? this.idExpression.getValue(this.evaluationContext, requestMessage, Object.class)
+				: null;
+		
+		Object value = this.valueExpression != null 
+				? this.valueExpression.getValue(this.evaluationContext, requestMessage, Object.class)
+				: null;
+		long timestamp = requestMessage.getHeaders().get(MessageHeaders.TIMESTAMP, Long.class);
 
 		if(id == null || value == null) return;
-		
+
 //		logger.debug("payload: "+payload);
 //		logger.debug("id: "+id);
-//		logger.debug("presentValue: "+presentValue);
+//		logger.debug("value: "+value);
 //		logger.debug("timestamp: "+timestamp);
 //		logger.debug("mongoTemplate: "+mongoTemplate);
 //		logger.debug("collectionName: "+collectionName);
@@ -87,5 +118,6 @@ public class MongoDbServiceActivator implements InitializingBean{
 		objectToSave.put("payload", payload);
 		mongoTemplate.save(objectToSave, collectionName);
 	}
+
 
 }

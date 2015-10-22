@@ -81,7 +81,10 @@ public class MongoDbExtSinkModuleIntegrationTest {
 		String processingChainUnderTest = "mongodb-ext-sink "
 				+ " --databaseName=MyDatabase "
 				+ " --host=127.0.0.1 "
-				+ " --port=27017 ";
+				+ " --port=27017 "
+				+ " --host=127.0.0.1 "
+				+ " --idExpression=payload.id "
+				+ " --valueExpression=payload.value ";
 
 		logger.debug(processingChainUnderTest);
 		

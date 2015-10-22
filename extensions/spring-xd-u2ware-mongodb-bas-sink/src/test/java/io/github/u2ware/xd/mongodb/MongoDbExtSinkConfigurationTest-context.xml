@@ -11,6 +11,8 @@
 		<prop key="databaseName">MyDatabase</prop>
 		<prop key="host">127.0.0.1</prop>
 		<prop key="port">27017</prop>
+		<prop key="idExpression">payload.id</prop>
+		<prop key="valueExpression">payload.value</prop>
 	</util:properties>
 
 	<import resource="classpath:config/mongodb-ext-sink.xml"/>

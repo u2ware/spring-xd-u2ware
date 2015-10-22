@@ -1,9 +1,7 @@
 package io.github.u2ware.xd.mongodb.test;
 
-import io.github.u2ware.integration.common.BuildingAutomationSystemData;
 
-@SuppressWarnings("serial")
-public class Point implements BuildingAutomationSystemData{
+public class Point {
 
 	private String id;
 	private Object value;

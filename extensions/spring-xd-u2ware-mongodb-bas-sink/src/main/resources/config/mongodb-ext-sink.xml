@@ -25,6 +25,16 @@
 		<bean class="io.github.u2ware.xd.mongodb.MongoDbServiceActivator">
 			<constructor-arg ref="mongoDbFactory"/>
 			<property name="collectionName" value="${databaseName}"/>
+			<property name="idExpression">
+				<bean class="org.springframework.integration.config.ExpressionFactoryBean">
+					<constructor-arg value="${idExpression}"/>
+				</bean>
+			</property>
+			<property name="valueExpression">
+				<bean class="org.springframework.integration.config.ExpressionFactoryBean">
+					<constructor-arg value="${valueExpression}"/>
+				</bean>
+			</property>
 		</bean>
 	</int:service-activator>
 
