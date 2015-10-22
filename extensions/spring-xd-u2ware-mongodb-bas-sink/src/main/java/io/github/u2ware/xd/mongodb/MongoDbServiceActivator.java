@@ -1,7 +1,7 @@
 package io.github.u2ware.xd.mongodb;
 
-import io.github.u2ware.integration.common.BuildingAutomationSystemData;
-
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -39,14 +39,15 @@ public class MongoDbServiceActivator implements InitializingBean{
 	public void execute(Message<?> request) throws Exception{
 		
 		try{
-			BuildingAutomationSystemData payload = (BuildingAutomationSystemData)request.getPayload();
 
-			String id = payload.getId();
-			Object value = payload.getValue();
+//			BuildingAutomationSystemData payload = (BuildingAutomationSystemData)request.getPayload();
+//			String id = payload.getId();
+//			Object value = payload.getValue();
 
-//			BeanWrapper wrapper = new BeanWrapperImpl(payload);
-//			String id = (String)wrapper.getPropertyValue("id");
-//			Object presentValue = wrapper.getPropertyValue("value");		
+			Object payload = request.getPayload();
+			BeanWrapper wrapper = new BeanWrapperImpl(payload);
+			String id = (String)wrapper.getPropertyValue("id");
+			Object value = wrapper.getPropertyValue("value");		
 			long timestamp = request.getHeaders().get(MessageHeaders.TIMESTAMP, Long.class);
 
 //			logger.debug("payload: "+payload);
