@@ -15,7 +15,7 @@ u2ware-mongodb-ext-sink 는 MongoDB 데이터 저장을 위한 [Sink Type Module
 
 다음과 같이 Stream 을 생성합니다.
 ```
-xd:> stream create --name "myMongodbSink" --definition "http | json-to-tuple | u2ware-mongodb-ext-sink --host=192.168.0.102  --databaseName=myDb --idExpression=payload.id  --valueExpression=payload.value"
+xd:> stream create --name "myMongodbSink" --definition "http | json-to-tuple | u2ware-mongodb-ext-sink --host=127.0.0.1  --databaseName=myDb --idExpression=payload.id  --valueExpression=payload.value"
 ```
 
 Stream 을 배포합니다. 
