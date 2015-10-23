@@ -12,7 +12,7 @@ public class ModbusSourceOptions implements ProfileNamesProvider{
 	private static final String dont_use_json_output = "dont_use_json_output";
 
 	private String host;
-	private int port;
+	private int port = 502;
 	private int unitId;
 	private int functionCode;
 	private int offset;
