@@ -31,8 +31,8 @@ public class BacnetProcessorConfigurationTest {
 	public static void beforeClass() throws Exception{
 		
 		bacnetSlave = new BacnetSlave();
-		bacnetSlave.setLocalPort(47808);
-		bacnetSlave.setLocalInstanceNumber(47808);
+		bacnetSlave.setLocalPort(47809);
+		bacnetSlave.setLocalInstanceNumber(47809);
 		bacnetSlave.afterPropertiesSet();
 	}    
 	@AfterClass

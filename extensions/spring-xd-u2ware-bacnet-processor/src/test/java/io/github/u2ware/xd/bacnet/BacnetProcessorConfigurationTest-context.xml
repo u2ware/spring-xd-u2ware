@@ -9,8 +9,8 @@
 
 	<util:properties id="props">
 		<prop key="localPort">9991</prop>
-		<prop key="remoteAddress">127.0.0.1:47808</prop>
-		<prop key="remoteInstanceNumber">47808</prop>
+		<prop key="remoteAddress">127.0.0.1:47809</prop>
+		<prop key="remoteInstanceNumber">47809</prop>
 	</util:properties>
 
 	<import resource="classpath:config/bacnet-processor.xml"/>
