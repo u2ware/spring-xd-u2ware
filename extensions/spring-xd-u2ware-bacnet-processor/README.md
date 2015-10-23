@@ -15,12 +15,12 @@ u2ware-bacnet-processor 은 BACNet 연동을 위한 processor [Module](http://do
 
 다음과 같이 Stream 을 생성합니다.
 ```
-xd:> stream create --name "bacnet-processor" --definition "http | u2ware-bacnet-processor --remoteAddress=192.168.0.1:47808 --remoteInstanceNumber=1001 | log"
+xd:> stream create --name "myBacnetProcessor" --definition "http | u2ware-bacnet-processor --remoteAddress=127.0.0.1:47809 --remoteInstanceNumber=47809 | log"
 ```
 
 Stream 을 배포합니다.
 ```
-xd:> stream deploy --name "bacnet-processor"
+xd:> stream deploy --name "myBacnetProcessor"
 ```
 
 http 명령어를 이용하여, Spring XD console 에서 BACNet 응답 JSON 문자열을 볼 수 있습니다.
@@ -28,6 +28,10 @@ http 명령어를 이용하여, Spring XD console 에서 BACNet 응답 JSON 문�
 xd:> http post --target http://localhost:9000 --data "{}"
 ```
 
+Stream 을 삭제합니다.
+```
+xd:> stream destroy --name "myBacnetProcessor"
+```
 
 
 
