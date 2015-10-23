@@ -1,6 +1,6 @@
 # u2ware-modbus-processor
 
-u2ware-modbus-processor 은 Modbus 연동을 위한 [Processor Type Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 입니다. 아래와 같은 옵션이 있습니다.
+u2ware-modbus-processor 는 Modbus 연동을 위한 [Processor Type Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 입니다. 아래와 같은 옵션이 있습니다.
 
 |option|description|default|
 |---|---|---|
@@ -29,10 +29,10 @@ xd:> http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCo
 
 [io.github.u2ware.modbus.core.ModbusRequest]() 객체로 변환가능한 JSON 문자열을 전달합니다.  
 
-* unitId: MODBUS Request 패킷의 unitId 값입니다.
-* functionCode: MODBUS Request 패킷의 functionCode 값입니다.
-* offset: MODBUS Request 패킷의 offset 값입니다.
-* count: MODBUS Request 패킷의 count 값입니다.
+* unitId: Modbus 요청 패킷의 unitId 값입니다.
+* functionCode: Modbus 요청 패킷의 functionCode 값입니다.
+* offset: Modbus 요청 패킷의 offset 값입니다.
+* count: Modbus 요청 패킷의 count 값입니다.
 
 Stream 을 삭제합니다.
 ```

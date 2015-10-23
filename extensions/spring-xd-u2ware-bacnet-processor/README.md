@@ -1,6 +1,6 @@
 # u2ware-bacnet-processor
 
-u2ware-bacnet-processor 은 BACNet 연동을 위한 [Processor Type Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 입니다. 아래와 같은 옵션이 있습니다.
+u2ware-bacnet-processor 는 BACNet 연동을 위한 [Processor Type Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 입니다. 아래와 같은 옵션이 있습니다.
 
 |option|description|default|
 |---|---|---|
