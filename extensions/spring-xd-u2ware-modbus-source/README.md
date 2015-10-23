@@ -21,7 +21,7 @@ u2ware-modbus-source 는 Modbus 연동을 위한 [Source Type Module](http://doc
 xd:> stream create --name "myModbusSource" --definition "u2ware-modbus-source --host=127.0.0.1 --port=10502 --unitId=0 --functionCode=4 --offset=0 --count=6 | log"
 ```
 
-Stream 을 배포합니다. 10초 마다, Spring XD console 에서 BACNet 응답 JSON 문자열을 볼 수 있습니다.
+Stream 을 배포합니다. 10초 마다, Spring XD console 에서 Modbus 응답 JSON 문자열을 볼 수 있습니다.
 ```
 xd:> stream deploy --name "myModbusSource"
 ```
