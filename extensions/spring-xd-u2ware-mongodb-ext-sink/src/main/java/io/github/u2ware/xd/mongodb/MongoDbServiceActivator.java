@@ -18,7 +18,7 @@ import com.mongodb.DBObject;
 
 public class MongoDbServiceActivator implements InitializingBean, BeanFactoryAware{
 
-//	private Log logger = LogFactory.getLog(getClass());
+	//private Log logger = LogFactory.getLog(getClass());
 
 	private BeanFactory beanFactory;
 	private volatile StandardEvaluationContext evaluationContext;
@@ -78,7 +78,6 @@ public class MongoDbServiceActivator implements InitializingBean, BeanFactoryAwa
 
 		if(id == null || value == null) return;
 
-//		logger.debug("payload: "+payload);
 //		logger.debug("id: "+id);
 //		logger.debug("value: "+value);
 //		logger.debug("timestamp: "+timestamp);

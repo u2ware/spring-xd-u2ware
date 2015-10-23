@@ -5,19 +5,15 @@ public class Point {
 
 	private String id;
 	private Object value;
-	private Object other;
+	private Object others;
 	
 	public Point(){
-		
+
 	}
-	public Point(String id, Object value){
+	public Point(String id, Object value, Object others){
 		this.id = id;
 		this.value = value;
-	}
-	public Point(String id, Object value, Object other){
-		this.id = id;
-		this.value = value;
-		this.other = other;
+		this.others = others;
 	}
 	
 	public String getId() {
@@ -32,11 +28,13 @@ public class Point {
 	public void setValue(Object value) {
 		this.value = value;
 	}
-	public Object getOther() {
-		return other;
+	public Object getOthers() {
+		return others;
 	}
-	public void setOther(Object other) {
-		this.other = other;
+	public void setOthers(Object others) {
+		this.others = others;
 	}
+	
+	
 	
 }

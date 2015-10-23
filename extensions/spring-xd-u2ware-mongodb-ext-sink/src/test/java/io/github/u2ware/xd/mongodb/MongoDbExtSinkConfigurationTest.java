@@ -14,8 +14,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -32,6 +33,7 @@ import de.flapdoodle.embed.process.runtime.Network;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
+@ActiveProfiles("use_json_input")
 public class MongoDbExtSinkConfigurationTest {
 
 	protected static MongodExecutable _mongodExe;
@@ -66,6 +68,7 @@ public class MongoDbExtSinkConfigurationTest {
 	@Test
 	public void test() throws Exception{
 
+
 		input.send(MessageBuilder.withPayload(new Point("Mina", 19, "aaa")).build());
 		Thread.sleep(1000);
 
@@ -78,6 +81,16 @@ public class MongoDbExtSinkConfigurationTest {
 		input.send(MessageBuilder.withPayload(new Point("Mina", 19, "ddd")).build());
 		Thread.sleep(1000);
 		
+		/*
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\"}").build());
+		Thread.sleep(1000);
+
+		Tuple tuple6 = TupleBuilder.tuple().of("id", "aaa", "value", "bbb");
+		input.send(MessageBuilder.withPayload(tuple6).build());
+		logger.debug(tuple6);
+		logger.debug(MessageBuilder.withPayload(tuple6).build());
+		Thread.sleep(1000);
+		*/
 		
 		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
 		List<DBObject> r = null;

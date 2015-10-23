@@ -17,13 +17,22 @@
 	<int:channel id="input"/>
 	
 	
-	<mongo:db-factory id="mongoDbFactory" host="${host}" port="${port}" dbname="${databaseName}"/>
+	<mongo:db-factory id="mongoDbFactory" host="${host}" port="${port:27017}" dbname="${databaseName}"/>
+
+	<mongo:mapping-converter id="mongoDbConverter">
+		<mongo:custom-converters>
+			<mongo:converter>
+				<bean class="io.github.u2ware.xd.mongodb.TupleWriteConverter"/>
+			</mongo:converter>
+		</mongo:custom-converters>
+	</mongo:mapping-converter>
 
 	<int:service-activator 
 		input-channel="input" 
 		method="execute">
 		<bean class="io.github.u2ware.xd.mongodb.MongoDbServiceActivator">
 			<constructor-arg ref="mongoDbFactory"/>
+			<property name="mongoConverter" ref="mongoDbConverter"/>
 			<property name="collectionName" value="${databaseName}"/>
 			<property name="idExpression">
 				<bean class="org.springframework.integration.config.ExpressionFactoryBean">
@@ -37,5 +46,21 @@
 			</property>
 		</bean>
 	</int:service-activator>
+	
+<!-- 	
+	<beans profile="use_json_input">
+		<int:payload-type-router input-channel="input">
+		    <int:mapping type="java.lang.String" channel="jsonRequest" />
+		    <int:mapping type="java.lang.Object" channel="mongodbRequest" />
+		</int:payload-type-router>
+	
+		<int:json-to-object-transformer input-channel="jsonRequest" output-channel="mongodbRequest">
+	</beans>
+	<beans profile="dont_use_json_input">
+		<int:bridge input-channel="input" output-channel="mongodbRequest"/>
+	</beans>
+ -->	
+	
+	
 
 </beans>
