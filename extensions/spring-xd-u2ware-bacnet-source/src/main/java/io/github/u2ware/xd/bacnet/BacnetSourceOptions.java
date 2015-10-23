@@ -12,10 +12,10 @@ public class BacnetSourceOptions implements ProfileNamesProvider{
 	private static final String use_json_output = "use_json_output";
 	private static final String dont_use_json_output = "dont_use_json_output";
 
-	private int localPort;
+	private int localPort = 47808;
 	private String remoteAddress;
 	private String remoteInstanceNumber;
-	private int fixedDelay = 3000;
+	private int fixedDelay = 10000;
 	private boolean split = true;
 	private boolean jsonOutput = true;
 	

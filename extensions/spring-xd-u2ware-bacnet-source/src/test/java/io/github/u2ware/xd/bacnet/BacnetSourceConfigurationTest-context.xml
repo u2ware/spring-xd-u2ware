@@ -9,8 +9,8 @@
 
 	<util:properties id="props">
 		<prop key="localPort">9991</prop>
-		<prop key="remoteAddress">127.0.0.1:47808</prop>
-		<prop key="remoteInstanceNumber">47808</prop>
+		<prop key="remoteAddress">127.0.0.1:47908</prop>
+		<prop key="remoteInstanceNumber">47908</prop>
 		<prop key="fixedDelay">3000</prop>
 	</util:properties>
 

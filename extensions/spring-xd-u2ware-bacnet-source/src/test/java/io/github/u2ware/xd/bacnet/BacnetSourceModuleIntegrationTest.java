@@ -33,8 +33,8 @@ public class BacnetSourceModuleIntegrationTest {
 	@BeforeClass
 	public static void beforeClass() throws Exception{
 		bacnetSlave = new BacnetSlave();
-		bacnetSlave.setLocalPort(47809);
-		bacnetSlave.setLocalInstanceNumber(47809);
+		bacnetSlave.setLocalPort(47909);
+		bacnetSlave.setLocalInstanceNumber(47909);
 		bacnetSlave.afterPropertiesSet();
 		
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
@@ -59,10 +59,8 @@ public class BacnetSourceModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "bacnet-source "
-				+ " --localPort=9992 "
-				+ " --remoteAddress=127.0.0.1:47809 "
-				+ " --remoteInstanceNumber=47809 "
-				+ " --fixedDelay=3000"
+				+ " --remoteAddress=127.0.0.1:47909 "
+				+ " --remoteInstanceNumber=47909 "
 				+ " --jsonOutput=false ";
 
 		logger.debug(processingChainUnderTest);
