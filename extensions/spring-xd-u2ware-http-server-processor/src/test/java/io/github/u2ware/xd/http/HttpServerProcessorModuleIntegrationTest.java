@@ -40,7 +40,7 @@ public class HttpServerProcessorModuleIntegrationTest {
 
 		String processingChainUnderTest = "http-server-processor "
 				+ " --httpPort=9993 "
-				+ " --messagingTimeout=10000 ";
+				+ " --httpTimeout=10000 ";
 
 		logger.debug(processingChainUnderTest);
 		

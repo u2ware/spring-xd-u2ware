@@ -9,7 +9,7 @@
 
 	<util:properties id="props">
 		<prop key="httpPort">9992</prop>
-		<prop key="messagingTimeout">10000</prop>
+		<prop key="httpTimeout">10000</prop>
 	</util:properties>
 
 	<import resource="classpath:config/http-server-processor.xml"/>

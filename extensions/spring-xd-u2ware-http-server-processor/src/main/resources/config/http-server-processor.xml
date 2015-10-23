@@ -19,7 +19,7 @@
 		<property name="port" value="${httpPort}"/>
 		<property name="sendChannel" ref="output"/>
 		<property name="receiveChannel" ref="input"/>
-		<property name="messagingTimeout" value="${messagingTimeout}"/>
+		<property name="messagingTimeout" value="${httpTimeout}"/>
 	</bean>
 
 	<int:channel id="output"/>
