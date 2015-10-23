@@ -27,11 +27,12 @@ http 명령어를 이용하여, Spring XD console 에서 Modbus 응답 JSON 문�
 xd:> http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
 ```
 
-[io.github.u2ware.modbus.core.ModbusRequest]() 객체로 변환가능한 JSON 문자열을전달합니다.  
-*unitId: MODBUS Request 패킷의 unitId 값입니다.
-*functionCode: MODBUS Request 패킷의 functionCode 값입니다.
-*offset: MODBUS Request 패킷의 offset 값입니다.
-*count: MODBUS Request 패킷의 count 값입니다.
+[io.github.u2ware.modbus.core.ModbusRequest]() 객체로 변환가능한 JSON 문자열을 전달합니다.  
+
+* unitId: MODBUS Request 패킷의 unitId 값입니다.
+* functionCode: MODBUS Request 패킷의 functionCode 값입니다.
+* offset: MODBUS Request 패킷의 offset 값입니다.
+* count: MODBUS Request 패킷의 count 값입니다.
 
 Stream 을 삭제합니다.
 ```
