@@ -30,5 +30,10 @@ xd:>http post --target http://localhost:9999 --data "hello world"
 HELLO WORLD
 ```
 
+Stream 을 삭제합니다.
+```
+xd:> stream destroy --name "myHttpServer1"
+xd:> stream destroy --name "myHttpServer2"
+```
 
 
