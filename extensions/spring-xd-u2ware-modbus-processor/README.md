@@ -27,8 +27,7 @@ http 명령어를 이용하여, Spring XD console 에서 Modbus 응답 JSON 문�
 xd:> http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
 ```
 
-[io.github.u2ware.modbus.core.ModbusRequest]() 객체로 변환가능한 JSON 문자열을 전달합니다.  
-
+테스트용 데이터는 [io.github.u2ware.modbus.core.ModbusRequest]() 객체로 변환가능한 JSON 문자열을 사용하여야 합니다.
 * unitId: Modbus 요청 패킷의 unitId 값입니다.
 * functionCode: Modbus 요청 패킷의 functionCode 값입니다.
 * offset: Modbus 요청 패킷의 offset 값입니다.
