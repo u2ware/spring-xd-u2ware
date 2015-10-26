@@ -9,9 +9,6 @@
 |MongoDB                   | | |[u2ware-mongodb-ext-sink](spring-xd-u2ware-mongodb-ext-sink/)|
 |HTTP Server               | |[u2ware-http-server-processor](spring-xd-u2ware-http-server-processor/)| |
 |HTTP Static File Server   |[u2ware-http-server-source](spring-xd-u2ware-http-server-source/)|-|-|
-|BACNet REST               |[u2ware-bacnet-rest-source](spring-xd-u2ware-bacnet-rest-source/)|-|-|
-|Modbus REST               |[u2ware-modbus-rest-source](spring-xd-u2ware-modbus-rest-source/)|-|-|
-|MongoDB REST              |[u2ware-mongodb-rest-source](spring-xd-u2ware-mongodb-rest-source/)|-|-|
 
 
 
