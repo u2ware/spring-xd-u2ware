@@ -13,7 +13,7 @@
 
 	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpStaticFileChannelAdapter">
 		<property name="port" value="${httpPort}"/>
-		<property name="resourcePrefix" value="${resourcePrefix}"/>
+		<property name="resourcePrefix" value="${resourceLocation}"/>
 	</bean>
 
 	<int:channel id="output"/>

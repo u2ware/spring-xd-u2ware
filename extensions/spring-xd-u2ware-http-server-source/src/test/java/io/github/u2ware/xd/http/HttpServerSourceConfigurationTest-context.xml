@@ -9,7 +9,7 @@
 
 	<util:properties id="props">
 		<prop key="httpPort">9992</prop>
-		<prop key="resourcePrefix">file://Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-http-server-source/src/test/resources</prop>
+		<prop key="resourceLocation">file://Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-http-server-source/src/test/resources</prop>
 	</util:properties>
 
 	<import resource="classpath:config/http-server-source.xml"/>

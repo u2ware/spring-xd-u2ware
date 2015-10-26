@@ -40,7 +40,7 @@ public class HttpServerSourceModuleIntegrationTest {
 
 		String processingChainUnderTest = "http-server-source "
 				+ " --httpPort=9993 "
-				+ " --resourcePrefix=file://Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-http-server-source/src/test/resources ";
+				+ " --resourceLocation=file://Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-http-server-source/src/test/resources ";
 
 		logger.debug(processingChainUnderTest);
 		
