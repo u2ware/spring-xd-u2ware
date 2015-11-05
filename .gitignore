@@ -26,12 +26,12 @@ data/
 logs/
 
 spring-xd-u2ware-hyundai-elevator/
-spring-xd-u2ware-hyundai-elevator-processor/
-spring-xd-u2ware-hyundai-elevator-source/
-spring-xd-u2ware-hyundai-elevator-rest-source/
+spring-xd-u2ware-hyundai-elevator-processor-a/
+spring-xd-u2ware-hyundai-elevator-source-a/
+spring-xd-u2ware-hyundai-elevator-rest-source-a/
 
 spring-xd-u2ware-siemens-fireview/
-spring-xd-u2ware-siemens-fireview-source/
+spring-xd-u2ware-siemens-fireview-source-a/
 
 project_lguplus_pyoungchon_idc/
 
