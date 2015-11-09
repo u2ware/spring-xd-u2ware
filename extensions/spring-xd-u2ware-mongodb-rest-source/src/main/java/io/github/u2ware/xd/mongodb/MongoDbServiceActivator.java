@@ -1,6 +1,6 @@
 package io.github.u2ware.xd.mongodb;
 
-import io.github.u2ware.integration.netty.handler.NettyHeaders;
+import io.github.u2ware.integration.netty.support.NettyHeaders;
 
 import java.util.List;
 import java.util.Map;
