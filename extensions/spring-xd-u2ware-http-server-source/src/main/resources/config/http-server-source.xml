@@ -11,7 +11,7 @@
 		http://u2ware.github.io/schema/integration/bacnet/spring-integration-bacnet.xsd">
 
 
-	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpStaticFileChannelAdapter">
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.http.HttpResourceServer">
 		<property name="port" value="${httpPort}"/>
 		<property name="resourcePrefix" value="${resourceLocation}"/>
 	</bean>
