@@ -22,4 +22,30 @@
 		</dependency>		
 	</dependencies>
 	
+
+<build>  
+ <plugins>  
+  <plugin>  
+   <groupId>org.codehaus.mojo</groupId>  
+   <artifactId>exec-maven-plugin</artifactId>  
+   <version>1.4.0</version>  
+   <executions>  
+    <execution>  
+     <phase>package</phase>  
+     <goals>  
+      <goal>java</goal>  
+     </goals>  
+     <configuration>  
+      <mainClass>io.github.u2ware.xd.bacnet.BacnetProcessorModuleUploadMain</mainClass>
+		<classpathScope>test</classpathScope>
+            
+        
+     </configuration>  
+    </execution>  
+   </executions>  
+  </plugin>  
+ </plugins>  
+</build>  
+	
+	
 </project>
