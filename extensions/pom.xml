@@ -76,38 +76,5 @@
         </dependency>
  	
 	</dependencies>
-<!--  
-	<properties>
-		
-		<spring.xd.custom-modules.processor>../../xd/custom-modules/processor</spring.xd.custom-modules.processor>
-		<spring.xd.custom-modules.sink>../../xd/custom-modules/sink</spring.xd.custom-modules.sink>
-		<spring.xd.custom-modules.source>../../xd/custom-modules/source</spring.xd.custom-modules.source>
-	</properties>
 
-
-	<build>
-	  <plugins>
-	    <plugin>
-	      <artifactId>maven-antrun-plugin</artifactId>
-	      <executions>
-	        <execution>
-	          <phase>package</phase>
-	          <goals>
-	            <goal>run</goal>
-	          </goals>
-	          <configuration>
-	            <tasks>
-					  <copy todir="${spring.xd.custom-modules.processor}">
-					    <fileset dir="target/">
-					      <include name="*.jar"/>
-					    </fileset>
-					  </copy>
-  	            </tasks>
-	          </configuration>
-	        </execution>
-	      </executions>
-	    </plugin>
-	  </plugins>
-	</build>
- --> 
 </project>
