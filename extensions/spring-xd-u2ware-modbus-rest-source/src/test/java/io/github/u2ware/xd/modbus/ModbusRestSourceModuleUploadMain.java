@@ -55,6 +55,9 @@ public class ModbusRestSourceModuleUploadMain {
 		logger.info("ModuleUploadPlugin module uploaded!!! ");
 		
 		application.close();
+		
+		Thread.sleep(3000);
+		System.exit(0);
     }
 }
 
