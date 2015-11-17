@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class HttpServerSourceConfigurationTest {
+public class HttpResourceServerConfigurationTest {
 
     protected Log logger = LogFactory.getLog(getClass());
 

@@ -13,7 +13,7 @@ import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainConsume
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
-public class HttpServerSourceModuleIntegrationTest {
+public class HttpResourceServerModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
@@ -40,7 +40,7 @@ public class HttpServerSourceModuleIntegrationTest {
 
 		String processingChainUnderTest = "http-server-source "
 				+ " --httpPort=9993 "
-				+ " --resourceLocation=file://Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-http-server-source/src/test/resources ";
+				+ " --resourceLocation=classpath: ";
 
 		logger.debug(processingChainUnderTest);
 		

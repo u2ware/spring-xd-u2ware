@@ -9,7 +9,7 @@
 
 	<logger name="org.springframework.integration.channel" level="OFF" />
 	
-	<logger name="io.github.u2ware.integration.netty" level="DEBUF" />
+	<logger name="io.github.u2ware.integration.netty" level="DEBUG" />
 	<logger name="io.github.u2ware.xd" level="DEBUG" />
 
 	<root level="OFF">

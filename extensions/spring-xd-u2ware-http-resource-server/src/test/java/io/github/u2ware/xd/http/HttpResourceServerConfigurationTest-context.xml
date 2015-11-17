@@ -9,10 +9,10 @@
 
 	<util:properties id="props">
 		<prop key="httpPort">9992</prop>
-		<prop key="resourceLocation">file://Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-http-server-source/src/test/resources</prop>
+		<prop key="resourceLocation">classpath:</prop>
 	</util:properties>
 
-	<import resource="classpath:config/http-server-source.xml"/>
+	<import resource="classpath:config/http-resource-server.xml"/>
 
 	<!-- Override direct channel with a queue channel so the test will block until a message is received -->
 	<int:channel id="output">
