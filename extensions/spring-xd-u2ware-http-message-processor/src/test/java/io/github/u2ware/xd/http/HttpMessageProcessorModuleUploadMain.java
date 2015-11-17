@@ -12,13 +12,13 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class HttpServerProcessorModuleUploadMain {
+public class HttpMessageProcessorModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(HttpServerProcessorModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(HttpMessageProcessorModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-http-server-processor";
+    private static final String moduleName     = "u2ware-http-message-processor";
     private static final String moduleType     = "processor";
-    private static final String moduleResource = "target/spring-xd-u2ware-http-server-processor-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-http-message-processor-1.0.0.jar";
 
     private static final String sourceResource     = "../custom-modules/";
     private static final String targetResource     = "../custom-modules/";
