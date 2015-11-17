@@ -11,7 +11,7 @@
 		http://u2ware.github.io/schema/integration/bacnet
 		http://u2ware.github.io/schema/integration/bacnet/spring-integration-bacnet.xsd">
 
-	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.http.HttpMessageServer">
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpMessageServer">
 		<property name="port" value="${httpPort}"/>
 		<property name="sendChannel" ref="httpRequest"/>
 		<property name="receiveChannel" ref="httpResponse"/>
