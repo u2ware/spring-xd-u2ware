@@ -39,8 +39,8 @@ public class HttpResourceServerModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "http-resource-server "
-				+ " --httpPort=9993 " ;
-
+				+ " --httpPort=9993 ";
+		
 		logger.debug(processingChainUnderTest);
 		
 		SingleNodeProcessingChainConsumer chain = SingleNodeProcessingChainSupport.chainConsumer(application, streamName, processingChainUnderTest);
