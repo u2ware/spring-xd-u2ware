@@ -9,7 +9,6 @@
 
 	<util:properties id="props">
 		<prop key="httpPort">9992</prop>
-		<prop key="configClass">com.mycompany.myproject.Application</prop>
 	</util:properties>
 
 	<import resource="classpath:config/http-webmvc-server.xml"/>

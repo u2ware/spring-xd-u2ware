@@ -39,8 +39,7 @@ public class HttpWebmvcServerModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "http-webmvc-server "
-				+ " --httpPort=9993 "
-				+ " --configClass=com.mycompany.myproject.Application ";
+				+ " --httpPort=9993 ";
 
 		logger.debug(processingChainUnderTest);
 		
