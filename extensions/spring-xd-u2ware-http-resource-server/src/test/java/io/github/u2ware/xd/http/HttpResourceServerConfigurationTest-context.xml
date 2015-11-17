@@ -9,7 +9,6 @@
 
 	<util:properties id="props">
 		<prop key="httpPort">9992</prop>
-		<prop key="resourceLocation">classpath:</prop>
 	</util:properties>
 
 	<import resource="classpath:config/http-resource-server.xml"/>

@@ -13,7 +13,7 @@
 
 	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpResourceServer">
 		<property name="port" value="${httpPort}"/>
-		<property name="resourceLocation" value="${resourceLocation}"/>
+		<property name="resourceLocation" value="classpath:WebContent"/>
 	</bean>
 
 	<int:channel id="output"/>
