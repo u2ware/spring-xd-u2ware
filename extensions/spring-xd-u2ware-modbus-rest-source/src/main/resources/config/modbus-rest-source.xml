@@ -11,7 +11,7 @@
 		http://u2ware.github.io/schema/integration/modbus 
 		http://u2ware.github.io/schema/integration/modbus/spring-integration-modbus.xsd">
 
-	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.http.HttpMessageServer">
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpMessageServer">
 		<property name="port" value="${httpPort}"/>
 		<property name="sendChannel" ref="httpRequest"/>
 		<property name="receiveChannel" ref="httpResponse"/>
