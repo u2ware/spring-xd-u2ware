@@ -20,8 +20,8 @@ public class BacnetProcessorModuleUploadMain {
     private static final String moduleType     = "processor";
     private static final String moduleResource = "target/spring-xd-u2ware-bacnet-processor-1.0.0.jar";
 
-    private static final String sourceResource     = "../custom-modules/";
-    private static final String targetResource     = "../custom-modules/";
+    private static final String sourceResource     = "../../custom-modules/";
+    private static final String targetResource     = "../../custom-modules/";
     
     public static void main(String[] args) throws Exception{
     	logger.info("ModuleUploadPlugin starting.....");
