@@ -75,8 +75,8 @@ Spring XD 콘솔에서 다음과 같이 메세지가 출력됩니다.
 2015-11-18T14:54:19+0900 1.2.1.RELEASE INFO task-scheduler-2 sink.ticktock - 2015-11-18 14:54:20
 ```
 
-[Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 은 여러가지 유형의 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules)들을 사용하여 구성됩니다.
-[Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 은 그 유형에 따라, [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources), [Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors), [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks) 등으로 분류 됩니다.
+[Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 은 여러가지 유형의 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 들을 사용하여 구성되며, [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 은 그 유형에 따라, [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources), [Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors), [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks) 등으로 분류 됩니다.
+
 이벤트 기반 데이터는 1개의 [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources) 에서 만들어 지고,  0개 또는 다수의 [Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors)를 거쳐 0개 또는 1개의 [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks)에서 처리되는 경로를 가지게 됩니다. 위 예제에서 'time' 은 [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources) 이고, 'log' 는 [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks) 입니다.
  
 
