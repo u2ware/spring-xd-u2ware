@@ -40,7 +40,7 @@ Documentation: https://github.com/spring-projects/spring-xd/wiki
 # Usage
 
 
-1. 다음과 같이 XD shell 을 실행하면 ```xd:>``` 로 진입합니다.
+다음과 같이 XD shell 을 실행하면 ```xd:>``` 로 진입합니다.
 ```
 [HOME]/shell/bin>$ ./xd-shell
  _____                           __   _______
@@ -57,7 +57,7 @@ Welcome to the Spring XD shell. For assistance hit TAB or type "help".
 xd:>
 ```
 
-2. [Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 이란, 이벤트 기반 데이터의 처리 경로에 대한 정의(definition) 입니다.
+[Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 이란, 이벤트 기반 데이터의 처리 경로에 대한 정의(definition) 입니다.
 ```xd:>``` 에서 [Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams)을 생성(create)하고 배포(deploy)할 수 있습니다.
 
 ```
@@ -91,7 +91,7 @@ Spring XD 콘솔에서 다음과 같이 메세지가 출력됩니다.
 위 예제에서 'time' 은 [Source] 이고, 'log' 는 [Sink] 입니다.
  
 
-3. 설치된 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 리스트를 아래 명령어로 볼 수 있습니다.
+설치된 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 리스트를 아래 명령어로 볼 수 있습니다.
 
 ```
 xd:>module list
