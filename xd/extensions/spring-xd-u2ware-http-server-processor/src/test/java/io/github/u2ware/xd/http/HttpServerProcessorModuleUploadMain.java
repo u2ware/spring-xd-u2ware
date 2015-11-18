@@ -12,16 +12,16 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class HttpMessageProcessorModuleUploadMain {
+public class HttpServerProcessorModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(HttpMessageProcessorModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(HttpServerProcessorModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-http-message-processor";
+    private static final String moduleName     = "u2ware-http-server-processor";
     private static final String moduleType     = "processor";
-    private static final String moduleResource = "target/spring-xd-u2ware-http-message-processor-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-http-server-processor-1.0.0.jar";
 
-    private static final String sourceResource     = "../custom-modules/";
-    private static final String targetResource     = "../custom-modules/";
+    private static final String sourceResource     = "../../custom-modules/";
+    private static final String targetResource     = "../../custom-modules/";
     
     public static void main(String[] args) throws Exception{
     	logger.info("ModuleUploadPlugin starting.....");

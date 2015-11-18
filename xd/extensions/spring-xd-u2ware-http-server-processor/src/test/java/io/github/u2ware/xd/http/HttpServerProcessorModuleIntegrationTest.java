@@ -13,7 +13,7 @@ import org.springframework.xd.dirt.test.process.SingleNodeProcessingChain;
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
-public class HttpMessageProcessorModuleIntegrationTest {
+public class HttpServerProcessorModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
