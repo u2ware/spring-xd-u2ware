@@ -2,8 +2,8 @@ Spring XD U2ware
 =================================================
 # Introduction
 
-각종 Custom Module 이 설치된 [spring-xd-1.2.1.RELEASE](https://repo.spring.io/libs-release/org/springframework/xd/spring-xd/1.2.1.RELEASE/spring-xd-1.2.1.RELEASE-dist.zip) 기준의 재배포판입니다.
-Spring XD 에 대해서는 [가이드](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#_install_spring_xd)를 참조합니다.
+각종 Custom Module 이 설치된 [spring-xd-1.2.1.RELEASE](https://repo.spring.io/libs-release/org/springframework/xd/spring-xd/1.2.1.RELEASE/spring-xd-1.2.1.RELEASE-dist.zip)의 재배포판입니다.
+Spring XD 에 대해서는 [가이드](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#_install_spring_xd)를 참조 할 수 있니다.
  
 
 # Download 
@@ -12,9 +12,9 @@ Spring XD 에 대해서는 [가이드](http://docs.spring.io/spring-xd/docs/1.2.
 
 # Run
 
-압축을 풀고, 다음 명령어를 실행하면 Spring XD 가 시작되고 메세지가 출력됩니다.
+임의로 지정한 경로(HOME)에 압축을 풀고, 다음과 같이 Spring XD 을 실행합니다.  
 ```
-/xd/bin>$ ./xd-singlenode
+[HOME]/xd/bin>$ ./xd-singlenode
  _____                           __   _______
 /  ___|          (-)             \ \ / /  _  \
 \ `--. _ __  _ __ _ _ __   __ _   \ V /| | | |
@@ -36,9 +36,13 @@ Documentation: https://github.com/spring-projects/spring-xd/wiki
 ..... - Scheduling deployments to new container(s) in 15000 ms 
 ```
 
-Spring XD 를 실행한 후 다음 명령어로 XD shell 을 실행하면 ```xd:>``` 로 진입합니다.
+
+# Usage
+
+
+1. 다음과 같이 XD shell 을 실행하면 ```xd:>``` 로 진입합니다.
 ```
-/shell/bin>$ ./xd-shell
+[HOME]/shell/bin>$ ./xd-shell
  _____                           __   _______
 /  ___|          (-)             \ \ / /  _  \
 \ `--. _ __  _ __ _ _ __   __ _   \ V /| | | |
@@ -52,7 +56,42 @@ eXtreme Data
 Welcome to the Spring XD shell. For assistance hit TAB or type "help".
 xd:>
 ```
-```xd:>``` 에서 설치된 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 리스트를 아래 명령어로 볼 수 있습니다.
+
+2. [Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 이란, 이벤트 기반 데이터의 처리 경로에 대한 정의(definition) 입니다.
+```xd:>``` 에서 [Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams)을 생성(create)하고 배포(deploy)할 수 있습니다.
+
+```
+xd:>stream create --name "ticktock" --definition "time | log" 
+Created new stream 'ticktock'
+
+xd:>stream deploy --name "ticktock"
+Deployed stream 'ticktock'
+```
+
+Spring XD 콘솔에서 다음과 같이 메세지가 출력됩니다.
+```
+2015-11-18T14:54:18+0900 1.2.1.RELEASE INFO task-scheduler-2 sink.ticktock - 2015-11-18 14:54:18
+2015-11-18T14:54:19+0900 1.2.1.RELEASE INFO task-scheduler-2 sink.ticktock - 2015-11-18 14:54:19
+2015-11-18T14:54:19+0900 1.2.1.RELEASE INFO task-scheduler-2 sink.ticktock - 2015-11-18 14:54:20
+```
+
+[Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 은 
+여러가지 유형의 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules)들을 사용하여 구성됩니다.
+
+[Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 은 그 유형에 따라, 
+[Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources), 
+[Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors), 
+[Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks) 등으로 분류 됩니다.
+
+이벤트 기반 데이터는  
+1개의 [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources) 에서 만들어 지고,  
+0개 또는 다수의 [Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors)를 거쳐 
+0개 또는 1개의 [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks)에서 처리되는 경로를 가지게 됩니다.
+
+위 예제에서 'time' 은 [Source] 이고, 'log' 는 [Sink] 입니다.
+ 
+
+3. 설치된 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 리스트를 아래 명령어로 볼 수 있습니다.
 
 ```
 xd:>module list
@@ -92,17 +131,4 @@ xd:>module list
       u2ware-mongodb-rest-source
       u2ware-siemens-fireview-source
 ``` 
-
-# Usage
-
-[Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 을 등록(register)하고 배포(deploy)합니다.
-추가된 Custom Modules 은 [다음](extensions/)을 참고합니다.
-
-
-
-
-
-
-
-
-
+Spring XD 가 기본적으로 제공하는 Module 이외에 추가 설치된 Custom Modules 에 대해서 [다음](extensions/)을 참고 할 수 있습니다.
