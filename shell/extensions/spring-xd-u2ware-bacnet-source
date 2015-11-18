@@ -2,3 +2,8 @@ stream create --name "spring-xd-u2ware-bacnet-source" --definition "u2ware-bacne
 
 stream deploy --name "spring-xd-u2ware-bacnet-source"
 
+//stream undeploy --name "spring-xd-u2ware-bacnet-source"
+
+//stream destroy --name "spring-xd-u2ware-bacnet-source"
+
+
