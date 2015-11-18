@@ -1,0 +1,3 @@
+stream create --name "spring-xd-u2ware-bacnet-source" --definition "u2ware-bacnet-source  --remoteAddress=127.0.0.1:47808  --remoteInstanceNumber=47808  --localPort=9991 --fixedDelay=5000 | log"
+
+stream deploy --name "spring-xd-u2ware-bacnet-source"
