@@ -1,0 +1,13 @@
+stream create --name "myHttpServer1" --definition "queue:myHttpRes > u2ware-http-server-processor --httpPort=9999  --httpTimeout=10000 > queue:myHttpReq"
+
+stream create --name "myHttpServer2" --definition "queue:myHttpReq > transform --expression=payload.toString().toUpperCase() > queue:myHttpRes"
+
+stream deploy --name "myHttpServer1"
+
+stream deploy --name "myHttpServer2"
+
+http post --target http://localhost:9999 --data "hello world"
+
+//stream destroy --name "myHttpServer1"
+
+//stream destroy --name "myHttpServer2"
