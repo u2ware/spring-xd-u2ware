@@ -1,0 +1,9 @@
+stream create --name "spring-xd-u2ware-hyundai-elevator-processor" --definition "http | u2ware-hyundai-elevator-processor --host=127.0.0.1 --port=9990 | log"
+
+stream deploy --name "spring-xd-u2ware-hyundai-elevator-processor"
+
+http post --target http://localhost:9000 --data "{}"
+
+//stream undeploy --name "spring-xd-u2ware-hyundai-elevator-processor"
+
+//stream destroy --name "spring-xd-u2ware-hyundai-elevator-processor"

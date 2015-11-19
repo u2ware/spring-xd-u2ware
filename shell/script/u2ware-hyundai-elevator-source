@@ -1,0 +1,9 @@
+stream create --name "spring-xd-u2ware-hyundai-elevator-source" --definition "u2ware-hyundai-elevator-source --host=127.0.0.1 --port=9990 --idleTimeout=5000 | log"
+
+stream deploy --name "spring-xd-u2ware-hyundai-elevator-source"
+
+//stream undeploy --name "spring-xd-u2ware-hyundai-elevator-source"
+
+//stream destroy --name "spring-xd-u2ware-hyundai-elevator-source"
+
+
