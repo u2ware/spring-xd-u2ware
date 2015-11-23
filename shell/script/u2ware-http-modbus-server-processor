@@ -8,6 +8,6 @@ stream deploy --name "myHttpServer2"
 
 http post --target http://localhost:9999 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
 
-//stream destroy --name "myHttpServer1"
+stream destroy --name "myHttpServer1"
 
-//stream destroy --name "myHttpServer2"
+stream destroy --name "myHttpServer2"

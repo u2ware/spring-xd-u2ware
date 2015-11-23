@@ -8,6 +8,6 @@ stream deploy --name "myHttpServer2"
 
 http post --target http://localhost:9999 --data "{}"
 
-//stream destroy --name "myHttpServer1"
+stream destroy --name "myHttpServer1"
 
-//stream destroy --name "myHttpServer2"
+stream destroy --name "myHttpServer2"
