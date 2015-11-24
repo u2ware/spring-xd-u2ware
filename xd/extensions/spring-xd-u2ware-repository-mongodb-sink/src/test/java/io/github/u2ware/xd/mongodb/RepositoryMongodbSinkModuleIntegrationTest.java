@@ -1,6 +1,6 @@
 package io.github.u2ware.xd.mongodb;
 
-import io.github.u2ware.xd.mongodb.test.Point;
+import io.github.u2ware.xd.mongodb.MongodbServer.Sample;
 
 import java.util.List;
 
@@ -21,22 +21,10 @@ import org.springframework.xd.module.ModuleType;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.runtime.Network;
-
-public class DatasetMongodbSinkModuleIntegrationTest {
+public class RepositoryMongodbSinkModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-	protected static MongodExecutable _mongodExe;
-	protected static MongodProcess _mongod;
-	protected static MongoClient mongoClient;
-    
     private static SingleNodeApplication application;
 
 
@@ -46,39 +34,30 @@ public class DatasetMongodbSinkModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		_mongodExe =  MongodStarter.getDefaultInstance()
-				.prepare(new MongodConfigBuilder()
-						.version(Version.Main.PRODUCTION)
-						.net(new Net(27017, Network.localhostIsIPv6()))
-						.build()
-				);
-		_mongod = _mongodExe.start();
-		
-		mongoClient = new MongoClient("localhost", 27017);
-		
+		MongodbServer.startup(27017);
+
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
 		
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.sink, "dataset-mongodb-sink"));
+				new SingletonModuleRegistry(ModuleType.sink, "repository-mongodb-sink"));
 	}
 
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		_mongod.stop();
-		_mongodExe.stop();
+		MongodbServer.shutdown();
 	}
 	
 
 	@Test
-	public void test() throws InterruptedException {
+	public void test() throws Exception {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "dataset-mongodb-sink "
+		String processingChainUnderTest = "repository-mongodb-sink "
 				+ " --databaseName=MyDatabase "
 				+ " --host=127.0.0.1 "
 				+ " --port=27017 "
@@ -94,18 +73,21 @@ public class DatasetMongodbSinkModuleIntegrationTest {
 		Thread.sleep(3000);
 
 
-		chain.sendPayload(new Point("Mina", 19, "aaa"));
+		chain.sendPayload(new Sample("Mina", 19, "aaa"));
 		Thread.sleep(1000);
 
-		chain.sendPayload(new Point("Mina", 22, "bbb"));
+		chain.sendPayload(new Sample("Mina", 22, "bbb"));
 		Thread.sleep(1000);
 		
-		chain.sendPayload(new Point("Mina", 19, "ccc"));
+		chain.sendPayload(new Sample("Mina", 19, "ccc"));
 		Thread.sleep(1000);
 
-		chain.sendPayload(new Point("Mina", 19, "ddd"));
+		chain.sendPayload(new Sample("Mina", 19, "ddd"));
 		Thread.sleep(1000);
 		
+		
+		
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
 		List<DBObject> r = null;
 		

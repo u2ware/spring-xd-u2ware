@@ -20,12 +20,14 @@
 	<mongo:db-factory id="mongoDbFactory" host="${host}" port="${port:27017}" dbname="${databaseName}"/>
 
 	<mongo:mapping-converter id="mongoDbConverter">
+	<!-- 
 		<mongo:custom-converters>
 			<mongo:converter>
 				<bean class="io.github.u2ware.xd.mongodb.TupleWriteConverter"/>
 			</mongo:converter>
 		</mongo:custom-converters>
-	</mongo:mapping-converter>
+ 	-->
+ 	</mongo:mapping-converter>
 
 	<int:service-activator 
 		input-channel="input" 

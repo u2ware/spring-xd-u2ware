@@ -1,5 +1,7 @@
 package io.github.u2ware.xd.mongodb;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -18,7 +20,7 @@ import com.mongodb.DBObject;
 
 public class MongodbServiceActivator implements InitializingBean, BeanFactoryAware{
 
-	//private Log logger = LogFactory.getLog(getClass());
+	private Log logger = LogFactory.getLog(getClass());
 
 	private BeanFactory beanFactory;
 	private volatile StandardEvaluationContext evaluationContext;
@@ -66,6 +68,10 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 	public void execute(Message<?> requestMessage) throws Exception{
 		
 		Object payload = requestMessage.getPayload();
+		logger.info(requestMessage);
+//		logger.debug(requestMessage.getHeaders());
+//		logger.debug(payload.getClass());
+//		logger.debug(payload);
 		
 		Object id = this.idExpression != null 
 				? this.idExpression.getValue(this.evaluationContext, requestMessage, Object.class)

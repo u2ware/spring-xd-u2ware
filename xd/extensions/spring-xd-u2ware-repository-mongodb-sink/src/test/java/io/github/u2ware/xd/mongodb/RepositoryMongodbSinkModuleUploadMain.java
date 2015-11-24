@@ -12,13 +12,13 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class DatasetMongodbSinkModuleUploadMain {
+public class RepositoryMongodbSinkModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(DatasetMongodbSinkModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(RepositoryMongodbSinkModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-dataset-mongodb-sink";
+    private static final String moduleName     = "u2ware-repository-mongodb-sink";
     private static final String moduleType     = "sink";
-    private static final String moduleResource = "target/spring-xd-u2ware-dataset-mongodb-sink-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-repository-mongodb-sink-1.0.0.jar";
 
     private static final String sourceResource     = "../../custom-modules/";
     private static final String targetResource     = "../../custom-modules/";
