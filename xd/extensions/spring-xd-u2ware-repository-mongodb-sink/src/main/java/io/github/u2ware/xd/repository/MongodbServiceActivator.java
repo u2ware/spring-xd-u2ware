@@ -1,7 +1,5 @@
 package io.github.u2ware.xd.repository;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -20,7 +18,7 @@ import com.mongodb.DBObject;
 
 public class MongodbServiceActivator implements InitializingBean, BeanFactoryAware{
 
-	private Log logger = LogFactory.getLog(getClass());
+	//private Log logger = LogFactory.getLog(getClass());
 
 	private BeanFactory beanFactory;
 	private volatile StandardEvaluationContext evaluationContext;
@@ -105,7 +103,7 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 				objectToSave.put("timestamp", timestamp);
 				objectToSave.put("payload", payload);
 				mongoTemplate.save(objectToSave, id.toString());
-				logger.info("save: "+timestamp+" in "+id);
+				//logger.info("save: "+timestamp+" in "+id);
 			}
 
 		}else{
@@ -115,7 +113,7 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 			objectToSave.put("timestamp", timestamp);
 			objectToSave.put("payload", payload);
 			mongoTemplate.save(objectToSave, id.toString());
-			logger.info("save: "+timestamp+" in "+id);
+			//logger.info("save: "+timestamp+" in "+id);
 		}
 
 		BasicDBObject objectToSave = new BasicDBObject();
@@ -124,7 +122,7 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 		objectToSave.put("timestamp", timestamp);
 		objectToSave.put("payload", payload);
 		mongoTemplate.save(objectToSave, collectionName);
-		logger.info("save: "+id+" in "+collectionName);
+		//logger.info("save: "+id+" in "+collectionName);
 	}
 
 
