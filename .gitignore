@@ -25,18 +25,11 @@ mvn-repo/
 data/
 logs/
 
-u2ware-http-resource-server.jar
-u2ware-http-resource-server.jar.md5
-
-u2ware-http-webmvc-server.jar
-u2ware-http-webmvc-server.jar.md5
-
-project_lguplus_pyoungchon_idc.xd
+project_*
 
 spring-xd-u2ware-hyundai-elevator/
 spring-xd-u2ware-hyundai-elevator-processor/
 spring-xd-u2ware-hyundai-elevator-source/
-spring-xd-u2ware-hyundai-elevator-rest-source/
 
 spring-xd-u2ware-siemens-fireview/
 spring-xd-u2ware-siemens-fireview-source/
