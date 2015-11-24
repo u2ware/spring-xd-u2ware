@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.mongodb;
+package io.github.u2ware.xd.repository;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,9 +12,9 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class RepositoryMongodbSinkModuleUploadMain {
+public class MongodbSinkModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(RepositoryMongodbSinkModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(MongodbSinkModuleUploadMain.class);
 
     private static final String moduleName     = "u2ware-repository-mongodb-sink";
     private static final String moduleType     = "sink";

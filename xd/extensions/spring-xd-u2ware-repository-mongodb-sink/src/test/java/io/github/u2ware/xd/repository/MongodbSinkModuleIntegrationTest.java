@@ -1,6 +1,4 @@
-package io.github.u2ware.xd.mongodb;
-
-import io.github.u2ware.xd.mongodb.MongodbServer.Sample;
+package io.github.u2ware.xd.repository;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ import org.springframework.xd.module.ModuleType;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class RepositoryMongodbSinkModuleIntegrationTest {
+public class MongodbSinkModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
@@ -72,19 +70,17 @@ public class RepositoryMongodbSinkModuleIntegrationTest {
 		
 		Thread.sleep(3000);
 
-
-		chain.sendPayload(new Sample("Mina", 19, "aaa"));
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18 }");
 		Thread.sleep(1000);
 
-		chain.sendPayload(new Sample("Mina", 22, "bbb"));
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"b\", \"age\":19 }");
 		Thread.sleep(1000);
 		
-		chain.sendPayload(new Sample("Mina", 19, "ccc"));
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":20 }");
 		Thread.sleep(1000);
 
-		chain.sendPayload(new Sample("Mina", 19, "ddd"));
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":21 }");
 		Thread.sleep(1000);
-		
 		
 		
 		MongoClient mongoClient = new MongoClient("localhost", 27017);

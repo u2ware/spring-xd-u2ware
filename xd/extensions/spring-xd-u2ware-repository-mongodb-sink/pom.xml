@@ -51,7 +51,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>io.github.u2ware.xd.mongodb.RepositoryMongodbSinkModuleUploadMain</mainClass>
+							<mainClass>io.github.u2ware.xd.repository.MongodbSinkModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  

@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.mongodb;
+package io.github.u2ware.xd.repository;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -68,10 +68,10 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 	public void execute(Message<?> requestMessage) throws Exception{
 		
 		Object payload = requestMessage.getPayload();
-		logger.info(requestMessage);
-//		logger.debug(requestMessage.getHeaders());
-//		logger.debug(payload.getClass());
-//		logger.debug(payload);
+//		logger.info(requestMessage);
+//		logger.info(requestMessage.getHeaders());
+//		logger.info(payload.getClass());
+//		logger.info(payload);
 		
 		Object id = this.idExpression != null 
 				? this.idExpression.getValue(this.evaluationContext, requestMessage, Object.class)
@@ -84,11 +84,11 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 
 		if(id == null || value == null) return;
 
-//		logger.debug("id: "+id);
-//		logger.debug("value: "+value);
-//		logger.debug("timestamp: "+timestamp);
+//		logger.info("id: "+id);
+//		logger.info("value: "+value);
+//		logger.info("timestamp: "+timestamp);
+//		logger.info("collectionName: "+collectionName);
 //		logger.debug("mongoTemplate: "+mongoTemplate);
-//		logger.debug("collectionName: "+collectionName);
 		
 		DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
 //		logger.debug("past : "+past);
@@ -105,6 +105,7 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 				objectToSave.put("timestamp", timestamp);
 				objectToSave.put("payload", payload);
 				mongoTemplate.save(objectToSave, id.toString());
+				logger.info("save: "+timestamp+" in "+id);
 			}
 
 		}else{
@@ -114,6 +115,7 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 			objectToSave.put("timestamp", timestamp);
 			objectToSave.put("payload", payload);
 			mongoTemplate.save(objectToSave, id.toString());
+			logger.info("save: "+timestamp+" in "+id);
 		}
 
 		BasicDBObject objectToSave = new BasicDBObject();
@@ -122,6 +124,7 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 		objectToSave.put("timestamp", timestamp);
 		objectToSave.put("payload", payload);
 		mongoTemplate.save(objectToSave, collectionName);
+		logger.info("save: "+id+" in "+collectionName);
 	}
 
 

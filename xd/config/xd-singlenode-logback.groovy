@@ -86,7 +86,6 @@ logger("org.springframework.integration.config.IntegrationRegistrar", ERROR)
 
 
 //
-logger("io.github.u2ware.integration", INFO)
-logger("io.github.u2ware.xd", INFO)
+logger("io.github.u2ware", INFO)
 
 

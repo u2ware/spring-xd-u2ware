@@ -1,12 +1,11 @@
-package io.github.u2ware.xd.mongodb;
-
-import io.github.u2ware.xd.mongodb.MongodbServer.Sample;
+package io.github.u2ware.xd.repository;
 
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +24,7 @@ import com.mongodb.MongoClient;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @ActiveProfiles("use_json_input")
-public class RepositoryMongodbSinkConfigurationTest {
+public class MongodbSinkConfigurationTest {
 
 //	protected static MongoClient mongoClient;
 	
@@ -49,48 +48,26 @@ public class RepositoryMongodbSinkConfigurationTest {
 	public void test() throws Exception{
 
 		
-		input.send(MessageBuilder.withPayload(new Sample("Mina", 19, "aaa")).build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18 }").build());
 		Thread.sleep(1000);
 
-		input.send(MessageBuilder.withPayload(new Sample("Mina", 22, "bbb")).build());
-		Thread.sleep(1000);
-		
-		input.send(MessageBuilder.withPayload(new Sample("Mina", 19, "ccc")).build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"b\", \"age\":19 }").build());
 		Thread.sleep(1000);
 
-		input.send(MessageBuilder.withPayload(new Sample("Mina", 19, "ddd")).build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":20 }").build());
 		Thread.sleep(1000);
 
-//		Tuple tuple = TupleBuilder.fromString("{\"id\":\"Mina\",\"value\":\"cccc\"}");
-//		logger.debug(tuple);
-		
-		//ObjectMapper mapper = new ObjectMapper();
-		//JsonNode root = mapper.readTree("{\"key\":\"Mina\",\"value\":\"cccc\"}");
-		//logger.debug(root);
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":21 }").build());
+		Thread.sleep(1000);
 
-//		BasicDBObject dbo = new BasicDBObject();
-//		dbo.put("key", "Mina");
-//		dbo.put("value", "cccc");
-//		logger.debug(dbo);
-		
-		
-//		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"xxxx\"}").build());
-//		Thread.sleep(1000);
-
-		
-		
-		
-		
 		
 		
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
 		List<DBObject> r = null;
 		
-		
-		
 		r= template.findAll(DBObject.class, "MyDatabase");
-		//Assert.assertEquals(1, r.size());
+		Assert.assertEquals(1, r.size());
 		logger.debug("\tMyDatabase");
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
@@ -98,7 +75,7 @@ public class RepositoryMongodbSinkConfigurationTest {
 
 		r = template.findAll(DBObject.class, "Mina");
 		logger.debug("\tMina");
-		//Assert.assertEquals(3, r.size());
+		Assert.assertEquals(3, r.size());
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}

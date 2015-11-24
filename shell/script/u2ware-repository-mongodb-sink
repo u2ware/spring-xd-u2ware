@@ -1,0 +1,9 @@
+stream create --name "spring-xd-u2ware-repository-mongodb-sink" --definition "http | u2ware-repository-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=http --idExpression=payload.id --valueExpression=payload.value"
+
+stream deploy --name "spring-xd-u2ware-repository-mongodb-sink"
+
+http post --target http://localhost:9000 --data "{\"id\":\"Mina\", \"value\":\"xx\"}"
+
+//stream undeploy --name "spring-xd-u2ware-repository-mongodb-sink"
+
+//stream destroy --name "spring-xd-u2ware-repository-mongodb-sink"
