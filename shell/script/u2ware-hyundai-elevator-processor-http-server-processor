@@ -2,12 +2,12 @@ stream create --name "myHttpServer1" --definition "queue:myHttpRes > u2ware-http
 
 stream create --name "myHttpServer2" --definition "queue:myHttpReq > u2ware-hyundai-elevator-processor --host=127.0.0.1 --port=9990 --split=false > queue:myHttpRes"
 
-stream deploy --name "myHttpServer1"
-
 stream deploy --name "myHttpServer2"
 
-http post --target http://localhost:9999 --data "{}"
+stream deploy --name "myHttpServer1"
 
-stream destroy --name "myHttpServer1"
+//http post --target http://localhost:9999 --data "{}"
 
-stream destroy --name "myHttpServer2"
+//stream destroy --name "myHttpServer1"
+
+//stream destroy --name "myHttpServer2"

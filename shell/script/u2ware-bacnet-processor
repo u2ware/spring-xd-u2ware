@@ -2,7 +2,7 @@ stream create --name "spring-xd-u2ware-bacnet-processor" --definition "http | u2
 
 stream deploy --name "spring-xd-u2ware-bacnet-processor"
 
-http post --target http://localhost:9000 --data "{}"
+//http post --target http://localhost:9000 --data "{}"
 
 //stream undeploy --name "spring-xd-u2ware-bacnet-processor"
 
