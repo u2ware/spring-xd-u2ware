@@ -2,7 +2,7 @@ stream create --name "spring-xd-u2ware-modbus-processor" --definition "http | u2
 
 stream deploy --name "spring-xd-u2ware-modbus-processor"
 
-http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
+//http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
 
 //stream undeploy --name "spring-xd-u2ware-modbus-processor"
 
