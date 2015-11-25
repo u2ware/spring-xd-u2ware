@@ -1,4 +1,4 @@
-stream create --name "spring-xd-u2ware-bacnet-processor" --definition "http | u2ware-bacnet-processor --remoteAddress=127.0.0.1:47808 --remoteInstanceNumber=47808 --localPort=9992 | log"
+stream create --name "spring-xd-u2ware-bacnet-processor" --definition "http | u2ware-bacnet-processor --remoteAddress=127.0.0.1:47808 --remoteInstanceNumber=47808 --localPort=47809 | log"
 
 stream deploy --name "spring-xd-u2ware-bacnet-processor"
 
