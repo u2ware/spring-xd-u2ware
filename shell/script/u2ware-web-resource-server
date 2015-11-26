@@ -1,0 +1,9 @@
+stream create --name "spring-xd-u2ware-web-resource-server" --definition "u2ware-web-resource-server  --httpPort=9999"
+
+stream deploy --name "spring-xd-u2ware-web-resource-server"
+
+http get --target http://localhost:9999/com/yourcompany/yourproject/index.html 
+
+stream undeploy --name "spring-xd-u2ware-web-resource-server"
+
+stream destroy --name "spring-xd-u2ware-web-resource-server"
