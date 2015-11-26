@@ -1,0 +1,9 @@
+stream create --name "spring-xd-u2ware-webmvc-helloworld" --definition "u2ware-webmvc-helloworld  --httpPort=9999"
+
+stream deploy --name "spring-xd-u2ware-webmvc-helloworld"
+
+http get --target http://localhost:9999/hello/world 
+
+stream undeploy --name "spring-xd-u2ware-webmvc-helloworld"
+
+stream destroy --name "spring-xd-u2ware-webmvc-helloworld"
