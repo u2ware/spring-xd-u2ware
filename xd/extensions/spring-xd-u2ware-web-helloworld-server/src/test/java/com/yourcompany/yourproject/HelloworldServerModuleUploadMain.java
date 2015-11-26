@@ -1,4 +1,4 @@
-package com.mycompany.myproject;
+package com.yourcompany.yourproject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,9 +12,9 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class HelloWorldModuleUploadMain {
+public class HelloworldServerModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(HelloWorldModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(HelloworldServerModuleUploadMain.class);
 
     private static final String moduleName     = "u2ware-web-helloworld-server";
     private static final String moduleType     = "source";

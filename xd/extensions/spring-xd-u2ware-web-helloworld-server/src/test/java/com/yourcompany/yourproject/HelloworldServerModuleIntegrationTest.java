@@ -1,4 +1,4 @@
-package com.mycompany.myproject;
+package com.yourcompany.yourproject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,7 +13,7 @@ import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainConsume
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
-public class HelloWorldModuleIntegrationTest {
+public class HelloworldServerModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 

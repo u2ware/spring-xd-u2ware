@@ -1,4 +1,4 @@
-package com.mycompany.myproject;
+package com.yourcompany.yourproject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class HelloWorldConfigurationTest {
+public class HelloworldServerConfigurationTest {
 
     protected Log logger = LogFactory.getLog(getClass());
 

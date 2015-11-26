@@ -44,7 +44,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>com.mycompany.myproject.HelloWorldModuleUploadMain</mainClass>
+							<mainClass>com.yourcompany.yourproject.HelloworldServerModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  

@@ -13,7 +13,7 @@
 
 	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpWebmvcServer">
 		<property name="port" value="${httpPort}"/>
-		<property name="configClass" value="com.mycompany.myproject.Application"/>
+		<property name="configClass" value="com.yourcompany.yourproject.Application"/>
 	</bean>
 
 	<int:channel id="output"/>

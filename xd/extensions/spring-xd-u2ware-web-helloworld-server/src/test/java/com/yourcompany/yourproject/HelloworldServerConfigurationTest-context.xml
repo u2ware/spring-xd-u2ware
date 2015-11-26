@@ -11,7 +11,7 @@
 		<prop key="httpPort">9992</prop>
 	</util:properties>
 
-	<import resource="classpath:config/webmvc-helloworld.xml"/>
+	<import resource="classpath:config/web-helloworld-server.xml"/>
 
 	<!-- Override direct channel with a queue channel so the test will block until a message is received -->
 	<int:channel id="output">
