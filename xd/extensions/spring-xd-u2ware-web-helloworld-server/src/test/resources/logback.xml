@@ -10,7 +10,7 @@
 	<logger name="org.springframework.integration.channel" level="OFF" />
 	
 	<logger name="io.github.u2ware" level="DEBUG" />
-	<logger name="com.mycompany.myproject" level="DEBUG" />
+	<logger name="com.yourcompany.yourproject" level="DEBUG" />
 
 	<root level="OFF">
 		<appender-ref ref="STDOUT" />
