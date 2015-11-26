@@ -1,0 +1,9 @@
+stream create --name "spring-xd-u2ware-web-rest-mongodb-server" --definition "u2ware-web-rest-mongodb-server  --httpPort=9999 --httpTimeout=1000 --host=127.0.0.1 --port=27017"
+
+stream deploy --name "spring-xd-u2ware-web-rest-mongodb-server"
+
+http post --target http://localhost:9999/personDb/person --data "{\"name\":\"Joe\"}" 
+
+stream undeploy --name "spring-xd-u2ware-web-rest-mongodb-server"
+
+stream destroy --name "spring-xd-u2ware-web-rest-mongodb-server"
