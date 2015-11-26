@@ -30,7 +30,7 @@ public class HelloWorldModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.source, "webmvc-helloworld"));
+				new SingletonModuleRegistry(ModuleType.source, "web-helloworld-server"));
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class HelloWorldModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "webmvc-helloworld "
+		String processingChainUnderTest = "web-helloworld-server "
 				+ " --httpPort=9993 ";
 
 		logger.debug(processingChainUnderTest);

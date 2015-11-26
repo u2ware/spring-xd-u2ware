@@ -16,9 +16,9 @@ public class HelloWorldModuleUploadMain {
 	
     protected static Log logger = LogFactory.getLog(HelloWorldModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-webmvc-helloworld";
+    private static final String moduleName     = "u2ware-web-helloworld-server";
     private static final String moduleType     = "source";
-    private static final String moduleResource = "target/spring-xd-u2ware-webmvc-helloworld-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-web-helloworld-server-1.0.0.jar";
 
     private static final String sourceResource     = "../../custom-modules/";
     private static final String targetResource     = "../../custom-modules/";
