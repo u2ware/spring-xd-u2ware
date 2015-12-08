@@ -32,7 +32,7 @@
 	<int:service-activator 
 		input-channel="mongodbInput" 
 		method="execute">
-		<bean class="io.github.u2ware.xd.ibs.MongodbServiceActivator">
+		<bean class="io.github.u2ware.xd.ibs.MongodbSinkServiceActivator">
 			<constructor-arg ref="mongoDbFactory"/>
 			<property name="mongoConverter" ref="mongoDbConverter"/>
 			<property name="collectionName" value="${databaseName}"/>

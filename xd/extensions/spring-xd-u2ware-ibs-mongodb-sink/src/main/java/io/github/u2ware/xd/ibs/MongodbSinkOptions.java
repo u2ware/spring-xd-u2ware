@@ -3,7 +3,7 @@ package io.github.u2ware.xd.ibs;
 import org.springframework.xd.module.options.spi.ModuleOption;
 import org.springframework.xd.module.options.spi.ProfileNamesProvider;
 
-public class MongodbOptions implements ProfileNamesProvider{
+public class MongodbSinkOptions implements ProfileNamesProvider{
 
 	private static final String use_json_input = "use_json_input";
 	private static final String dont_use_json_input = "dont_use_json_input";

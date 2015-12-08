@@ -16,7 +16,7 @@ import org.springframework.messaging.MessageHeaders;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class MongodbServiceActivator implements InitializingBean, BeanFactoryAware{
+public class MongodbSinkServiceActivator implements InitializingBean, BeanFactoryAware{
 
 	//private Log logger = LogFactory.getLog(getClass());
 
@@ -30,7 +30,7 @@ public class MongodbServiceActivator implements InitializingBean, BeanFactoryAwa
 	private MongoConverter mongoConverter;
 	private String collectionName;
 
-	public MongodbServiceActivator(MongoDbFactory mongoDbFactory){
+	public MongodbSinkServiceActivator(MongoDbFactory mongoDbFactory){
 		this.mongoDbFactory = mongoDbFactory;
 	}
 	
