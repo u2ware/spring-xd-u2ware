@@ -27,12 +27,10 @@ logs/
 
 project_*
 
-spring-xd-u2ware-hyundai-elevator/
 spring-xd-u2ware-hyundai-elevator-processor/
 spring-xd-u2ware-hyundai-elevator-source/
 
-spring-xd-u2ware-siemens-fireview/
-spring-xd-u2ware-siemens-fireview-source/
+spring-xd-u2ware-siemens-fire-source/
 
 
 
