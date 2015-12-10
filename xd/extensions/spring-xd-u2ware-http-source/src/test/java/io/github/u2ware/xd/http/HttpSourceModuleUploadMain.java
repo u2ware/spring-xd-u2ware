@@ -1,4 +1,4 @@
-package com.yourcompany.yourproject;
+package io.github.u2ware.xd.http;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,9 +12,9 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class ResourceServerModuleUploadMain {
+public class HttpSourceModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(ResourceServerModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(HttpSourceModuleUploadMain.class);
 
     private static final String moduleName     = "u2ware-http-source";
     private static final String moduleType     = "source";

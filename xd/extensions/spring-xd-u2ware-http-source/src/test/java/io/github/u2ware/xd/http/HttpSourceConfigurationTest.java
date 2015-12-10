@@ -1,4 +1,4 @@
-package com.yourcompany.yourproject;
+package io.github.u2ware.xd.http;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class ResourceServerConfigurationTest {
+public class HttpSourceConfigurationTest {
 
     protected Log logger = LogFactory.getLog(getClass());
 

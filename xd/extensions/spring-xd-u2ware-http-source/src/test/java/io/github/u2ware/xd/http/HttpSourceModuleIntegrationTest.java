@@ -1,4 +1,4 @@
-package com.yourcompany.yourproject;
+package io.github.u2ware.xd.http;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,7 +13,7 @@ import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainConsume
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
-public class ResourceServerModuleIntegrationTest {
+public class HttpSourceModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 

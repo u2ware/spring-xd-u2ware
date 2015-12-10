@@ -32,7 +32,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>com.yourcompany.yourproject.ResourceServerModuleUploadMain</mainClass>
+							<mainClass>io.github.u2ware.xd.http.HttpSourceModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  
