@@ -1,9 +1,13 @@
-stream create --name "spring-xd-u2ware-bacnet-processor" --definition "http | u2ware-bacnet-processor --remoteAddress=127.0.0.1:47808 --remoteInstanceNumber=47808 --localPort=47809 | log"
+stream create --name "testStream" --definition "http | u2ware-bacnet-processor --remoteAddress=127.0.0.1:47808 --remoteInstanceNumber=47808 --localPort=47809 | log"
 
-stream deploy --name "spring-xd-u2ware-bacnet-processor"
+stream deploy --name "testStream"
 
-//http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
 
-//stream undeploy --name "spring-xd-u2ware-bacnet-processor"
+stream undeploy --name "testStream"
 
-//stream destroy --name "spring-xd-u2ware-bacnet-processor"
+stream destroy --name "testStream"

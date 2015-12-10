@@ -1,0 +1,13 @@
+stream create --name "testStream" --definition "u2ware-ibs-boot-example-ui"
+
+stream deploy --name "testStream"
+
+http get --target http://localhost:9898/helloworld 
+http get --target http://localhost:9898/helloworld 
+http get --target http://localhost:9898/helloworld 
+http get --target http://localhost:9898/helloworld 
+http get --target http://localhost:9898/helloworld 
+
+stream undeploy --name "testStream"
+
+stream destroy --name "testStream"
