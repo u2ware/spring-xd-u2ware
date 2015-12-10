@@ -1,14 +1,14 @@
-stream create --name "myHttpServer1" --definition "queue:myHttpRes > u2ware-http-server-processor --httpPort=9999  --httpTimeout=10000 > queue:myHttpReq"
 
-stream create --name "myHttpServer2" --definition "queue:myHttpReq > u2ware-bacnet-processor --remoteAddress=127.0.0.1:47808 --remoteInstanceNumber=47808 --localPort=47810 --split=false > queue:myHttpRes"
+stream create --name "testStream1" --definition "queue:myHttpRes > u2ware-http-processor --httpPort=9898  --httpTimeout=10000 > queue:myHttpReq"
 
-stream deploy --name "myHttpServer2"
+stream create --name "testStream2" --definition "queue:myHttpReq > u2ware-bacnet-processor --remoteAddress=127.0.0.1:47808 --remoteInstanceNumber=47808 --localPort=47810 --split=false > queue:myHttpRes"
 
-stream deploy --name "myHttpServer1"
+stream deploy --name "testStream1"
 
+stream deploy --name "testStream2"
 
-http post --target http://localhost:9999 --data "{}"
+http post --target http://localhost:9898 --data "{}"
 
-stream destroy --name "myHttpServer1"
+stream destroy --name "testStream1"
 
-stream destroy --name "myHttpServer2"
+stream destroy --name "testStream2"
