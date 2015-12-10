@@ -1,9 +1,0 @@
-stream create --name "spring-xd-u2ware-siemens-fireview-source-mongodb-sink" --definition "u2ware-siemens-fireview-source --port=9990 | u2ware-repository-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=fire --idExpression=payload.id --valueExpression=payload.value"
-
-stream deploy --name "spring-xd-u2ware-siemens-fireview-source-mongodb-sink"
-
-//stream undeploy --name "spring-xd-u2ware-siemens-fireview-source-mongodb-sink"
-
-//stream destroy --name "spring-xd-u2ware-siemens-fireview-source-mongodb-sink"
-
-

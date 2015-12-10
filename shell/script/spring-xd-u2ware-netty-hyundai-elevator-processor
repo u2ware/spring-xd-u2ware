@@ -1,9 +1,12 @@
-stream create --name "spring-xd-u2ware-hyundai-elevator-processor" --definition "http | u2ware-hyundai-elevator-processor --host=127.0.0.1 --port=9990 | log"
 
-stream deploy --name "spring-xd-u2ware-hyundai-elevator-processor"
+stream create --name "testStream" --definition "http | u2ware-netty-hyundai-elevator-processor --host=127.0.0.1 --port=9990 | log"
 
-//http post --target http://localhost:9000 --data "{}"
+stream deploy --name "testStream"
 
-//stream undeploy --name "spring-xd-u2ware-hyundai-elevator-processor"
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
 
-//stream destroy --name "spring-xd-u2ware-hyundai-elevator-processor"
+stream undeploy --name "testStream"
+
+stream destroy --name "testStream"
