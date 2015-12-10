@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.xd</groupId>
 		<artifactId>spring-xd-module-parent</artifactId>
-		<version>1.3.0.RELEASE</version>
+		<version>1.2.1.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -60,7 +60,9 @@
 			<artifactId>spring-boot-starter-logging</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!-- 		<dependency>
+<!--
+		
+ 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
@@ -72,7 +74,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
- --> 	</dependencies>
+ --> 	
+ 	</dependencies>
 
 	<build>
 		<plugins>
