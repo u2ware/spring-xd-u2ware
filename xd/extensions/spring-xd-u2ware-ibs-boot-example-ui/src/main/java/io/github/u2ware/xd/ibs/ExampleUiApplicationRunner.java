@@ -28,11 +28,15 @@ public class ExampleUiApplicationRunner implements InitializingBean, DisposableB
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		
-		System.out.println("afterPropertiesSet... ");
+		System.out.println("afterPropertiesSet... 222");
 
-		String[] args = new String[]{"--server.port="+httpPort};
+		System.setProperty(ExampleUiApplication.class.getName(), ""+httpPort);
+		String[] args = new String[]{};
+
+		//String[] args = new String[]{"--server.port="+httpPort};
+
 		context = SpringApplication.run(ExampleUiApplication.class, args);
-
+		
 		System.out.println("afterPropertiesSet... "+httpPort);
 	}
 }
