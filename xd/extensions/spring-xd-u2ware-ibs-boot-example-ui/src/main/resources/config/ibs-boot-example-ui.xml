@@ -5,7 +5,7 @@
 	    http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean class="com.example.ApplicationRunner">
+	<bean class="io.github.u2ware.xd.ibs.ExampleUiApplicationRunner">
 		<property name="httpPort" value="${httpPort}"/>
 	</bean>
 	

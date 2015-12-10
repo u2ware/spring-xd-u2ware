@@ -1,8 +1,9 @@
-package com.example;
+package io.github.u2ware.xd.ibs;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import io.github.u2ware.xd.ibs.ExampleUiApplication;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +17,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = ExampleUiApplication.class)
 @WebAppConfiguration
-public class ApplicationTests {
+public class ExampleUiApplicationTests {
 
     @Autowired
 	private WebApplicationContext context;

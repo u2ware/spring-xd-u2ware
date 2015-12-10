@@ -1,11 +1,11 @@
-package com.example;
+package io.github.u2ware.xd.ibs;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
-public class ApplicationRunner implements InitializingBean, DisposableBean {
+public class ExampleUiApplicationRunner implements InitializingBean, DisposableBean {
 	
 	private ApplicationContext context;
 	
@@ -31,7 +31,7 @@ public class ApplicationRunner implements InitializingBean, DisposableBean {
 		System.out.println("afterPropertiesSet... ");
 
 		String[] args = new String[]{"--server.port="+httpPort};
-		context = SpringApplication.run(Application.class, args);
+		context = SpringApplication.run(ExampleUiApplication.class, args);
 
 		System.out.println("afterPropertiesSet... "+httpPort);
 	}

@@ -1,4 +1,4 @@
-package com.example;
+package io.github.u2ware.xd.ibs;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,9 +12,9 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class ExampleModuleUploadMain {
+public class ExampleUiModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(ExampleModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(ExampleUiModuleUploadMain.class);
 
     private static final String moduleName     = "u2ware-ibs-boot-example-ui";
     private static final String moduleType     = "source";

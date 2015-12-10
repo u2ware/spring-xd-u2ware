@@ -30,7 +30,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>com.example.ExampleModuleUploadMain</mainClass>
+							<mainClass>io.github.u2ware.xd.ibs.ExampleUiModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  

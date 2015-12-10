@@ -1,4 +1,4 @@
-package com.example.hello;
+package io.github.u2ware.xd.ibs.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class HelloWorldController {
+public class HelloworldController {
 
     protected Log logger = LogFactory.getLog(getClass());
 
