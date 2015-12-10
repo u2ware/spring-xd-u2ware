@@ -1,9 +1,11 @@
-stream create --name "spring-xd-u2ware-repository-mongodb-sink" --definition "http | u2ware-repository-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=MyRepository --idExpression=payload.id --valueExpression=payload.value"
+stream create --name "testStream" --definition "http | u2ware-ibs-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=MyRepository --idExpression=payload.id --valueExpression=payload.value"
 
-stream deploy --name "spring-xd-u2ware-repository-mongodb-sink"
+stream deploy --name "testStream"
 
 http post --target http://localhost:9000 --data "{\"id\":\"Mina\", \"value\":\"xx\"}"
+http post --target http://localhost:9000 --data "{\"id\":\"Mina\", \"value\":\"xx\"}"
+http post --target http://localhost:9000 --data "{\"id\":\"Mina\", \"value\":\"xx\"}"
 
-//stream undeploy --name "spring-xd-u2ware-repository-mongodb-sink"
+stream undeploy --name "testStream"
 
-//stream destroy --name "spring-xd-u2ware-repository-mongodb-sink"
+stream destroy --name "testStream"
