@@ -15,7 +15,7 @@
 		<int:queue/>
 	</int:channel>
 
-	<bean id="httpServer" class="io.github.u2ware.integration.netty.support.HttpMessageServer">
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.HttpMessageServer">
 		<property name="port" value="${httpPort}"/>
 		<property name="sendChannel" ref="output"/>
 		<property name="receiveChannel" ref="input"/>

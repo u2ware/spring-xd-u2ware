@@ -8,6 +8,7 @@
 		<groupId>io.github.u2ware</groupId>
 		<artifactId>spring-xd-u2ware</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<dependencies>
