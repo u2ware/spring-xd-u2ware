@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:int="http://www.springframework.org/schema/integration"
+	   xmlns:int-u2ware-bacnet="http://u2ware.github.io/schema/integration/bacnet"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://u2ware.github.io/schema/integration/bacnet
+		http://u2ware.github.io/schema/integration/bacnet/spring-integration-bacnet.xsd">
+
+
+	<int:channel id="input">
+		<int:queue/>
+	</int:channel>
+
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.HttpMessageServer">
+		<property name="port" value="${httpPort}"/>
+		<property name="sendChannel" ref="output"/>
+		<property name="receiveChannel" ref="input"/>
+		<property name="messagingTimeout" value="${httpTimeout}"/>
+	</bean>
+
+	<int:channel id="output"/>
+
+</beans>
