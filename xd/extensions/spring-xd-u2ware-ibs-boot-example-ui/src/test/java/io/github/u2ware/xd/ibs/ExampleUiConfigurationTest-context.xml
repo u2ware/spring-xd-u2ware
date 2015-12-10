@@ -13,8 +13,9 @@
 
 	<import resource="classpath:config/ibs-boot-example-ui.xml"/>
 
-	<!-- Override direct channel with a queue channel so the test will block until a message is received -->
+	<!-- Override direct channel with a queue channel so the test will block until a message is received 
 	<int:channel id="output">
 		<int:queue/>
 	</int:channel>
+	-->
 </beans>

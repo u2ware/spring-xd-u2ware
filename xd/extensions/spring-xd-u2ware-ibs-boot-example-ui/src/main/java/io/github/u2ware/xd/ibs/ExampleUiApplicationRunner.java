@@ -21,14 +21,14 @@ public class ExampleUiApplicationRunner implements InitializingBean, DisposableB
 
 	@Override
 	public void destroy() throws Exception {
-		System.out.println("destroy... "+httpPort);
 		SpringApplication.exit(context);
+		System.out.println("ExampleUiApplicationRunner exit: port="+httpPort);
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		
-		System.out.println("afterPropertiesSet... 222");
+		System.out.println("ExampleUiApplicationRunner ready: port="+httpPort);
 
 		System.setProperty(ExampleUiApplication.class.getName(), ""+httpPort);
 		String[] args = new String[]{};
@@ -37,6 +37,6 @@ public class ExampleUiApplicationRunner implements InitializingBean, DisposableB
 
 		context = SpringApplication.run(ExampleUiApplication.class, args);
 		
-		System.out.println("afterPropertiesSet... "+httpPort);
+		System.out.println("ExampleUiApplicationRunner started: port="+httpPort);
 	}
 }
