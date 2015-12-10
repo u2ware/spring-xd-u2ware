@@ -16,9 +16,9 @@ public class MongodbSinkModuleUploadMain {
 	
     protected static Log logger = LogFactory.getLog(MongodbSinkModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-ibs-mongodb-sink";
+    private static final String moduleName     = "u2ware-ibs-storage-mongodb-sink";
     private static final String moduleType     = "sink";
-    private static final String moduleResource = "target/spring-xd-u2ware-ibs-mongodb-sink-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-ibs-storage-mongodb-sink-1.0.0.jar";
 
     private static final String sourceResource     = "../../custom-modules/";
     private static final String targetResource     = "../../custom-modules/";
