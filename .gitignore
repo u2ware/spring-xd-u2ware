@@ -25,14 +25,10 @@ mvn-repo/
 data/
 logs/
 
+
 project_*
-
-spring-xd-u2ware-netty-hyundai-elevator-processor/
-spring-xd-u2ware-netty-hyundai-elevator-source/
-spring-xd-u2ware-netty-siemens-fire-source/
-
-spring-xd-u2ware-ibs-webapp-sample1/
-spring-xd-u2ware-ibs-webapp-sample2/
+spring-xd-u2ware-netty-*/
+spring-xd-u2ware-ibs-*/
 
 
 
