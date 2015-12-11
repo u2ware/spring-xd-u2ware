@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "u2ware-ibs-boot-example-ui --httpPort=9898"
+stream create --name "testStream" --definition "u2ware-ibs-boot-helloworld-ui --httpPort=9898"
 
 stream deploy --name "testStream"
 
