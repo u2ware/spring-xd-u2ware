@@ -16,6 +16,10 @@
 			<artifactId>spring-integration-u2ware-netty</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+ 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
 		<dependency>
 		    <groupId>org.webjars.bower</groupId>
 		    <artifactId>angularjs</artifactId>

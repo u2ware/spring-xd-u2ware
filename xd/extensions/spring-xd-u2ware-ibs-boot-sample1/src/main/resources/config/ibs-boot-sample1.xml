@@ -5,8 +5,9 @@
 	    http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean class="io.github.u2ware.xd.ibs.ApplicationRunner">
+	<bean class="io.github.u2ware.xd.ibs.SpringBootRunner">
 		<property name="httpPort" value="${httpPort}"/>
+		<property name="configClass" value="${configClass}"/>
 	</bean>
 	
 </beans>

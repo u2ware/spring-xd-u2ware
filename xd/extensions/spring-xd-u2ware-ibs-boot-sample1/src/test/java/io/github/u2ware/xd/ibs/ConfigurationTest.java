@@ -2,7 +2,9 @@ package io.github.u2ware.xd.ibs;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,16 @@ import org.springframework.web.client.RestTemplate;
 public class ConfigurationTest {
 
     protected Log logger = LogFactory.getLog(getClass());
+   
+    @BeforeClass
+	public static void beforeClass() throws Exception {
+		MongodbServer.startup(27017);
+	}
+	
+	@AfterClass
+	public static void afterClass() throws Exception {
+		MongodbServer.shutdown();
+	}
 
 	@Test
 	public void test() throws Exception {
@@ -30,6 +42,9 @@ public class ConfigurationTest {
 		logger.debug(result2);
 		Assert.assertNotNull(result2);
 		
+		String result3 = restTemplate.getForObject("http://localhost:10801/person",  String.class);
+		logger.debug(result3);
+		Assert.assertNotNull(result3);
 	}
 }
 

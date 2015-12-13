@@ -7,7 +7,9 @@ import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletCont
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 
 @SpringBootApplication
-public class Application implements EmbeddedServletContainerCustomizer {
+public class Application {
+/*	
+	implements EmbeddedServletContainerCustomizer {
 
 	@Value("#{systemProperties['io.github.u2ware.xd.ibs.Application']}")
 	private Integer httpPort = 9898;
@@ -16,7 +18,7 @@ public class Application implements EmbeddedServletContainerCustomizer {
     public void customize(ConfigurableEmbeddedServletContainer container) {
         container.setPort(httpPort);
     }
-
+*/
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         //JettyEmbeddedServletContainer f;
