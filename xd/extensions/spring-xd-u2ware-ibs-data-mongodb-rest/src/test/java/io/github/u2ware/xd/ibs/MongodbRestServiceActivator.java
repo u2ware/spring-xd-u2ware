@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.ibs.controller;
+package io.github.u2ware.xd.ibs;
 
 import io.github.u2ware.integration.netty.support.NettyHeaders;
 
