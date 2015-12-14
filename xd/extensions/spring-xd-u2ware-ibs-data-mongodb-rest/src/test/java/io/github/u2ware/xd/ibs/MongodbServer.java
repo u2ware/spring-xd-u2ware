@@ -54,7 +54,7 @@ public class MongodbServer implements Runnable{
 				);
 		_mongod = _mongodExe.start();
 		
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		MongoClient mongoClient = new MongoClient("localhost", port);
 		MongoTemplate template = new MongoTemplate(mongoClient, "personDb");
 		template.save(new Person("Mina", 12, "a"));
 		template.save(new Person("Joe", 36, "b"));

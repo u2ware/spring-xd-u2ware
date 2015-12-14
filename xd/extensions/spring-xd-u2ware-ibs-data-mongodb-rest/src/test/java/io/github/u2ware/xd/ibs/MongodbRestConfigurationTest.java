@@ -1,5 +1,8 @@
 package io.github.u2ware.xd.ibs;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.AfterClass;
@@ -17,7 +20,7 @@ public class MongodbRestConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		MongodbServer.startup(27017);
+		MongodbServer.startup(27018);
 	}
 	
 	@AfterClass
@@ -28,7 +31,7 @@ public class MongodbRestConfigurationTest {
     protected Log logger = LogFactory.getLog(getClass());
 
 
-	//@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void test() throws Exception{
 		
@@ -37,38 +40,42 @@ public class MongodbRestConfigurationTest {
 		String result = restTemplate.getForObject("http://localhost:9898/helloworld", String.class);
 		logger.debug(result);
 		Assert.assertEquals("hello world", result);
-		/*
+
 		logger.debug("");
 		logger.debug("");
 		Thread.sleep(2000);
-		List<Map> database = restTemplate.getForObject("http://localhost:9999", List.class);
-		for(Map db : database){
+		Map database = restTemplate.getForObject("http://localhost:9898", Map.class);
+		List<Map> databaseContent = (List<Map>)database.get("content");
+		
+		for(Map db : databaseContent){
 			logger.debug(db);
 			
-			List<Map> collections = restTemplate.getForObject("http://localhost:9999/{database}", List.class, 
-																db.get("databaseName"));
+			Map collections = restTemplate.getForObject("http://localhost:9898/{database}", Map.class, 
+											db.get("databaseName"));
+			List<Map> collectionsContent = (List<Map>)collections.get("content");
 			
-			for(Map collection : collections){
+			for(Map collection : collectionsContent){
 				logger.debug("\t"+collection);
-				List<Map> entities = restTemplate.getForObject("http://localhost:9999/{database}/{collectionName}", List.class, 
-										db.get("databaseName"), 
+				Map entities = restTemplate.getForObject("http://localhost:9898/{database}/{collectionName}?size=17", Map.class, 
+										collection.get("databaseName"), 
 										collection.get("collectionName"));
 				
-				for(Map e : entities){
-
-					String entity = restTemplate.getForObject("http://localhost:9999/{database}/{collectionName}/{id}", String.class, 
-							db.get("databaseName"), 
+				List<Map> entitiesContent = (List<Map>)entities.get("content");
+				for(Map e : entitiesContent){
+					
+					String entity = restTemplate.getForObject("http://localhost:9898/{database}/{collectionName}/{id}", String.class, 
+							collection.get("databaseName"), 
 							collection.get("collectionName"),
 							e.get("_id"));
+
 					logger.debug("\t\t"+entity);
-					
+
 				}
 			}
 		}
-		List result4 = restTemplate.postForObject("http://localhost:9999/personDb/person","{'name':'Joe'}", List.class);
-		logger.debug(result4);
-		Assert.assertEquals(1, result4.size());
-		*/
+//		Map result4 = restTemplate.postForObject("http://localhost:9898/personDb/person","{'name':'Joe'}", Map.class);
+//		logger.debug(result4);
+//		Assert.assertEquals(1, result4.size());
 	}
 }
 

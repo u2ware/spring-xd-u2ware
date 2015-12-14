@@ -10,45 +10,29 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
 		http://www.springframework.org/schema/integration 
 		http://www.springframework.org/schema/integration/spring-integration.xsd">
-	
+
 	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.HttpServletServer">
 		<property name="port" value="${httpPort}"/>
 		<property name="configClass" value="io.github.u2ware.xd.ibs.MongodbRestApplication"/>
+		<property name="defaultProperties">
+			<map>
+				<entry key="spring.data.mongodb.host" value="${host}"/>
+				<entry key="spring.data.mongodb.port" value="${port}"/>
+			</map>
+		</property>
 	</bean>
 
-
-	<!--  
-	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.HttpMessageServer">
-		<property name="port" value="${httpPort}"/>
-		<property name="sendChannel" ref="httpRequest"/>
-		<property name="receiveChannel" ref="httpResponse"/>
-		<property name="messagingTimeout" value="${httpTimeout}"/>
+<!--  
+	<bean id="httpServer" class="io.github.u2ware.xd.ibs.MongodbRestApplicationRunner">
+		<property name="configClass" value="io.github.u2ware.xd.ibs.MongodbRestApplication"/>
+		<property name="defaultProperties">
+			<map>
+				<entry key="server.port" value="${httpPort}"/>
+				<entry key="spring.data.mongodb.host" value="${host}"/>
+				<entry key="spring.data.mongodb.port" value="${port}"/>
+			</map>
+		</property>
 	</bean>
-
-	<int:channel id="httpRequest"/>
-
-	<mongo:mongo id="mongo" host="${host}" port="${port}"/>
-	<mongo:db-factory id="mongoDbFactory" dbname="${databaseName}" mongo-ref="mongo"
-					  username="${username}" password="${password}"
-					  authentication-dbname="${authenticationDatabaseName}"
-					  write-concern="${writeConcern}"/>
-
-	<int:service-activator 
-		input-channel="httpRequest" output-channel="mongodbResponse"
-		method="execute">
-		<bean class="io.github.u2ware.xd.ibs.MongodbRestServiceActivator">
-			<constructor-arg ref="mongo"/>
-		</bean>
-	</int:service-activator>
-
-	<int:object-to-json-transformer 
-		input-channel="mongodbResponse" 
-		output-channel="httpResponse" 
-		content-type="application/json" />
-
-	<int:channel id="httpResponse">
-		<int:queue/>
-	</int:channel>
-	-->
+ -->
 
 </beans>

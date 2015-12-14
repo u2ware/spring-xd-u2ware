@@ -9,6 +9,8 @@
 
 	<util:properties id="props">
 		<prop key="httpPort">9898</prop>
+		<prop key="host">localhost</prop>
+		<prop key="port">27018</prop>
 	</util:properties>
 
 	<import resource="classpath:config/ibs-data-mongodb-rest.xml"/>

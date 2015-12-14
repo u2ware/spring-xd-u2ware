@@ -27,7 +27,7 @@ public class MongodbRestModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		MongodbServer.startup(27017);
+		MongodbServer.startup(27019);
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
 		
@@ -50,7 +50,11 @@ public class MongodbRestModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "ibs-data-mongodb-rest "
-				+ " --httpPort=9899 ";
+				+ " --httpPort=9899 "
+				+ " --host=localhost "
+				+ " --port=27019 ";
+				
+				
 
 		logger.debug(processingChainUnderTest);
 		
@@ -66,18 +70,19 @@ public class MongodbRestModuleIntegrationTest {
 			logger.debug(result);
 			Assert.assertEquals("hello world", result);
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}
 		
 //		List<?> result4 = restTemplate.postForObject("http://localhost:9998/personDb/person","{'name':'Joe'}", List.class);
 //		logger.debug(result4);
 //		Assert.assertEquals(1, result4.size());
 
-		
-
-		
-
 		chain.destroy();
+
+		
+
+		Thread.sleep(5000);
+
 	}
 }
 
