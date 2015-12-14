@@ -1,0 +1,14 @@
+
+
+stream create --name "testStream" --definition "u2ware-ibs-data-mongodb-rest --httpPort=9898"
+
+stream deploy --name "testStream"
+
+http get --target http://localhost:9898/helloworld 
+http get --target http://localhost:9898/helloworld 
+http get --target http://localhost:9898/helloworld 
+http get --target http://localhost:9898/helloworld 
+
+stream undeploy --name "testStream"
+
+stream destroy --name "testStream"
