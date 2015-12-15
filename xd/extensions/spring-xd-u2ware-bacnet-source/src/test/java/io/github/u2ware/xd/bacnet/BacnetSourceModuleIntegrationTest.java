@@ -20,8 +20,6 @@ public class BacnetSourceModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-    private static BacnetSlave bacnetSlave;
-    
     private static SingleNodeApplication application;
 
 	private static int RECEIVE_TIMEOUT = 6000;
@@ -32,10 +30,7 @@ public class BacnetSourceModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		bacnetSlave = new BacnetSlave();
-		bacnetSlave.setLocalPort(47909);
-		bacnetSlave.setLocalInstanceNumber(47909);
-		bacnetSlave.afterPropertiesSet();
+		BacnetSlave.startup(47909);
 		
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -49,7 +44,7 @@ public class BacnetSourceModuleIntegrationTest {
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		bacnetSlave.destroy();
+		BacnetSlave.shutdown();
 	}
 	
 

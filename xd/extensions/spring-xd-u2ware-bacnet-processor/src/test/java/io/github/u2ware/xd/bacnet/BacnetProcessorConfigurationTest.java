@@ -25,19 +25,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles({"use_json_input", "dont_use_splitter", "use_json_output"})
 public class BacnetProcessorConfigurationTest {
 
-    private static BacnetSlave bacnetSlave;
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		
-		bacnetSlave = new BacnetSlave();
-		bacnetSlave.setLocalPort(47809);
-		bacnetSlave.setLocalInstanceNumber(47809);
-		bacnetSlave.afterPropertiesSet();
+		BacnetSlave.startup(47809);
 	}    
 	@AfterClass
 	public static void afterClass() throws Exception{
-		bacnetSlave.destroy();
+		BacnetSlave.shutdown();
 	}	
 	
     protected Log logger = LogFactory.getLog(getClass());
@@ -51,13 +46,25 @@ public class BacnetProcessorConfigurationTest {
 	@Test
 	public void test() throws Exception{
 
-		input.send(MessageBuilder.withPayload(new BacnetRequest()).build());
+		Object payload = new BacnetRequest("127.0.0.1:47809", 47809);
+		input.send(MessageBuilder.withPayload(payload).build());
 		//input.send(MessageBuilder.withPayload("{}").build());
 		//input.send(MessageBuilder.withPayload("aaaas").build());
 		
 		Message<?> message = output.receive(1000);
-		logger.debug(message.getPayload());
+		//logger.debug(message.getPayload());
 		Assert.assertEquals(String.class, message.getPayload().getClass());
+
+	
+		payload = "{\"remoteAddress\":\"127.0.0.1:47809\", \"remoteInstanceNumber\":47809}";
+		input.send(MessageBuilder.withPayload(payload).build());
+		//input.send(MessageBuilder.withPayload("{}").build());
+		//input.send(MessageBuilder.withPayload("aaaas").build());
+		
+		message = output.receive(1000);
+		//logger.debug(message.getPayload());
+		Assert.assertEquals(String.class, message.getPayload().getClass());
+	
 	}
 }
 

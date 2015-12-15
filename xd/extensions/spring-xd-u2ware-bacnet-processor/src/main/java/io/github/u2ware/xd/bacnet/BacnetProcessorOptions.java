@@ -15,8 +15,6 @@ public class BacnetProcessorOptions implements ProfileNamesProvider{
 	private static final String dont_use_json_output = "dont_use_json_output";
 
 	private int localPort = 47808;
-	private String remoteAddress;
-	private String remoteInstanceNumber;
 	private boolean split = true;
 	private boolean jsonInput = true;
 	private boolean jsonOutput = true;
@@ -27,20 +25,6 @@ public class BacnetProcessorOptions implements ProfileNamesProvider{
 	@ModuleOption("setLocalPort")
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
-	}
-	public String getRemoteAddress() {
-		return remoteAddress;
-	}
-	@ModuleOption("setRemoteAddress")
-	public void setRemoteAddress(String remoteAddress) {
-		this.remoteAddress = remoteAddress;
-	}
-	public String getRemoteInstanceNumber() {
-		return remoteInstanceNumber;
-	}
-	@ModuleOption("setRemoteInstanceNumber")
-	public void setRemoteInstanceNumber(String remoteInstanceNumber) {
-		this.remoteInstanceNumber = remoteInstanceNumber;
 	}
 	public boolean isSplit() {
 		return split;

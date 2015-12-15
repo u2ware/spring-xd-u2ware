@@ -19,8 +19,6 @@ public class BacnetProcessorModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-    private static BacnetSlave bacnetSlave;
-    
     private static SingleNodeApplication application;
 
 	private static int RECEIVE_TIMEOUT = 6000;
@@ -31,10 +29,7 @@ public class BacnetProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		bacnetSlave = new BacnetSlave();
-		bacnetSlave.setLocalPort(47909);
-		bacnetSlave.setLocalInstanceNumber(47909);
-		bacnetSlave.afterPropertiesSet();
+		BacnetSlave.startup(47909);
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
 		
@@ -47,7 +42,7 @@ public class BacnetProcessorModuleIntegrationTest {
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		bacnetSlave.destroy();
+		BacnetSlave.shutdown();
 	}
 	
 
@@ -57,8 +52,7 @@ public class BacnetProcessorModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "bacnet-processor "
-				+ " --remoteAddress=127.0.0.1:47909 "
-				+ " --remoteInstanceNumber=47909 ";
+				+ " --localPort=9992 ";
 
 		logger.debug(processingChainUnderTest);
 		
@@ -67,7 +61,7 @@ public class BacnetProcessorModuleIntegrationTest {
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 
-		chain.sendPayload("{}");
+		chain.sendPayload("{\"remoteAddress\":\"127.0.0.1:47909\", \"remoteInstanceNumber\":47909}");
 		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
 		Assert.assertEquals(String.class, payload.getClass());

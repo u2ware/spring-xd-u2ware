@@ -22,19 +22,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles({"use_splitter", "dont_use_json_output"})
 public class BacnetSourceConfigurationTest {
 
-    private static BacnetSlave bacnetSlave;
-     
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		
-		bacnetSlave = new BacnetSlave();
-		bacnetSlave.setLocalPort(47908);
-		bacnetSlave.setLocalInstanceNumber(47908);
-		bacnetSlave.afterPropertiesSet();
+		BacnetSlave.startup(47908);
 	}    
 	@AfterClass
 	public static void afterClass() throws Exception{
-		bacnetSlave.destroy();
+		BacnetSlave.shutdown();
 	}	
 	
     protected Log logger = LogFactory.getLog(getClass());
