@@ -7,7 +7,8 @@
 	</appender>
 
 
-	<logger name="io.github.u2ware" level="DEBUG" />
+	<logger name="org.springframework" level="WARN" />
+	<logger name="io.github.u2ware" level="INFO" />
 
 
 	<root level="OFF">
