@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,14 +36,9 @@ public class MongodbRestConfigurationTest {
 		
 		Thread.sleep(2000);
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject("http://localhost:9898/helloworld", String.class);
-		logger.debug(result);
-		Assert.assertEquals("hello world", result);
 
-		logger.debug("");
-		logger.debug("");
-		Thread.sleep(2000);
 		Map database = restTemplate.getForObject("http://localhost:9898", Map.class);
+		//logger.debug("database:"+database);
 		List<Map> databaseContent = (List<Map>)database.get("content");
 		
 		for(Map db : databaseContent){
@@ -52,17 +46,19 @@ public class MongodbRestConfigurationTest {
 			
 			Map collections = restTemplate.getForObject("http://localhost:9898/{database}", Map.class, 
 											db.get("databaseName"));
+			//logger.debug("collections: "+collections);
 			List<Map> collectionsContent = (List<Map>)collections.get("content");
-			
 			for(Map collection : collectionsContent){
 				logger.debug("\t"+collection);
+			
 				Map entities = restTemplate.getForObject("http://localhost:9898/{database}/{collectionName}?size=17", Map.class, 
 										collection.get("databaseName"), 
 										collection.get("collectionName"));
-				
+				//logger.debug("entities: "+entities);
 				List<Map> entitiesContent = (List<Map>)entities.get("content");
 				for(Map e : entitiesContent){
 					
+					//logger.debug("entity: "+e);
 					String entity = restTemplate.getForObject("http://localhost:9898/{database}/{collectionName}/{id}", String.class, 
 							collection.get("databaseName"), 
 							collection.get("collectionName"),
@@ -73,7 +69,7 @@ public class MongodbRestConfigurationTest {
 				}
 			}
 		}
-//		Map result4 = restTemplate.postForObject("http://localhost:9898/personDb/person","{'name':'Joe'}", Map.class);
+//		Map result4 = restTemplate.postForObject("http://localhost:9898/test/person","{'name':'Joe'}", Map.class);
 //		logger.debug(result4);
 //		Assert.assertEquals(1, result4.size());
 	}

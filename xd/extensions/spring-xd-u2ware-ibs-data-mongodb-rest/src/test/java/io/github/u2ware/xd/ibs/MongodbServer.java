@@ -55,11 +55,34 @@ public class MongodbServer implements Runnable{
 		_mongod = _mongodExe.start();
 		
 		MongoClient mongoClient = new MongoClient("localhost", port);
-		MongoTemplate template = new MongoTemplate(mongoClient, "personDb");
-		template.save(new Person("Mina", 12, "a"));
-		template.save(new Person("Joe", 36, "b"));
-		template.save(new Person("Yok", 27, "c"));
+		MongoTemplate template = new MongoTemplate(mongoClient, "person");
+
+		template.save(create("x"), "Mina");
+		template.save(create("y"), "Mina");
+		template.save(create("a"), "Mina");
+
+		template.save(create("Mina",  "a"), "person");
+		template.save(create("Joe",  "b"), "person");
+		template.save(create("Yok",  "c"), "person");
+	
 	}
+	
+	private static CurrentData create(String id, Object value){
+		CurrentData objectToSave = new CurrentData();
+		objectToSave.setId(id);
+		objectToSave.setValue(value);
+		objectToSave.setTimestamp(System.currentTimeMillis());
+		return objectToSave;
+	}
+	private static PostData create(Object value){
+		PostData objectToSave = new PostData();
+		Long id = System.currentTimeMillis();
+		objectToSave.setId(id);
+		objectToSave.setValue(value);
+		objectToSave.setTimestamp(id);
+		return objectToSave;
+	}
+	
 	
 	public static void shutdown() throws Exception{
 		_mongod.stop();
@@ -67,38 +90,5 @@ public class MongodbServer implements Runnable{
 	}	
 	
 	
-	public static class Person {
-		  private String id;
-		  private String name;
-		  private int age;
-
-		  public Person() {
-			  
-		  }
-		  public Person(String name, int age) {
-		    this.name = name;
-		    this.age = age;
-		  }
-		  public Person(String name, int age, String id) {
-			    this.id = id;
-			    this.name = name;
-			    this.age = age;
-		  }
-
-		  public String getId() {
-		    return id;
-		  }
-		  public String getName() {
-		    return name;
-		  }
-		  public int getAge() {
-		    return age;
-		  }
-
-		  @Override
-		  public String toString() {
-		    return "Person [id=" + id + ", name=" + name + ", age=" + age + "]";
-		  }
-	}
 
 }

@@ -90,40 +90,45 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		
 		DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
 //		logger.debug("past : "+past);
-		
+		boolean history = false;
 		if(past != null){
-
 			Object pastValue = past.get("value");
-			
 			if(! value.equals(pastValue)){
-				
-				BasicDBObject objectToSave = new BasicDBObject();
-				objectToSave.put("_id", timestamp);
-				objectToSave.put("value", value);
-				objectToSave.put("timestamp", timestamp);
-				objectToSave.put("payload", payload);
-				mongoTemplate.save(objectToSave, id.toString());
-				//logger.info("save: "+timestamp+" in "+id);
+				history = true;
 			}
-
 		}else{
-			BasicDBObject objectToSave = new BasicDBObject();
-			objectToSave.put("_id", timestamp);
-			objectToSave.put("value", value);
-			objectToSave.put("timestamp", timestamp);
-			objectToSave.put("payload", payload);
+			history = true;
+		}
+
+		if(history){
+//			BasicDBObject objectToSave = new BasicDBObject();
+//			objectToSave.put("_id", timestamp);
+//			objectToSave.put("value", value);
+//			objectToSave.put("timestamp", timestamp);
+//			objectToSave.put("payload", payload);
+			PostData objectToSave = new PostData();
+			objectToSave.setId(timestamp);
+			objectToSave.setValue(value);
+			objectToSave.setTimestamp(timestamp);
+			objectToSave.setPayload(payload);
 			mongoTemplate.save(objectToSave, id.toString());
 			//logger.info("save: "+timestamp+" in "+id);
 		}
-
-		BasicDBObject objectToSave = new BasicDBObject();
-		objectToSave.put("_id", id);
-		objectToSave.put("value", value);
-		objectToSave.put("timestamp", timestamp);
-		objectToSave.put("payload", payload);
+		
+//		BasicDBObject objectToSave = new BasicDBObject();
+//		objectToSave.put("_id", id);
+//		objectToSave.put("value", value);
+//		objectToSave.put("timestamp", timestamp);
+//		objectToSave.put("payload", payload);
+		CurrentData objectToSave = new CurrentData();
+		objectToSave.setId(id.toString());
+		objectToSave.setValue(value);
+		objectToSave.setTimestamp(timestamp);
+		objectToSave.setPayload(payload);
 		mongoTemplate.save(objectToSave, collectionName);
 		//logger.info("save: "+id+" in "+collectionName);
 	}
 
+	
 
 }

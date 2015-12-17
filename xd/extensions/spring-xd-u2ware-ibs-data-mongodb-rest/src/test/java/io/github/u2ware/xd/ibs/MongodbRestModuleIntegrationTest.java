@@ -63,19 +63,15 @@ public class MongodbRestModuleIntegrationTest {
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 		
-		Thread.sleep(3000);
 		try{
+			Thread.sleep(3000);
 			RestTemplate restTemplate = new RestTemplate();
-			String result = restTemplate.getForObject("http://localhost:9899/helloworld", String.class);
+			String result = restTemplate.getForObject("http://localhost:9899/", String.class);
 			logger.debug(result);
-			Assert.assertEquals("hello world", result);
+			Assert.assertNotNull(result);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-//		List<?> result4 = restTemplate.postForObject("http://localhost:9998/personDb/person","{'name':'Joe'}", List.class);
-//		logger.debug(result4);
-//		Assert.assertEquals(1, result4.size());
 
 		chain.destroy();
 

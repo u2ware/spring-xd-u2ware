@@ -18,6 +18,8 @@
 			<map>
 				<entry key="spring.data.mongodb.host" value="${host}"/>
 				<entry key="spring.data.mongodb.port" value="${port}"/>
+				<entry key="endpoints.jmx.enabled" value="false"/>
+				
 			</map>
 		</property>
 	</bean>

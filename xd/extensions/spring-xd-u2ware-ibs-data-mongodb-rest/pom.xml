@@ -18,17 +18,17 @@
 	</repositories>
 	
 	<dependencies>
- 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jetty</artifactId>
-			<scope>test</scope>
-		</dependency>		
 
+ 		<dependency>
+			<groupId>io.github.u2ware</groupId>
+			<artifactId>spring-xd-u2ware-ibs-data</artifactId>
+			<version>1.0.0</version>
+		</dependency>		
  		<dependency>
 			<groupId>io.github.u2ware</groupId>
 			<artifactId>spring-integration-u2ware-netty</artifactId>
 			<version>1.0.0</version>
-		</dependency>		
+		</dependency>
 
 		<dependency>
 		    <groupId>de.flapdoodle.embed</groupId>

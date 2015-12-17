@@ -46,7 +46,7 @@ public class MongodbRestApplicationTests {
 	public void contextLoads() throws Exception {
 
 		this.mvc.perform(
-						get("/helloworld")
+						get("/")
 				).andDo(
 						print()
 				).andExpect(

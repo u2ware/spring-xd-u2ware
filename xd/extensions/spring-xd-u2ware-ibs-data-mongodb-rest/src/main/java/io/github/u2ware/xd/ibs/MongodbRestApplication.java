@@ -2,21 +2,11 @@ package io.github.u2ware.xd.ibs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(exclude={JmxAutoConfiguration.class, IntegrationAutoConfiguration.class})
 public class MongodbRestApplication {
-
-	/*
-	implements EmbeddedServletContainerCustomizer{
-
-	@Value("#{systemProperties['MongodbRestApplicationRunner.server.port']}")
-	private Integer port;
-	
-	@Override
-	public void customize(ConfigurableEmbeddedServletContainer container) {
-		container.setPort(port);
-	}
-	*/
 
 	public static void main(String[] args) {
         SpringApplication.run(MongodbRestApplication.class, args);
