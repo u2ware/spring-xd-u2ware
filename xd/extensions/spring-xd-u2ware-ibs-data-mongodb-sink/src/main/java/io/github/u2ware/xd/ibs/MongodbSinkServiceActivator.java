@@ -101,30 +101,24 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		}
 
 		if(history){
-//			BasicDBObject objectToSave = new BasicDBObject();
-//			objectToSave.put("_id", timestamp);
-//			objectToSave.put("value", value);
-//			objectToSave.put("timestamp", timestamp);
-//			objectToSave.put("payload", payload);
-			PostData objectToSave = new PostData();
-			objectToSave.setId(timestamp);
-			objectToSave.setValue(value);
-			objectToSave.setTimestamp(timestamp);
-			objectToSave.setPayload(payload);
+			BasicDBObject objectToSave = new BasicDBObject();
+			objectToSave.put("_id", timestamp);
+			objectToSave.put("value", value);
+			objectToSave.put("usage", "history");
+			objectToSave.put("timestamp", timestamp);
+			objectToSave.put("payload", payload);
+
 			mongoTemplate.save(objectToSave, id.toString());
 			//logger.info("save: "+timestamp+" in "+id);
 		}
 		
-//		BasicDBObject objectToSave = new BasicDBObject();
-//		objectToSave.put("_id", id);
-//		objectToSave.put("value", value);
-//		objectToSave.put("timestamp", timestamp);
-//		objectToSave.put("payload", payload);
-		CurrentData objectToSave = new CurrentData();
-		objectToSave.setId(id.toString());
-		objectToSave.setValue(value);
-		objectToSave.setTimestamp(timestamp);
-		objectToSave.setPayload(payload);
+		BasicDBObject objectToSave = new BasicDBObject();
+		objectToSave.put("_id", id);
+		objectToSave.put("value", value);
+		objectToSave.put("usage", "current");
+		objectToSave.put("timestamp", timestamp);
+		objectToSave.put("payload", payload);
+
 		mongoTemplate.save(objectToSave, collectionName);
 		//logger.info("save: "+id+" in "+collectionName);
 	}
