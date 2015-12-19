@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
 import java.util.List;
 

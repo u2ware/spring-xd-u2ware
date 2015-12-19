@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,10 +53,6 @@ public class MongodbSinkModuleUploadMain {
 		singleNodeIntegrationTestSupport.addModuleRegistry(synchRegistry);
 
 		logger.info("ModuleUploadPlugin module uploaded!!! ");
-		
-		application.close();
-		
-		Thread.sleep(3000);
 		System.exit(0);
     }
 }

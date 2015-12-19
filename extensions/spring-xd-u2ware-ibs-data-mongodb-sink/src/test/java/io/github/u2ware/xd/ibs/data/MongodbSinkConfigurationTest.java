@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class MongodbSinkConfigurationTest {
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"b\", \"age\":19 }").build());
 		Thread.sleep(1000);
 
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":20 }").build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":19 }").build());
 		Thread.sleep(1000);
 
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":21 }").build());
@@ -73,9 +73,10 @@ public class MongodbSinkConfigurationTest {
 			logger.debug("\t\t"+e);
 		}
 
+		
 		r = template.findAll(DBObject.class, "Mina");
-		logger.debug("\tMina");
 		Assert.assertEquals(3, r.size());
+		logger.debug("\tMina");
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}

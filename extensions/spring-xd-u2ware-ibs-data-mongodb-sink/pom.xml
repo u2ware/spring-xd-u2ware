@@ -32,7 +32,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>io.github.u2ware.xd.ibs.MongodbSinkModuleUploadMain</mainClass>
+							<mainClass>io.github.u2ware.xd.ibs.data.MongodbSinkModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  

@@ -1,12 +1,18 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
+
+import io.github.u2ware.xd.ibs.Data;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
+import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.integration.expression.ExpressionUtils;
@@ -14,7 +20,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 
 public class MongodbSinkServiceActivator implements InitializingBean, BeanFactoryAware{
 
@@ -88,11 +93,22 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 //		logger.info("collectionName: "+collectionName);
 //		logger.debug("mongoTemplate: "+mongoTemplate);
 		
-		DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
-//		logger.debug("past : "+past);
+		
+		BasicDBObject q = new BasicDBObject();
+		q.append("_class", Data.class.getName());
+		
+		Sort sort = new Sort(Direction.DESC, "timestamp");
+		Query query = new BasicQuery(q).with(sort);
+		
+		
+		//DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
+		Data post = mongoTemplate.findOne(query, Data.class, id.toString());
+
+//		logger.debug("past : "+post);
+
 		boolean history = false;
-		if(past != null){
-			Object pastValue = past.get("value");
+		if(post != null){
+			Object pastValue = post.getValue();
 			if(! value.equals(pastValue)){
 				history = true;
 			}
@@ -101,23 +117,34 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		}
 
 		if(history){
-			BasicDBObject objectToSave = new BasicDBObject();
-			objectToSave.put("_id", timestamp);
-			objectToSave.put("value", value);
-			objectToSave.put("usage", "history");
-			objectToSave.put("timestamp", timestamp);
-			objectToSave.put("payload", payload);
+//			BasicDBObject objectToSave = new BasicDBObject();
+//			objectToSave.put("_id", timestamp);
+//			objectToSave.put("value", value);
+//			objectToSave.put("usage", "history");
+//			objectToSave.put("timestamp", timestamp);
+//			objectToSave.put("payload", payload);
+			Data objectToSave = new Data();
+			objectToSave.setId(""+timestamp);
+			objectToSave.setValue(value);
+			objectToSave.setTimestamp(timestamp);
+			objectToSave.setPayload(payload);
 
 			mongoTemplate.save(objectToSave, id.toString());
 			//logger.info("save: "+timestamp+" in "+id);
 		}
 		
-		BasicDBObject objectToSave = new BasicDBObject();
-		objectToSave.put("_id", id);
-		objectToSave.put("value", value);
-		objectToSave.put("usage", "current");
-		objectToSave.put("timestamp", timestamp);
-		objectToSave.put("payload", payload);
+//		BasicDBObject objectToSave = new BasicDBObject();
+//		objectToSave.put("_id", id);
+//		objectToSave.put("value", value);
+//		objectToSave.put("usage", "current");
+//		objectToSave.put("timestamp", timestamp);
+//		objectToSave.put("payload", payload);
+
+		Data objectToSave = new Data();
+		objectToSave.setId(id.toString());
+		objectToSave.setValue(value);
+		objectToSave.setTimestamp(timestamp);
+		objectToSave.setPayload(payload);
 
 		mongoTemplate.save(objectToSave, collectionName);
 		//logger.info("save: "+id+" in "+collectionName);
