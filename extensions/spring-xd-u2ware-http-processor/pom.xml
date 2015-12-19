@@ -40,7 +40,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>io.github.u2ware.xd.http.HttpProcessorModuleUploadMain</mainClass>
+							<mainClass>io.github.u2ware.xd.netty.x.HttpProcessorModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  
