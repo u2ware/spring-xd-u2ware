@@ -7,10 +7,9 @@
 	</appender>
 
 
-	<logger name="org.springframework.integration.channel" level="OFF" />
+	<logger name="org.springframework" level="WARN" />
 	
-	<logger name="io.github.u2ware.integration.bacnet" level="INFO" />
-	<logger name="io.github.u2ware.xd.bacnet" level="DEBUG" />
+	<logger name="io.github.u2ware" level="DEBUG" />
 
 	<root level="OFF">
 		<appender-ref ref="STDOUT" />
