@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.http;
+package io.github.u2ware.xd.netty.x;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
