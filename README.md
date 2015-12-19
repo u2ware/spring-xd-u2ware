@@ -2,13 +2,13 @@ Spring XD U2ware
 =================================================
 # Introduction
 
-각종 Custom Module 이 설치된 [spring-xd-1.2.1.RELEASE](https://repo.spring.io/libs-release/org/springframework/xd/spring-xd/1.2.1.RELEASE/spring-xd-1.2.1.RELEASE-dist.zip)의 재배포판입니다.
-Spring XD 에 대해서는 [가이드](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#_install_spring_xd)를 참조 할 수 있니다.
+각종 Custom Module 이 설치된 [spring-xd-1.3.0.RELEASE](https://repo.spring.io/libs-release/org/springframework/xd/spring-xd/1.3.0.RELEASE/spring-xd-1.3.0.RELEASE-dist.zip)의 재배포판입니다.
+Spring XD 에 대해서는 [가이드](http://docs.spring.io/spring-xd/docs/1.3.0.RELEASE/reference/html/#_install_spring_xd)를 참조 할 수 있니다.
  
 
 # Download 
 
-[spring-xd-u2ware-1.2.1.zip]()
+[spring-xd-u2ware-1.3.0.zip]()
 
 # Run
 
@@ -23,7 +23,7 @@ Spring XD 에 대해서는 [가이드](http://docs.spring.io/spring-xd/docs/1.2.
 \____/| .__/|_|  |_|_| |_|\__, | \/   \/___/
       | |                  __/ |
       |_|                 |___/
-1.2.1.RELEASE                    eXtreme Data
+1.3.0.RELEASE                    eXtreme Data
 
 
 Started : SingleNodeApplication
@@ -52,7 +52,7 @@ Documentation: https://github.com/spring-projects/spring-xd/wiki
       | |                  __/ |
       |_|                 |___/
 eXtreme Data
-1.2.1.RELEASE | Admin Server Target: http://localhost:9393
+1.3.0.RELEASE | Admin Server Target: http://localhost:9393
 Welcome to the Spring XD shell. For assistance hit TAB or type "help".
 xd:>
 ```
@@ -75,7 +75,7 @@ Spring XD 콘솔에서 다음과 같이 메세지가 출력됩니다.
 2015-11-18T14:54:19+0900 1.2.1.RELEASE INFO task-scheduler-2 sink.ticktock - 2015-11-18 14:54:20
 ```
 
-[Stream](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#streams) 은 여러가지 유형의 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 들을 사용하여 구성되며, [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 은 그 유형에 따라, [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources), [Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors), [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks) 등으로 분류 됩니다.
+[Stream](http://docs.spring.io/spring-xd/docs/1.3.0.RELEASE/reference/html/#streams) 은 여러가지 유형의 [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 들을 사용하여 구성되며, [Module](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#modules) 은 그 유형에 따라, [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources), [Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors), [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks) 등으로 분류 됩니다.
 
 이벤트 기반 데이터는 1개의 [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources) 에서 만들어 지고,  0개 또는 다수의 [Processor](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#processors)를 거쳐 0개 또는 1개의 [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks)에서 처리되는 경로를 가지게 됩니다. 위 예제에서 'time' 은 [Source](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sources) 이고, 'log' 는 [Sink](http://docs.spring.io/spring-xd/docs/1.2.1.RELEASE/reference/html/#sinks) 입니다.
  
