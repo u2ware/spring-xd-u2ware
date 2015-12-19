@@ -28,4 +28,5 @@ logs/
 
 project_*
 spring-xd-u2ware-netty-*/
+spring-xd-u2ware-ibs-boot-*/
 
