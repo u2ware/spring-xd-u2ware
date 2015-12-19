@@ -20,8 +20,8 @@ public class MongodbSinkModuleUploadMain {
     private static final String moduleType     = "sink";
     private static final String moduleResource = "target/spring-xd-u2ware-ibs-data-mongodb-sink-1.0.0.jar";
 
-    private static final String sourceResource     = "../../custom-modules/";
-    private static final String targetResource     = "../../custom-modules/";
+    private static final String sourceResource     = "../../xd/custom-modules/";
+    private static final String targetResource     = "../../xd/custom-modules/";
     
     public static void main(String[] args) throws Exception{
     	logger.info("ModuleUploadPlugin starting.....");
