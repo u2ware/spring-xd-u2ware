@@ -6,8 +6,8 @@ stream deploy --name "testStream"
 
 http get --target http://localhost:9898/ 
 http get --target http://localhost:9898/person 
-http get --target http://localhost:9898/person/Mina 
 http get --target http://localhost:9898/person/person
+http get --target http://localhost:9898/person/Mina 
 
 
 stream undeploy --name "testStream"
