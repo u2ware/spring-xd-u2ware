@@ -1,9 +1,0 @@
-
-stream create --name "testStream" --definition "u2ware-netty-siemens-fire-source --port=9990 | u2ware-ibs-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=fire --idExpression=payload.id --valueExpression=payload.value"
-
-stream deploy --name "testStream"
-
-//stream undeploy --name "testStream"
-
-//stream destroy --name "testStream"
-
