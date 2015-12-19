@@ -1,0 +1,12 @@
+
+stream create --name "testStream" --definition "http | u2ware-modbus-processor --host=127.0.0.1 --port=10502 | log"
+
+stream deploy --name "testStream"
+
+http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
+http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
+http post --target http://localhost:9000 --data "{\"unitId\":0,\"functionCode\":4,\"offset\":0,\"count\":6}"
+
+stream undeploy --name "testStream"
+
+stream destroy --name "testStream"
