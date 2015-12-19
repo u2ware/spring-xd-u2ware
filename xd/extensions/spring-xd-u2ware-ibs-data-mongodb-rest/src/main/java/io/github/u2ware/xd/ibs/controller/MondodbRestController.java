@@ -1,8 +1,5 @@
 package io.github.u2ware.xd.ibs.controller;
 
-import io.github.u2ware.xd.ibs.CurrentData;
-import io.github.u2ware.xd.ibs.PostData;
-
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +29,7 @@ public class MondodbRestController {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-	private static String[] allowClassNames = new String[]{CurrentData.class.getName(), PostData.class.getName()};
+	//private static String[] allowClassNames = new String[]{CurrentData.class.getName(), PostData.class.getName()};
 
 	private @Autowired Mongo mongo;
     private Map<String, MongoTemplate> mongoTemplates = Maps.newHashMap();
@@ -64,11 +61,10 @@ public class MondodbRestController {
 		for(String collectionName : mongoTemplate.getCollectionNames()){
 
 			BasicDBObject q = new BasicDBObject();
-			q.append("_class", new BasicDBObject("$in", allowClassNames));
+			q.append("_class", CurrentData.class.getName());
 			
 			Query query = new BasicQuery(q);
-			//Query query = new BasicQuery("{\"_class\":\"io.github.u2ware.xd.ibs.Data\"}");
-			Long documentCount = mongoTemplate.count(query, collectionName);
+			Long documentCount = mongoTemplate.count(query, CurrentData.class, collectionName);
 			
 			BasicDBObject obj = new BasicDBObject();
 			obj.put("databaseName", databaseName);
@@ -80,7 +76,7 @@ public class MondodbRestController {
 	}
 
     @RequestMapping(value="/{databaseName}/{collectionName}")
-	public Page<DBObject> documents(
+	public Page<CurrentData> documents(
 			@PathVariable("databaseName") String databaseName, 
 			@PathVariable("collectionName") String collectionName, 
 			Pageable pageable) throws Exception{
@@ -88,25 +84,27 @@ public class MondodbRestController {
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
 		
 		BasicDBObject q = new BasicDBObject();
-		q.append("_class", new BasicDBObject("$in", allowClassNames));
-		
+		q.append("_class", CurrentData.class.getName());
 		Query query = new BasicQuery(q).with(pageable);
-		//Query query = new BasicQuery("{\"_class\":\"io.github.u2ware.xd.ibs.Data\"}").with(pageable);
 
-		Long count = mongoTemplate.count(query, collectionName);
-		List<DBObject> content = mongoTemplate.find(query, DBObject.class, collectionName);
-		return new PageImpl<DBObject>(content, pageable, count);
+		Long count = mongoTemplate.count(query, CurrentData.class, collectionName);
+		List<CurrentData> content = mongoTemplate.find(query, CurrentData.class, collectionName);
+		return new PageImpl<CurrentData>(content, pageable, count);
 	}
 
     @RequestMapping(value="/{databaseName}/{collectionName}/{id}")
-	public Object document(
+    //@RequestMapping(value="/{databaseName}/{id}/{timestamp}")
+	public CurrentData document(
 			@PathVariable("databaseName") String databaseName, 
 			@PathVariable("collectionName") String collectionName, 
 			@PathVariable("id") String id) throws Exception{
     	
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
 
-
+		CurrentData result = mongoTemplate.findById(id, CurrentData.class, collectionName);
+		return result;
+		
+		/*
 		logger.info("document: "+databaseName);
 		logger.info("document: "+collectionName);
 		logger.info("document: "+id);
@@ -114,35 +112,36 @@ public class MondodbRestController {
 		BasicDBObject q1 = new BasicDBObject();
 		q1.append("_class", allowClassNames[0]);
 		q1.append("_id", collectionName);
-    	Query query1 = new BasicQuery(q1);
-		
-		boolean exists = mongoTemplate.exists(query1, databaseName);
+
+		Query query1 = new BasicQuery(q1);
+		boolean exists = mongoTemplate.exists(query, entityClass, databaseName);
 
 		logger.info("document: "+exists);
 		
 		if(exists){
 			//history...
 			BasicDBObject q = new BasicDBObject();
-			q.append("_class", allowClassNames[1]);
+			q.append("usage", "history");
 			q.append("_id", Long.parseLong(id));
 			
 	    	Query query = new BasicQuery(q);
 			
-			PostData result = mongoTemplate.findOne(query, PostData.class, collectionName);
+	    	DBObject result = mongoTemplate.findOne(query, DBObject.class, collectionName);
 			logger.info("document: "+result);
 			return result;
 			
 		}else{
 			//current...
 			BasicDBObject q = new BasicDBObject();
-			q.append("_class", allowClassNames[0]);
+			q.append("usage", "current");
 			q.append("_id", id);
 	    	Query query = new BasicQuery(q);
 			
-			CurrentData result = mongoTemplate.findOne(query, CurrentData.class, collectionName);
+	    	DBObject result = mongoTemplate.findOne(query, DBObject.class, collectionName);
 			logger.info("document: "+result);
 			return result;
 		}
+		*/
 	}
     
 	protected MongoTemplate getMongoTemplate(String databaseName) {
@@ -157,6 +156,4 @@ public class MondodbRestController {
 //    private static HttpServletRequest request(){
 //    	return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 //    }
-    
-	
 }

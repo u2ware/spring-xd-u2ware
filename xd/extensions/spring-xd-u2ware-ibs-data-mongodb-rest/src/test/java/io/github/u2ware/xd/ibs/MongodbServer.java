@@ -1,5 +1,7 @@
 package io.github.u2ware.xd.ibs;
 
+import io.github.u2ware.xd.ibs.controller.CurrentData;
+
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.MongoClient;
@@ -64,7 +66,6 @@ public class MongodbServer implements Runnable{
 		template.save(create("Mina",  "a"), "person");
 		template.save(create("Joe",  "b"), "person");
 		template.save(create("Yok",  "c"), "person");
-	
 	}
 	
 	private static CurrentData create(String id, Object value){
@@ -74,10 +75,10 @@ public class MongodbServer implements Runnable{
 		objectToSave.setTimestamp(System.currentTimeMillis());
 		return objectToSave;
 	}
-	private static PostData create(Object value){
-		PostData objectToSave = new PostData();
+	private static CurrentData create(Object value){
+		CurrentData objectToSave = new CurrentData();
 		Long id = System.currentTimeMillis();
-		objectToSave.setId(id);
+		objectToSave.setId(""+id);
 		objectToSave.setValue(value);
 		objectToSave.setTimestamp(id);
 		return objectToSave;
