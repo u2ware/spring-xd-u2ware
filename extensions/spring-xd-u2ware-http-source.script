@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "u2ware-http-source --httpPort=9898 --resourceLocation=file://Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/xd/extensions/spring-xd-u2ware-http-source/src/test/resources"
+stream create --name "testStream" --definition "u2ware-http-source --httpPort=9898 --resourceLocation=file:/Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-http-source/src/test/resources"
 
 stream deploy --name "testStream"
 
