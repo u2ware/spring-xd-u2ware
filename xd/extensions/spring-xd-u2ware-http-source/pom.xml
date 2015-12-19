@@ -16,6 +16,7 @@
 			<groupId>io.github.u2ware</groupId>
 			<artifactId>spring-integration-u2ware-netty</artifactId>
 			<version>1.0.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	

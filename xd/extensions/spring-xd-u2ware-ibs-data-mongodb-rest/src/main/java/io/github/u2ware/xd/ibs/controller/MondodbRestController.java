@@ -28,6 +28,8 @@ import com.mongodb.Mongo;
 @RestController
 public class MondodbRestController {
 
+	//MappingMongoConverter a;
+	
     protected Log logger = LogFactory.getLog(getClass());
 
 	private static String[] allowClassNames = new String[]{CurrentData.class.getName(), PostData.class.getName()};
@@ -104,6 +106,10 @@ public class MondodbRestController {
     	
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
 
+
+		logger.info("document: "+databaseName);
+		logger.info("document: "+collectionName);
+		logger.info("document: "+id);
 		
 		BasicDBObject q1 = new BasicDBObject();
 		q1.append("_class", allowClassNames[0]);
@@ -111,7 +117,9 @@ public class MondodbRestController {
     	Query query1 = new BasicQuery(q1);
 		
 		boolean exists = mongoTemplate.exists(query1, databaseName);
-    	
+
+		logger.info("document: "+exists);
+		
 		if(exists){
 			//history...
 			BasicDBObject q = new BasicDBObject();
@@ -121,6 +129,7 @@ public class MondodbRestController {
 	    	Query query = new BasicQuery(q);
 			
 			PostData result = mongoTemplate.findOne(query, PostData.class, collectionName);
+			logger.info("document: "+result);
 			return result;
 			
 		}else{
@@ -131,6 +140,7 @@ public class MondodbRestController {
 	    	Query query = new BasicQuery(q);
 			
 			CurrentData result = mongoTemplate.findOne(query, CurrentData.class, collectionName);
+			logger.info("document: "+result);
 			return result;
 		}
 	}
