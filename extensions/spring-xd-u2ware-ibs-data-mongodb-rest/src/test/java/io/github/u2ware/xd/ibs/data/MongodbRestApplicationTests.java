@@ -1,8 +1,9 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import io.github.u2ware.xd.ibs.data.MongodbRestApplication;
 
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

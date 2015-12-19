@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,15 +63,11 @@ public class MongodbRestModuleIntegrationTest {
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 		
-		try{
-			Thread.sleep(3000);
-			RestTemplate restTemplate = new RestTemplate();
-			String result = restTemplate.getForObject("http://localhost:9899/", String.class);
-			logger.debug(result);
-			Assert.assertNotNull(result);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		Thread.sleep(3000);
+		RestTemplate restTemplate = new RestTemplate();
+		String result = restTemplate.getForObject("http://localhost:9899/", String.class);
+		logger.debug(result);
+		Assert.assertNotNull(result);
 
 		chain.destroy();
 

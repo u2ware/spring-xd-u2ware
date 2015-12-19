@@ -13,7 +13,7 @@
 
 	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.HttpServletServer">
 		<property name="port" value="${httpPort}"/>
-		<property name="configClass" value="io.github.u2ware.xd.ibs.MongodbRestApplication"/>
+		<property name="configClass" value="io.github.u2ware.xd.ibs.data.MongodbRestApplication"/>
 		<property name="defaultProperties">
 			<map>
 				<entry key="spring.data.mongodb.host" value="${host}"/>

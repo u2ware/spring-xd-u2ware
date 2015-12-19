@@ -1,10 +1,10 @@
-package io.github.u2ware.xd.ibs.controller;
+package io.github.u2ware.xd.ibs.data;
+
+import io.github.u2ware.xd.ibs.Data;
 
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,11 +25,7 @@ import com.mongodb.Mongo;
 @RestController
 public class MondodbRestController {
 
-	//MappingMongoConverter a;
-	
-    protected Log logger = LogFactory.getLog(getClass());
-
-	//private static String[] allowClassNames = new String[]{CurrentData.class.getName(), PostData.class.getName()};
+    //protected Log logger = LogFactory.getLog(getClass());
 
 	private @Autowired Mongo mongo;
     private Map<String, MongoTemplate> mongoTemplates = Maps.newHashMap();
@@ -61,10 +57,10 @@ public class MondodbRestController {
 		for(String collectionName : mongoTemplate.getCollectionNames()){
 
 			BasicDBObject q = new BasicDBObject();
-			q.append("_class", CurrentData.class.getName());
+			q.append("_class", Data.class.getName());
 			
 			Query query = new BasicQuery(q);
-			Long documentCount = mongoTemplate.count(query, CurrentData.class, collectionName);
+			Long documentCount = mongoTemplate.count(query, Data.class, collectionName);
 			
 			BasicDBObject obj = new BasicDBObject();
 			obj.put("databaseName", databaseName);
@@ -76,7 +72,7 @@ public class MondodbRestController {
 	}
 
     @RequestMapping(value="/{databaseName}/{collectionName}")
-	public Page<CurrentData> documents(
+	public Page<Data> documents(
 			@PathVariable("databaseName") String databaseName, 
 			@PathVariable("collectionName") String collectionName, 
 			Pageable pageable) throws Exception{
@@ -84,64 +80,28 @@ public class MondodbRestController {
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
 		
 		BasicDBObject q = new BasicDBObject();
-		q.append("_class", CurrentData.class.getName());
+		q.append("_class", Data.class.getName());
 		Query query = new BasicQuery(q).with(pageable);
 
-		Long count = mongoTemplate.count(query, CurrentData.class, collectionName);
-		List<CurrentData> content = mongoTemplate.find(query, CurrentData.class, collectionName);
-		return new PageImpl<CurrentData>(content, pageable, count);
+		Long count = mongoTemplate.count(query, Data.class, collectionName);
+		List<Data> content = mongoTemplate.find(query, Data.class, collectionName);
+		return new PageImpl<Data>(content, pageable, count);
 	}
 
     @RequestMapping(value="/{databaseName}/{collectionName}/{id}")
-    //@RequestMapping(value="/{databaseName}/{id}/{timestamp}")
-	public CurrentData document(
+	public Data document(
 			@PathVariable("databaseName") String databaseName, 
 			@PathVariable("collectionName") String collectionName, 
 			@PathVariable("id") String id) throws Exception{
     	
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
 
-		CurrentData result = mongoTemplate.findById(id, CurrentData.class, collectionName);
+//		logger.info("document: "+databaseName);
+//		logger.info("document: "+collectionName);
+//		logger.info("document: "+id);
+		
+		Data result = mongoTemplate.findById(id, Data.class, collectionName);
 		return result;
-		
-		/*
-		logger.info("document: "+databaseName);
-		logger.info("document: "+collectionName);
-		logger.info("document: "+id);
-		
-		BasicDBObject q1 = new BasicDBObject();
-		q1.append("_class", allowClassNames[0]);
-		q1.append("_id", collectionName);
-
-		Query query1 = new BasicQuery(q1);
-		boolean exists = mongoTemplate.exists(query, entityClass, databaseName);
-
-		logger.info("document: "+exists);
-		
-		if(exists){
-			//history...
-			BasicDBObject q = new BasicDBObject();
-			q.append("usage", "history");
-			q.append("_id", Long.parseLong(id));
-			
-	    	Query query = new BasicQuery(q);
-			
-	    	DBObject result = mongoTemplate.findOne(query, DBObject.class, collectionName);
-			logger.info("document: "+result);
-			return result;
-			
-		}else{
-			//current...
-			BasicDBObject q = new BasicDBObject();
-			q.append("usage", "current");
-			q.append("_id", id);
-	    	Query query = new BasicQuery(q);
-			
-	    	DBObject result = mongoTemplate.findOne(query, DBObject.class, collectionName);
-			logger.info("document: "+result);
-			return result;
-		}
-		*/
 	}
     
 	protected MongoTemplate getMongoTemplate(String databaseName) {

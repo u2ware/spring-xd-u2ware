@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
 import java.util.List;
 import java.util.Map;
@@ -63,9 +63,9 @@ public class MongodbRestConfigurationTest {
 					String entity = restTemplate.getForObject("http://localhost:9898/{database}/{collectionName}/{id}", String.class, 
 							collection.get("databaseName"), 
 							collection.get("collectionName"),
-							e.get("_id"));
+							e.get("id"));
 
-					logger.debug("\t\t"+entity);
+					logger.debug("\tcc\t"+entity);
 
 				}
 			}

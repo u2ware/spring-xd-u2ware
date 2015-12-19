@@ -1,6 +1,6 @@
-package io.github.u2ware.xd.ibs.controller;
+package io.github.u2ware.xd.ibs;
 
-public class CurrentData {
+public class Data {
 
 	private String id;
 	private Object value;
@@ -30,5 +30,11 @@ public class CurrentData {
 	}
 	public void setPayload(Object payload) {
 		this.payload = payload;
+	}
+	
+	@Override
+	public String toString() {
+		return "IBSData [id=" + id + ", value=" + value + ", timestamp="
+				+ timestamp + ", payload=" + payload + "]";
 	}
 }

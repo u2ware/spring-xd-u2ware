@@ -1,6 +1,6 @@
-package io.github.u2ware.xd.ibs;
+package io.github.u2ware.xd.ibs.data;
 
-import io.github.u2ware.xd.ibs.controller.CurrentData;
+import io.github.u2ware.xd.ibs.Data;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -59,28 +59,23 @@ public class MongodbServer implements Runnable{
 		MongoClient mongoClient = new MongoClient("localhost", port);
 		MongoTemplate template = new MongoTemplate(mongoClient, "person");
 
-		template.save(create("x"), "Mina");
-		template.save(create("y"), "Mina");
-		template.save(create("a"), "Mina");
+		template.save(create(null, "x"), "Mina");
+		template.save(create(null, "y"), "Mina");
+		template.save(create(null, "a"), "Mina");
 
 		template.save(create("Mina",  "a"), "person");
 		template.save(create("Joe",  "b"), "person");
 		template.save(create("Yok",  "c"), "person");
 	}
 	
-	private static CurrentData create(String id, Object value){
-		CurrentData objectToSave = new CurrentData();
-		objectToSave.setId(id);
+	private static Data create(String id, Object value){
+		
+		Long timestamp = System.currentTimeMillis();
+		
+		Data objectToSave = new Data();
+		objectToSave.setId(id != null ? id : timestamp.toString());
 		objectToSave.setValue(value);
-		objectToSave.setTimestamp(System.currentTimeMillis());
-		return objectToSave;
-	}
-	private static CurrentData create(Object value){
-		CurrentData objectToSave = new CurrentData();
-		Long id = System.currentTimeMillis();
-		objectToSave.setId(""+id);
-		objectToSave.setValue(value);
-		objectToSave.setTimestamp(id);
+		objectToSave.setTimestamp(timestamp);
 		return objectToSave;
 	}
 	
