@@ -84,7 +84,8 @@ logger("org.apache.hadoop.conf.Configuration", ERROR)
 // Suppress json-path warning until SI 4.2 is released
 logger("org.springframework.integration.config.IntegrationRegistrar", ERROR)
 
-logger("org.springframework", WARN)
-logger("io.github.u2ware", INFO)
+
+logger("org.springframework.boot.context.embedded", INFO)
+logger("io.github.u2ware", DEBUG)
 
 
