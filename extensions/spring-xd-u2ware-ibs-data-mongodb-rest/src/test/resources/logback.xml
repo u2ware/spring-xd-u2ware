@@ -10,7 +10,8 @@
 <!-- 	<logger name="org.springframework" level="WARN" /> -->
  	<logger name="org.springframework.boot.context.embedded" level="INFO" />
 
-	<logger name="io.github.u2ware" level="INFO" />
+	<logger name="io.github.u2ware.integration" level="OFF" />
+	<logger name="io.github.u2ware.xd" level="DEBUG" />
 
 
 	<root level="OFF">

@@ -11,15 +11,13 @@
 		http://www.springframework.org/schema/integration 
 		http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.HttpServletServer">
-		<property name="port" value="${httpPort}"/>
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.SpringBootEmbeddedServer">
 		<property name="configClass" value="io.github.u2ware.xd.ibs.data.MongodbRestApplication"/>
 		<property name="defaultProperties">
 			<map>
+				<entry key="server.port" value="${httpPort}"/>
 				<entry key="spring.data.mongodb.host" value="${host}"/>
 				<entry key="spring.data.mongodb.port" value="${port}"/>
-				<entry key="endpoints.jmx.enabled" value="false"/>
-				
 			</map>
 		</property>
 	</bean>
