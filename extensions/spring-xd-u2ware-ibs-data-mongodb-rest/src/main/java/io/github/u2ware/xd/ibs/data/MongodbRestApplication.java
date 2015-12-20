@@ -1,7 +1,5 @@
 package io.github.u2ware.xd.ibs.data;
 
-import io.github.u2ware.integration.netty.x.SpringBootEmbeddedServer;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

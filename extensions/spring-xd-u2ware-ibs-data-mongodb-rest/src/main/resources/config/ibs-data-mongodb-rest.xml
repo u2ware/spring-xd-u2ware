@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/integration 
 		http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.SpringBootEmbeddedServer">
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.SpringBootMockServer">
 		<property name="configClass" value="io.github.u2ware.xd.ibs.data.MongodbRestApplication"/>
 		<property name="defaultProperties">
 			<map>
