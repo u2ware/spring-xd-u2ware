@@ -7,8 +7,10 @@
 	</appender>
 
 
-	<logger name="org.springframework" level="WARN" />
-	<logger name="io.github.u2ware.xd" level="DEBUG" />
+<!-- 	<logger name="org.springframework" level="WARN" /> -->
+ 	<logger name="org.springframework.boot.context.embedded" level="INFO" />
+
+	<logger name="io.github.u2ware" level="INFO" />
 
 
 	<root level="OFF">

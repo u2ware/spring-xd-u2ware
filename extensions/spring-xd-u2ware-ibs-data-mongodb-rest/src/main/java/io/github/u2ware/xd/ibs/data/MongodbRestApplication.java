@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 
 @SpringBootApplication(exclude={JmxAutoConfiguration.class, IntegrationAutoConfiguration.class})
 public class MongodbRestApplication {
-
+	
 	public static void main(String[] args) {
         SpringApplication.run(MongodbRestApplication.class, args);
     }
