@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/mongo 
+		http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+		http://www.springframework.org/schema/integration 
+		http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.SpringBootMockServer">
+		<property name="configClass" value="io.github.u2ware.xd.data.MongodbRestApplication"/>
+		<property name="defaultProperties">
+			<map>
+				<entry key="server.port" value="${httpPort}"/>
+				<entry key="spring.data.mongodb.host" value="${host}"/>
+				<entry key="spring.data.mongodb.port" value="${port}"/>
+			</map>
+		</property>
+	</bean>
+<!--  
+	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.SpringBootEmbeddedServer">
+		<property name="configClass" value="io.github.u2ware.xd.data.MongodbRestApplication"/>
+		<property name="defaultProperties">
+			<map>
+				<entry key="server.port" value="${httpPort}"/>
+				<entry key="spring.data.mongodb.host" value="${host}"/>
+				<entry key="spring.data.mongodb.port" value="${port}"/>
+			</map>
+		</property>
+	</bean>
+ -->
+
+</beans>
