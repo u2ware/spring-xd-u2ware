@@ -12,3 +12,4 @@ http post --target http://localhost:9898 --data "hello world"
 stream destroy --name "testStream1"
 
 stream destroy --name "testStream2"
+

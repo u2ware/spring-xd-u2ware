@@ -8,3 +8,4 @@ http post --target http://localhost:9000 --data "{\"remoteAddress\":\"127.0.0.1:
 stream undeploy --name "testStream"
 
 stream destroy --name "testStream"
+
