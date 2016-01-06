@@ -27,7 +27,7 @@ public class HyundaiElevatorProcessorConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		HyundaiElevatorSlave.startup(10901);
+		HyundaiElevatorSlave.startup(9897);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{

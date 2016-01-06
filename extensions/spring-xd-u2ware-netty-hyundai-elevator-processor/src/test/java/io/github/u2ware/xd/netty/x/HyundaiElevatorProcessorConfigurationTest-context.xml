@@ -9,7 +9,7 @@
 
 	<util:properties id="props">
 		<prop key="host">127.0.0.1</prop>
-		<prop key="port">10901</prop>
+		<prop key="port">9897</prop>
 	</util:properties>
 
 	<import resource="classpath:config/netty-hyundai-elevator-processor.xml"/>

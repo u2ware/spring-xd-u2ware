@@ -8,6 +8,7 @@
 
 
 	<logger name="org.springframework" level="WARN" />
+	<logger name="io.netty" level="INFO" />
 	
 	<logger name="io.github.u2ware" level="DEBUG" />
 

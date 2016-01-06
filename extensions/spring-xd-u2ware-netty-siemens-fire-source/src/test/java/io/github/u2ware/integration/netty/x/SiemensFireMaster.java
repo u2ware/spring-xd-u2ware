@@ -37,9 +37,11 @@ public class SiemensFireMaster extends AbstractTcpClient {
 		siemensFireMaster.setPort(port);
 		siemensFireMaster.setAutoConnection(true);
 		siemensFireMaster.afterPropertiesSet();
+		System.err.println("SiemensFireMaster Startup "+siemensFireMaster.getHost()+":"+siemensFireMaster.getPort());
 	}
 	public static void shutdown() throws Exception{
 		siemensFireMaster.destroy();
+		System.err.println("SiemensFireMaster Shutdown "+siemensFireMaster.getHost()+":"+siemensFireMaster.getPort());
 	}
 	
 	
@@ -76,10 +78,10 @@ public class SiemensFireMaster extends AbstractTcpClient {
 			@Override
 			public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
 				
-				
 				if(seq % 2 == 0){
 					ctx.writeAndFlush(ACK.copy());
 				}else{
+	    			System.err.println("SiemensFireMaster ...");
 					ctx.writeAndFlush(FIRE.copy());
 				}
 				
