@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-	<artifactId>spring-xd-u2ware-netty-siemens-fire-source</artifactId>
+  	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>spring-xd-u2ware-netty-hyundai-elevator-processor</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -25,7 +26,7 @@
 			<version>1.0.0</version>
 		</dependency>		
 	</dependencies>
-	
+
 	<build>  
 		<plugins>  
 			<plugin>  
@@ -39,7 +40,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>io.github.u2ware.xd.netty.x.SiemensFireSourceModuleUploadMain</mainClass>
+							<mainClass>io.github.u2ware.xd.netty.x.HyundaiElevatorProcessorModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  
@@ -47,5 +48,5 @@
 			</plugin>  
 		</plugins>  
 	</build>  
-	
+
 </project>
