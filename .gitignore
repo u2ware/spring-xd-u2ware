@@ -22,7 +22,7 @@ recycle/
 mvn-repo/
 
 *.log
-data/
+jobs/
 logs/
 
 
