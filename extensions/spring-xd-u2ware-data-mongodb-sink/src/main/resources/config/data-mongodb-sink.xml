@@ -46,6 +46,7 @@
 					<constructor-arg value="${valueExpression}"/>
 				</bean>
 			</property>
+			<property name="valueLogging" value="${valueLogging:true}"/>
 		</bean>
 	</int:service-activator>
 	

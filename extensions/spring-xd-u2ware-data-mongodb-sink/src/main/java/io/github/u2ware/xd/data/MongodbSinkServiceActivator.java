@@ -27,6 +27,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 	private volatile StandardEvaluationContext evaluationContext;
 	private volatile Expression idExpression;
 	private volatile Expression valueExpression;
+	private boolean valueLogging;
 	
 	private MongoDbFactory mongoDbFactory;
 	private MongoTemplate mongoTemplate;
@@ -55,6 +56,13 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 	public void setValueExpression(Expression valueExpression) {
 		this.valueExpression = valueExpression;
 	}
+	public boolean isValueLogging() {
+		return valueLogging;
+	}
+	public void setValueLogging(boolean valueLogging) {
+		this.valueLogging = valueLogging;
+	}
+
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
@@ -103,32 +111,33 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		Entity post = mongoTemplate.findOne(query, Entity.class, id.toString());
 
 //		logger.debug("past : "+post);
-
-		boolean history = false;
-		if(post != null){
-			Object pastValue = post.getValue();
-			if(! value.equals(pastValue)){
+		if(valueLogging){
+			boolean history = false;
+			if(post != null){
+				Object pastValue = post.getValue();
+				if(! value.equals(pastValue)){
+					history = true;
+				}
+			}else{
 				history = true;
 			}
-		}else{
-			history = true;
-		}
 
-		if(history){
-//			BasicDBObject objectToSave = new BasicDBObject();
-//			objectToSave.put("_id", timestamp);
-//			objectToSave.put("value", value);
-//			objectToSave.put("usage", "history");
-//			objectToSave.put("timestamp", timestamp);
-//			objectToSave.put("payload", payload);
-			Entity objectToSave = new Entity();
-			objectToSave.setId(""+timestamp);
-			objectToSave.setValue(value);
-			objectToSave.setTimestamp(timestamp);
-			objectToSave.setPayload(payload);
+			if(history){
+//				BasicDBObject objectToSave = new BasicDBObject();
+//				objectToSave.put("_id", timestamp);
+//				objectToSave.put("value", value);
+//				objectToSave.put("usage", "history");
+//				objectToSave.put("timestamp", timestamp);
+//				objectToSave.put("payload", payload);
+				Entity objectToSave = new Entity();
+				objectToSave.setId(""+timestamp);
+				objectToSave.setValue(value);
+				objectToSave.setTimestamp(timestamp);
+				objectToSave.setPayload(payload);
 
-			mongoTemplate.save(objectToSave, id.toString());
-			//logger.info("save: "+timestamp+" in "+id);
+				mongoTemplate.save(objectToSave, id.toString());
+				//logger.info("save: "+timestamp+" in "+id);
+			}
 		}
 		
 //		BasicDBObject objectToSave = new BasicDBObject();
