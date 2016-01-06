@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "http | u2ware-netty-hyundai-elevator-processor --host=127.0.0.1 --port=10901 --idleTimeout=5000 | log"
+stream create --name "testStream" --definition "queue:my > u2ware-netty-hyundai-elevator-processor --host=127.0.0.1 --port=10901 --idleTimeout=5000 | log"
 
 stream deploy --name "testStream"
 
