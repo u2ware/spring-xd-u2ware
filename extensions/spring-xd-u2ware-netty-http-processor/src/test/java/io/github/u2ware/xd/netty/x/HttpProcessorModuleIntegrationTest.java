@@ -30,7 +30,7 @@ public class HttpProcessorModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.processor, "http-server-processor"));
+				new SingletonModuleRegistry(ModuleType.processor, "netty-http-processor"));
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class HttpProcessorModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "http-server-processor "
+		String processingChainUnderTest = "netty-http-processor "
 				+ " --httpPort=9993 "
 				+ " --httpTimeout=10000 ";
 
