@@ -1,0 +1,12 @@
+
+stream create --name "testStream" --definition "http | u2ware-netty-hyundai-elevator-processor --host=127.0.0.1 --port=10901 | log"
+
+stream deploy --name "testStream"
+
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
+http post --target http://localhost:9000 --data "{}"
+
+stream undeploy --name "testStream"
+
+stream destroy --name "testStream"
