@@ -30,7 +30,7 @@ public class HttpSourceModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.source, "web-resource-server"));
+				new SingletonModuleRegistry(ModuleType.source, "netty-http-source"));
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class HttpSourceModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "web-resource-server "
+		String processingChainUnderTest = "netty-http-source "
 				+ " --httpPort=9993 "
 				+ " --resourceLocation=classpath: ";
 		
