@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
 		http://www.springframework.org/schema/integration 
 		http://www.springframework.org/schema/integration/spring-integration.xsd">
-
+<!-- 
 	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.SpringBootMockServer">
 		<property name="configClass" value="io.github.u2ware.xd.data.MongodbRestApplication"/>
 		<property name="defaultProperties">
@@ -21,7 +21,8 @@
 			</map>
 		</property>
 	</bean>
-<!--  
+ -->
+  
 	<bean id="httpServer" class="io.github.u2ware.integration.netty.x.SpringBootEmbeddedServer">
 		<property name="configClass" value="io.github.u2ware.xd.data.MongodbRestApplication"/>
 		<property name="defaultProperties">
@@ -32,6 +33,6 @@
 			</map>
 		</property>
 	</bean>
- -->
+
 
 </beans>
