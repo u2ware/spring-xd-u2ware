@@ -86,6 +86,6 @@ logger("org.springframework.integration.config.IntegrationRegistrar", ERROR)
 
 
 logger("org.springframework.boot.context.embedded", INFO)
-logger("io.github.u2ware", DEBUG)
+logger("io.github.u2ware", INFO)
 
 
