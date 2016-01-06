@@ -1,4 +1,4 @@
-stream create --name "testStream" --definition "http | u2ware-ibs-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=MyRepository --idExpression=payload.id --valueExpression=payload.value"
+stream create --name "testStream" --definition "http | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=MyRepository --idExpression=payload.id --valueExpression=payload.value"
 
 stream deploy --name "testStream"
 
