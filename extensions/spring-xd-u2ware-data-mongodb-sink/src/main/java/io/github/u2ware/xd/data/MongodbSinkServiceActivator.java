@@ -130,10 +130,10 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 //				objectToSave.put("timestamp", timestamp);
 //				objectToSave.put("payload", payload);
 				Entity objectToSave = new Entity();
-				objectToSave.setId(""+timestamp);
+				objectToSave.setId(timestamp);
 				objectToSave.setValue(value);
 				objectToSave.setTimestamp(timestamp);
-				objectToSave.setPayload(payload);
+				objectToSave.setPayload(payload.getClass().getName());
 
 				mongoTemplate.save(objectToSave, id.toString());
 				//logger.info("save: "+timestamp+" in "+id);
@@ -148,10 +148,10 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 //		objectToSave.put("payload", payload);
 
 		Entity objectToSave = new Entity();
-		objectToSave.setId(id.toString());
+		objectToSave.setId(id);
 		objectToSave.setValue(value);
 		objectToSave.setTimestamp(timestamp);
-		objectToSave.setPayload(payload);
+		objectToSave.setPayload(payload.getClass().getName());
 
 		mongoTemplate.save(objectToSave, collectionName);
 		//logger.info("save: "+id+" in "+collectionName);

@@ -38,21 +38,21 @@ public class MongodbRestConfigurationTest {
 		RestTemplate restTemplate = new RestTemplate();
 
 		
-		Map database = restTemplate.getForObject("http://localhost:9898", Map.class);
+		Map database = restTemplate.getForObject("http://localhost:9898/raw/", Map.class);
 		//logger.debug("database:"+database);
 		List<Map> databaseContent = (List<Map>)database.get("content");
 		
 		for(Map db : databaseContent){
 			logger.debug(db);
 			
-			Map collections = restTemplate.getForObject("http://localhost:9898/{database}", Map.class, 
+			Map collections = restTemplate.getForObject("http://localhost:9898/raw/{database}", Map.class, 
 											db.get("databaseName"));
 			//logger.debug("collections: "+collections);
 			List<Map> collectionsContent = (List<Map>)collections.get("content");
 			for(Map collection : collectionsContent){
 				logger.debug("\t"+collection);
 			
-				Map entities = restTemplate.getForObject("http://localhost:9898/{database}/{collectionName}?size=17", Map.class, 
+				Map entities = restTemplate.getForObject("http://localhost:9898/raw/{database}/{collectionName}?size=17", Map.class, 
 										collection.get("databaseName"), 
 										collection.get("collectionName"));
 				//logger.debug("entities: "+entities);
@@ -60,7 +60,7 @@ public class MongodbRestConfigurationTest {
 				for(Map e : entitiesContent){
 					
 					//logger.debug("entity: "+e);
-					String entity = restTemplate.getForObject("http://localhost:9898/{database}/{collectionName}/{id}", String.class, 
+					String entity = restTemplate.getForObject("http://localhost:9898/raw/{database}/{collectionName}/{id}", String.class, 
 							collection.get("databaseName"), 
 							collection.get("collectionName"),
 							e.get("id"));

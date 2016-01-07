@@ -65,7 +65,7 @@ public class MongodbRestModuleIntegrationTest {
 		
 		Thread.sleep(3000);
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject("http://localhost:9899/", String.class);
+		String result = restTemplate.getForObject("http://localhost:9899/raw", String.class);
 		logger.debug(result);
 		Assert.assertNotNull(result);
 

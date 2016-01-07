@@ -65,7 +65,7 @@ public class MongodbRestApplicationTests {
 		}
 
 		this.mvc.perform(
-						get("/")
+						get("/raw")
 				).andDo(
 						print()
 				).andExpect(
@@ -73,7 +73,7 @@ public class MongodbRestApplicationTests {
 				);
 
 		this.mvc.perform(
-				get("/person")
+				get("/raw/person")
 		).andDo(
 				print()
 		).andExpect(
@@ -81,7 +81,7 @@ public class MongodbRestApplicationTests {
 		);
 
 		this.mvc.perform(
-				get("/person/person")
+				get("/raw/person/person")
 		).andDo(
 				print()
 		).andExpect(
@@ -89,7 +89,34 @@ public class MongodbRestApplicationTests {
 		);
 
 		this.mvc.perform(
-				get("/person/person/Mina")
+				get("/raw/person/person/Mina")
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		);
+		
+		
+		this.mvc.perform(
+				get("/data/person")
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		);
+		
+		this.mvc.perform(
+				get("/data/person/Mina")
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		);
+		
+		this.mvc.perform(
+				get("/chart/person/Mina")
+				.param("interval", "HOUR")
+				.param("calculation", "AVG")
 		).andDo(
 				print()
 		).andExpect(

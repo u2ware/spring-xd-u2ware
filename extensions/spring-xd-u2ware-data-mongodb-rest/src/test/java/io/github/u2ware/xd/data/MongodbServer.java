@@ -1,9 +1,14 @@
 package io.github.u2ware.xd.data;
 
-import io.github.u2ware.xd.data.Entity;
-
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.query.Criteria;
 
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
@@ -59,26 +64,95 @@ public class MongodbServer implements Runnable{
 		MongoClient mongoClient = new MongoClient("localhost", port);
 		MongoTemplate template = new MongoTemplate(mongoClient, "person");
 
-		template.save(create(null, "x"), "Mina");
-		template.save(create(null, "y"), "Mina");
-		template.save(create(null, "a"), "Mina");
+		template.save(history(new DateTime(2016, 1, 3, 12, 0), new Person("Mina", 23)), "Mina");		
+		template.save(history(new DateTime(2016, 1, 3, 10, 0), new Person("Mina",   9)), "Mina");
+		template.save(history(new DateTime(2016, 1, 3, 8, 0), new Person("Mina",  86)), "Mina");
+		
+		template.save(history(new DateTime(2016, 1, 7, 12, 0), new Person("Mina", 13)), "Mina");		
+		template.save(history(new DateTime(2016, 1, 7, 10, 0), new Person("Mina",   7)), "Mina");
+		template.save(history(new DateTime(2016, 1, 7, 8, 0), new Person("Mina",  40)), "Mina");
+		
+		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Mina", 13)), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Yok",  14)), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Joe",  15)), "person");
+		
 
-		template.save(create("Mina",  "a"), "person");
-		template.save(create("Joe",  "b"), "person");
-		template.save(create("Yok",  "c"), "person");
+		Long min = new DateTime(2016, 1, 7, 7, 0).getMillis();
+		Long max = new DateTime(2016, 1, 7, 11, 0).getMillis();
+		
+		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("timestamp").gte(min).lte(max));
+		System.err.println(operation1);
+		AggregationOperation operation2 = TypedAggregation.group("payload").avg("value").as("avg");
+		System.err.println(operation2);
+		Aggregation aggregation = TypedAggregation.newAggregation(operation1, operation2);	
+		AggregationResults<DBObject> result = template.aggregate(aggregation, "Mina", DBObject.class);
+		System.err.println(result);
+		System.err.println(result.getRawResults());
+		System.err.println(result.getUniqueMappedResult());
+		
 	}
 	
-	private static Entity create(String id, Object value){
+	private static Entity history(DateTime datetime, Person payload){
 		
-		Long timestamp = System.currentTimeMillis();
+		Long timestamp = datetime.getMillis();//.currentTimeMillis();
 		
 		Entity objectToSave = new Entity();
-		objectToSave.setId(id != null ? id : timestamp.toString());
-		objectToSave.setValue(value);
+		objectToSave.setId(timestamp);
+		objectToSave.setValue(payload.getValue());
 		objectToSave.setTimestamp(timestamp);
+		objectToSave.setPayload(payload.getClass().getName());
 		return objectToSave;
 	}
+	private static Entity base(DateTime datetime, Person payload){
+		
+		Long timestamp = datetime.getMillis();//.currentTimeMillis();
+		
+		Entity objectToSave = new Entity();
+		objectToSave.setId(payload.getId());
+		objectToSave.setValue(payload.getValue());
+		objectToSave.setTimestamp(timestamp);
+		objectToSave.setPayload(payload.getClass().getName());
+		return objectToSave;
+	}
+
 	
+	
+	
+	public static class Person{
+		private String id;
+		private Object value;
+		
+		public Person(){
+		}
+
+		public Person(String id, Object value) {
+			super();
+			this.id = id;
+			this.value = value;
+		}
+
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
+		}
+
+		public Object getValue() {
+			return value;
+		}
+
+		public void setValue(Object value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "Person [id=" + id + ", value=" + value + "]";
+		}
+		
+	}
 	
 	public static void shutdown() throws Exception{
 		_mongod.stop();
