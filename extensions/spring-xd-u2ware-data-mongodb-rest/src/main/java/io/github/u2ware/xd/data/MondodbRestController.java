@@ -1,6 +1,8 @@
 package io.github.u2ware.xd.data;
 
+import io.github.u2ware.xd.data.EntityTimestampSupport.Calculation;
 import io.github.u2ware.xd.data.EntityTimestampSupport.Interval;
+import io.github.u2ware.xd.data.EntityTimestampSupport.IntervalHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -162,44 +169,83 @@ public class MondodbRestController {
 	public DBObject chart(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id,
-			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") DateTime datetime, 
-			final @RequestParam(name="interval", required=false, defaultValue="HOUR") Interval interval) throws Exception{
+			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH") DateTime datetime, 
+			final @RequestParam(name="interval", required=false, defaultValue="HOUR") Interval interval,
+			final @RequestParam(name="calculation", required=false, defaultValue="AVG") Calculation calculation) throws Exception{
     	
     	final List<Object> data = Lists.newArrayList();
     	
-    	List<DateTime> partical = EntityTimestampSupport.getPartical(datetime, interval);
-    	
-    	for(int i = 0; i < partical.size(); i++){
-    		DateTime max = partical.get(i);
-    		Object value = chartValue(entityName, id, i, max);
-			data.add(value);
-    	}
+    	EntityTimestampSupport.handle(datetime, interval, new IntervalHandler() {
+			
+    		private Object value;
+    		public void interval(int index, DateTime min, DateTime max) {
+//				if(index == 0){
+//					obj.put("startTimestamp", min.toString());
+//				}
+//				obj.put("endTimestamp", max.toString());
+	    		value = chartValue(value, entityName, id, index, min, max, calculation);
+				data.add(value);
+			}
+		});
 
-    	BasicDBObject obj = new BasicDBObject();
+    	final BasicDBObject obj = new BasicDBObject();
 		obj.put("chartName", id);
-		obj.put("startTimestamp", partical.get(0).getMillis());
-		obj.put("endTimestamp", partical.get(partical.size()-1).getMillis());
 		obj.put("dataCount", data.size());
 		obj.put("data", data);
 		return obj;
     }
 
-	private Object chartValue(String entityName, String id, int index, DateTime datetime) {
-		if(datetime.isAfterNow()){
-    		logger.info(index+" ~"+datetime+": isAfterNow");
+	private Object chartValue(Object beforeValue, String entityName, String id, int index, DateTime min, DateTime max, Calculation calculation) {
+		if(min.isAfterNow()){
+			logger.info(index+": "+min+"~"+max+" = isAfterNow: null");
     		return null;
 		}
 
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 
-		BasicDBObject q = new BasicDBObject();
-		q.append("id", new BasicDBObject("$lt", datetime.getMillis()));
-		Query query = new BasicQuery(q).with(new Sort(Direction.DESC, "id"));
+		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("id").gte(min.getMillis()).lte(max.getMillis()));
+		AggregationOperation operation2 = null;
 
-		Entity entity = mongoTemplate.findOne(query, Entity.class, id);
-    	Object value = (entity != null) ? entity.getValue() : null;
+		if(Calculation.AVG.equals(calculation)){
+			operation2 = TypedAggregation.group("payload").avg("value").as("calculation");
+			
+		}else if(Calculation.MAX.equals(calculation)){
+			operation2 = TypedAggregation.group("payload").max("value").as("calculation");
+		
+		}else if(Calculation.MIN.equals(calculation)){
+			operation2 = TypedAggregation.group("payload").min("value").as("calculation");
+		
+		}else{
+    		logger.info(index+" "+min+" ~ "+max+": calculation error="+calculation);
+			return null;
+		}
+		
+		Aggregation aggregation = TypedAggregation.newAggregation(operation1, operation2);	
+		AggregationResults<DBObject> result = mongoTemplate.aggregate(aggregation, id, DBObject.class);
+		
+		DBObject obj = result.getUniqueMappedResult();
+		if(obj != null) {
+    		logger.info(index+" "+min+" ~ "+max+": calculationValue: "+obj.get("calculation"));
+			return obj.get("calculation");
 
-		logger.info(index+": ~"+datetime+" = "+value);
-		return value;
+		}else{
+			if(beforeValue == null){
+				
+				BasicDBObject q = new BasicDBObject();
+				q.append("id", new BasicDBObject("$lt", min.getMillis()));
+				Query query = new BasicQuery(q).with(new Sort(Direction.DESC, "id"));
+
+				Entity entity = mongoTemplate.findOne(query, Entity.class, id);
+				Object value = (entity != null) ? entity.getValue() : null;
+				logger.info(index+": "+min+"~"+max+" = guessValue: "+value);
+				return value;
+
+			}else{
+				logger.info(index+": "+min+"~"+max+" = beforeValue "+beforeValue);
+				return beforeValue;
+			}
+		}
+
+		
 	}
 }

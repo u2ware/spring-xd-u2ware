@@ -117,7 +117,7 @@ public class MongodbServer implements Runnable{
 		objectToSave.setId(timestamp);
 		objectToSave.setValue(payload.getValue());
 		objectToSave.setDatetime(new DateTime(timestamp).toString());
-		objectToSave.setPayload(payload);
+		objectToSave.setPayload(payload.getClass().getName());
 		return objectToSave;
 	}
 	private static Entity base(DateTime datetime, Person payload){
@@ -128,7 +128,7 @@ public class MongodbServer implements Runnable{
 		objectToSave.setId(payload.getId());
 		objectToSave.setValue(payload.getValue());
 		objectToSave.setDatetime(new DateTime(timestamp).toString());
-		objectToSave.setPayload(payload);
+		objectToSave.setPayload(payload.getClass().getName());
 		return objectToSave;
 	}
 

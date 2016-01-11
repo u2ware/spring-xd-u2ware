@@ -1,66 +1,70 @@
 package io.github.u2ware.xd.data;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
-
-import com.google.common.collect.Lists;
 
 public class EntityTimestampSupport {
 
+    public static enum Calculation{
+    	MIN, MAX, AVG;
+    }
     public static enum Interval{
     	REALTIME, //  
+    	MINUTE, //
     	HOUR, //24
     	DAY, //total day of month
     	MONTH //12
     }
 	
-	
-	public static List<DateTime> getPartical(DateTime datetime, Interval interval) {
-		final List<DateTime> partical = Lists.newArrayList();
-
-		DateTime criterion = datetime == null ? DateTime.now() : datetime;
-		
-		if(Interval.HOUR.equals(interval)){
-			hour(criterion, new DatetimeIntervalHandler(){
-				public void interval(int index, DateTime min, DateTime max) {
-					partical.add(max);
-				}
-			});
-		
-		}else if(Interval.DAY.equals(interval)){
-			day(criterion, new DatetimeIntervalHandler(){
-				public void interval(int index, DateTime min, DateTime max) {
-					partical.add(max);
-				}
-			});
-
-		}else if(Interval.MONTH.equals(interval)){
-			month(criterion, new DatetimeIntervalHandler(){
-				public void interval(int index, DateTime min, DateTime max) {
-					partical.add(max);
-				}
-			});
-			
-		}else if(Interval.REALTIME.equals(interval)){
-			realtime(DateTime.now(), new DatetimeIntervalHandler(){
-				public void interval(int index, DateTime min, DateTime max) {
-					partical.add(max);
-				}
-			});
-
-		}
-		
-		return partical;
-	}
-
-	
-	
-	private interface DatetimeIntervalHandler {
+	public interface IntervalHandler {
     	void interval(int index, DateTime min, DateTime max);
     }
 	
-	private static void hour(DateTime d, DatetimeIntervalHandler handler){
+	public static void handle(DateTime datetime, Interval interval, IntervalHandler handler) {
+
+		DateTime criterion = datetime == null ? DateTime.now() : datetime;
+		
+		if(Interval.MINUTE.equals(interval)){
+			minute(criterion, handler);
+		
+		}else if(Interval.HOUR.equals(interval)){
+			hour(criterion, handler);
+		
+		}else if(Interval.DAY.equals(interval)){
+			day(criterion, handler);
+
+		}else if(Interval.MONTH.equals(interval)){
+			month(criterion, handler);
+			
+		}else if(Interval.REALTIME.equals(interval)){
+			realtime(DateTime.now(), handler);
+
+		}
+	}
+
+	private static void minute(DateTime d, IntervalHandler handler){
+		
+    	DateTime x = d.minuteOfHour().withMinimumValue();
+    	DateTime min , max = null;
+    	int index = 0;
+    	
+    	while(x.getHourOfDay() == d.getHourOfDay()){
+    		min = x.secondOfMinute().withMinimumValue()
+					.millisOfSecond().withMinimumValue();
+    		
+    		max = x.secondOfMinute().withMaximumValue()
+					.millisOfSecond().withMaximumValue();
+
+    		//logger.debug(count+": "+min+"~~~"+max);
+    		handler.interval(index, min, max);
+    		
+    		x = x.plusMinutes(1);
+    		index++;
+    	}
+	}
+	
+	
+	
+	private static void hour(DateTime d, IntervalHandler handler){
     	DateTime x = d.hourOfDay().withMinimumValue();
     	DateTime min , max = null;
     	int index = 0;
@@ -75,14 +79,13 @@ public class EntityTimestampSupport {
 					.millisOfSecond().withMaximumValue();
 
     		//logger.debug(count+": "+min+"~~~"+max);
-    		
     		handler.interval(index, min, max);
     		
     		x = x.plusHours(1);
     		index++;
     	}
 	}
-	private static void day(DateTime d, DatetimeIntervalHandler handler){
+	private static void day(DateTime d, IntervalHandler handler){
 
 		DateTime x = d.dayOfMonth().withMinimumValue();
     	DateTime min , max = null;
@@ -109,7 +112,7 @@ public class EntityTimestampSupport {
     	}
 	}
 	
-	private static void month(DateTime d, DatetimeIntervalHandler handler){
+	private static void month(DateTime d, IntervalHandler handler){
 
     	DateTime x = d.monthOfYear().withMinimumValue();
     	DateTime min , max = null;
@@ -137,7 +140,7 @@ public class EntityTimestampSupport {
     	}
 	}
 
-	private static void realtime(DateTime d, DatetimeIntervalHandler handler){
+	private static void realtime(DateTime d, IntervalHandler handler){
 
 		int c = 60;
 		int i = 3;

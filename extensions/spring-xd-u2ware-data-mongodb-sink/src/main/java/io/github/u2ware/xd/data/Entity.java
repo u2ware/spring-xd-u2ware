@@ -6,7 +6,7 @@ public class Entity {
 	private Object id;
 	private Object value;
 	private String datetime;
-	private Object payload;
+	private String payload;
 	
 	public Object getId() {
 		return id;
@@ -26,10 +26,10 @@ public class Entity {
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
-	public Object getPayload() {
+	public String getPayload() {
 		return payload;
 	}
-	public void setPayload(Object payload) {
+	public void setPayload(String payload) {
 		this.payload = payload;
 	}
 	
