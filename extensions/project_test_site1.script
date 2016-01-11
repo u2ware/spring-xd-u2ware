@@ -1,0 +1,16 @@
+
+///////////////
+// 설비
+////////////////
+stream create --name "testStream1" --definition "u2ware-bacnet-source  --remoteAddress=127.0.0.1:47808  --remoteInstanceNumber=47808  --localPort=47812 --fixedDelay=5000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=bacnet --idExpression=payload.id --valueExpression=payload.value" --deploy
+
+///////////////
+// 전력 
+////////////////
+stream create --name "testStream2" --definition "u2ware-modbus-source --host=127.0.0.1 --port=10502 --unitId=0 --functionCode=4 --offset=0 --count=6 --fixedDelay=5000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=modbus --idExpression=payload.id --valueExpression=payload.value" --deploy
+
+
+///////////////
+// REST 
+////////////////
+stream create --name "testStream3" --definition "u2ware-data-mongodb-rest --httpPort=9897 --host=localhost --port=27017" --deploy
