@@ -107,9 +107,9 @@ public class MongodbRestApplicationTests {
 		
 		this.mvc.perform(
 				get("/chart/person/Mina")
-				.param("datetime", "2016-01-11")
-				.param("interval", "REALTIME")
-				//.param("calculation", "AVG")
+				.param("datetime", "2015-02-11 00:00:00")
+				.param("interval", "DAY")
+				.param("calculation", "AVG")
 		).andDo(
 				print()
 		).andExpect(

@@ -6,13 +6,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 
-import io.github.u2ware.xd.data.MongodbRestApplication;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +51,10 @@ public class MongodbRestApplication2 {
 		}
 		
 		this.mvc.perform(
-				get("/chart/bacnet/47808_0_0")
-//				.param("datetime", "2016-01-11")
-				//.param("interval", "MONTH")
-				//.param("calculation", "AVG")
+				get("/chart/bacnet/47808_2_0")
+				.param("datetime", "2016-01-11 22:58:00")
+				.param("interval", "REALTIME")
+				.param("calculation", "AVG")
 		).andDo(
 				print()
 		).andExpect(

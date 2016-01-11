@@ -21,7 +21,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -170,43 +169,38 @@ public class MondodbRestController {
 	public DBObject chart(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id,
-			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH") DateTime datetime, 
+			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime datetime, 
 			final @RequestParam(name="interval", required=false, defaultValue="HOUR") Interval interval,
 			final @RequestParam(name="calculation", required=false, defaultValue="AVG") Calculation calculation) throws Exception{
     	
+//		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+//    	logger.info(datetime);
+//    	logger.info(interval);
+//    	logger.info(calculation);
+//		List<Entity> r = mongoTemplate.findAll(Entity.class, id);
+//		for(Entity e : r){
+//			logger.debug(e);
+//		}
+
     	final List<Object> data = Lists.newArrayList();
-    	
-		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-		
-		List<Entity> r = mongoTemplate.findAll(Entity.class, id);
-		for(Entity e : r){
-			logger.debug(e);
-		}
-		
-    	
     	EntityTimestampSupport.handle(datetime, interval, new IntervalHandler() {
-			
     		private Object value;
     		public void interval(int index, DateTime min, DateTime max) {
-//				if(index == 0){
-//					obj.put("startTimestamp", min.toString());
-//				}
-//				obj.put("endTimestamp", max.toString());
 	    		value = chartValue(value, entityName, id, index, min, max, calculation);
 				data.add(value);
 			}
 		});
 
-    	final BasicDBObject obj = new BasicDBObject();
-		obj.put("chartName", id);
-		obj.put("dataCount", data.size());
-		obj.put("data", data);
-		return obj;
+    	final BasicDBObject result = new BasicDBObject();
+    	result.put("chartName", id);
+    	result.put("dataCount", data.size());
+    	result.put("data", data);
+		return result;
     }
 
 	private Object chartValue(Object beforeValue, String entityName, String id, int index, DateTime min, DateTime max, Calculation calculation) {
 		if(min.isAfterNow()){
-			logger.info(index+": "+min+"~"+max+" = isAfterNow: null");
+			logger.info(index+": "+min+" ~ "+max+": isAfterNow=null");
     		return null;
 		}
 
@@ -223,10 +217,6 @@ public class MondodbRestController {
 		
 		}else if(Calculation.MIN.equals(calculation)){
 			operation2 = TypedAggregation.group("payload").min("value").as("calculation");
-		
-		}else{
-    		logger.info(index+" "+min+" ~ "+max+": calculation error="+calculation);
-			return null;
 		}
 		
 		Aggregation aggregation = TypedAggregation.newAggregation(operation1, operation2);	
@@ -237,7 +227,7 @@ public class MondodbRestController {
 //		logger.info(index+" "+obj);
 		
 		if(obj != null) {
-    		logger.info(index+" "+min+"~"+max+": calculationValue: "+obj.get("calculation"));
+    		logger.info(index+": "+min+" ~ "+max+": calculationValue="+obj.get("calculation"));
 			return obj.get("calculation");
 
 		}else{
@@ -249,11 +239,11 @@ public class MondodbRestController {
 
 				Entity entity = mongoTemplate.findOne(query, Entity.class, id);
 				Object value = (entity != null) ? entity.getValue() : null;
-				logger.info(index+": "+min+"~"+max+" = guessValue: "+value);
+				logger.info(index+": "+min+" ~ "+max+": guessValue="+value);
 				return value;
 
 			}else{
-				logger.info(index+": "+min+"~"+max+" = beforeValue "+beforeValue);
+				logger.info(index+": "+min+" ~ "+max+": beforeValue="+beforeValue);
 				return beforeValue;
 			}
 		}

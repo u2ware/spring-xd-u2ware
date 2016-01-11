@@ -69,23 +69,23 @@ public class MongodbServer implements Runnable{
 		MongoClient mongoClient = new MongoClient("localhost", port);
 		MongoTemplate template = new MongoTemplate(mongoClient, "person");
 
-		template.save(history(new DateTime(2016, 1, 3, 12, 0), new Person("Mina", 23)), "Mina");		
-		template.save(history(new DateTime(2016, 1, 3, 10, 0), new Person("Mina",   9)), "Mina");
-		template.save(history(new DateTime(2016, 1, 3, 8, 0), new Person("Mina",  86)), "Mina");
+		template.save(history(new DateTime(2016, 1, 3, 8, 3, 5), new Person("Mina",  56)), "Mina");
+		template.save(history(new DateTime(2016, 1, 3, 10, 2, 5), new Person("Mina",   11)), "Mina");
+		template.save(history(new DateTime(2016, 1, 3, 12, 1, 5), new Person("Mina", 23)), "Mina");		
+
+		template.save(history(new DateTime(2016, 1, 11, 7, 3, 5), new Person("Mina",  40)), "Mina");
+		template.save(history(new DateTime(2016, 1, 11, 11, 2, 5), new Person("Mina",   7)), "Mina");
+		template.save(history(new DateTime(2016, 1, 11, 15, 1, 5), new Person("Mina", 13)), "Mina");		
 		
-		template.save(history(new DateTime(2016, 1, 11, 12, 0), new Person("Mina", 13)), "Mina");		
-		template.save(history(new DateTime(2016, 1, 11, 10, 0), new Person("Mina",   7)), "Mina");
-		template.save(history(new DateTime(2016, 1, 11, 8, 0), new Person("Mina",  40)), "Mina");
-		
-		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Mina", 13)), "person");
-		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Yok",  14)), "person");
-		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Joe",  15)), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 1, 5), new Person("Mina", 13)), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 2, 5), new Person("Yok",  14)), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 3, 5), new Person("Joe",  15)), "person");
 		
 
-		Long min = new DateTime(2016, 1, 7, 7, 0).getMillis();
-		Long max = new DateTime(2016, 1, 7, 11, 0).getMillis();
+		Long min = new DateTime(2016, 1, 1, 7, 0).getMillis();
+		Long max = new DateTime(2016, 1, 11, 11, 0).getMillis();
 		
-		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("timestamp").gte(min).lte(max));
+		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("_id").gte(min).lte(max));
 		System.err.println(operation1);
 		AggregationOperation operation2 = TypedAggregation.group("payload").avg("value").as("avg");
 		System.err.println(operation2);
@@ -97,14 +97,14 @@ public class MongodbServer implements Runnable{
 		
 		
 		
-		BasicDBObject q = new BasicDBObject();
-		q.append("timestamp", new BasicDBObject("$lt", max));
-		Query query = new BasicQuery(q);
-
 		MongoTemplate minaTemplate = new MongoTemplate(mongoClient, "person");
 		List<Entity> entities = minaTemplate.findAll(Entity.class, "Mina");
 		System.err.println(entities);
 
+
+		BasicDBObject q = new BasicDBObject();
+		q.append("id", new BasicDBObject("$lt", max));
+		Query query = new BasicQuery(q);
 		Entity entity = minaTemplate.findOne(query, Entity.class, "Mina");
 		System.err.println(entity);
 	}

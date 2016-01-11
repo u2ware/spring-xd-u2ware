@@ -8,8 +8,8 @@ public class EntityTimestampSupport {
     	MIN, MAX, AVG;
     }
     public static enum Interval{
-    	REALTIME, //  
-    	MINUTE, //
+    	REALTIME, //60  
+    	MINUTE, //60
     	HOUR, //24
     	DAY, //total day of month
     	MONTH //12
@@ -36,7 +36,7 @@ public class EntityTimestampSupport {
 			month(criterion, handler);
 			
 		}else if(Interval.REALTIME.equals(interval)){
-			realtime(DateTime.now(), handler);
+			realtime(criterion, handler);
 
 		}
 	}
@@ -144,12 +144,16 @@ public class EntityTimestampSupport {
 
 		int c = 60;
 		int i = 3;
-		
-    	DateTime x = d.minusSeconds(c*i - i);
+
+    	DateTime min = d.millisOfSecond().withMinimumValue().minusSeconds(c*i - i);
+    	DateTime max;
     	for(int index = 0 ; index < c; index++){
-    		handler.interval(index, x, x);
-    		x = x.plusSeconds(i);
-    		//index++;
+
+    		max = min.plusSeconds(2).millisOfSecond().withMaximumValue();
+    		
+    		handler.interval(index, min, max);
+
+    		min = min.plusSeconds(3);
     	}
 	}
 }
