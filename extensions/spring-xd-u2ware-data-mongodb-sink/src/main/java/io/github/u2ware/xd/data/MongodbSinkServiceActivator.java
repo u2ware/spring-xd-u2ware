@@ -77,7 +77,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 
 	public void execute(Message<?> requestMessage) throws Exception{
 		
-		Object payload = requestMessage.getPayload();
+//		Object payload = requestMessage.getPayload();
 //		logger.info(requestMessage);
 //		logger.info(requestMessage.getHeaders());
 //		logger.info(payload.getClass());
