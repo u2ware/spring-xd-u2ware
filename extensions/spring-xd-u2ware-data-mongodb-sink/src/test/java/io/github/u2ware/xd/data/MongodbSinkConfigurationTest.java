@@ -75,11 +75,11 @@ public class MongodbSinkConfigurationTest {
 
 		
 		r = template.findAll(DBObject.class, "Mina");
-		Assert.assertEquals(3, r.size());
 		logger.debug("\tMina");
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}
+		Assert.assertEquals(3, r.size());
 	}
 }
 

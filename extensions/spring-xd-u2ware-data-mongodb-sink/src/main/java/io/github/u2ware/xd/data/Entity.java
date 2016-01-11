@@ -1,11 +1,12 @@
 package io.github.u2ware.xd.data;
 
+
 public class Entity {
 
 	private Object id;
 	private Object value;
-	private Long timestamp;
-	private String payload;
+	private String datetime;
+	private Object payload;
 	
 	public Object getId() {
 		return id;
@@ -19,22 +20,22 @@ public class Entity {
 	public void setValue(Object value) {
 		this.value = value;
 	}
-	public Long getTimestamp() {
-		return timestamp;
+	public String getDatetime() {
+		return datetime;
 	}
-	public void setTimestamp(Long timestamp) {
-		this.timestamp = timestamp;
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
 	}
-	public String getPayload() {
+	public Object getPayload() {
 		return payload;
 	}
-	public void setPayload(String payload) {
+	public void setPayload(Object payload) {
 		this.payload = payload;
 	}
 	
 	@Override
 	public String toString() {
-		return "Entity [id=" + id + ", value=" + value + ", timestamp="
-				+ timestamp + ", payload=" + payload + "]";
+		return "Entity [id=" + id + ", value=" + value + ", datetime="
+				+ datetime + ", payload=" + payload + "]";
 	}
 }

@@ -1,5 +1,6 @@
 package io.github.u2ware.xd.data;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -101,15 +102,13 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		
 		
 		BasicDBObject q = new BasicDBObject();
-		q.append("_class", Entity.class.getName());
-		
-		Sort sort = new Sort(Direction.DESC, "timestamp");
+		Sort sort = new Sort(Direction.DESC, "id");
 		Query query = new BasicQuery(q).with(sort);
 		
 		
 		//DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
 		Entity post = mongoTemplate.findOne(query, Entity.class, id.toString());
-
+		
 //		logger.debug("past : "+post);
 		if(valueLogging){
 			boolean history = false;
@@ -132,8 +131,8 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 				Entity objectToSave = new Entity();
 				objectToSave.setId(timestamp);
 				objectToSave.setValue(value);
-				objectToSave.setTimestamp(timestamp);
-				objectToSave.setPayload(payload.getClass().getName());
+				objectToSave.setDatetime(new DateTime(timestamp).toString());
+				objectToSave.setPayload(payload);
 
 				mongoTemplate.save(objectToSave, id.toString());
 				//logger.info("save: "+timestamp+" in "+id);
@@ -150,8 +149,8 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		Entity objectToSave = new Entity();
 		objectToSave.setId(id);
 		objectToSave.setValue(value);
-		objectToSave.setTimestamp(timestamp);
-		objectToSave.setPayload(payload.getClass().getName());
+		objectToSave.setDatetime(new DateTime(timestamp).toString());
+		objectToSave.setPayload(payload);
 
 		mongoTemplate.save(objectToSave, collectionName);
 		//logger.info("save: "+id+" in "+collectionName);

@@ -193,8 +193,8 @@ public class MondodbRestController {
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 
 		BasicDBObject q = new BasicDBObject();
-		q.append("timestamp", new BasicDBObject("$lt", datetime.getMillis()));
-		Query query = new BasicQuery(q).with(new Sort(Direction.DESC, "timestamp"));
+		q.append("id", new BasicDBObject("$lt", datetime.getMillis()));
+		Query query = new BasicQuery(q).with(new Sort(Direction.DESC, "id"));
 
 		Entity entity = mongoTemplate.findOne(query, Entity.class, id);
     	Object value = (entity != null) ? entity.getValue() : null;
