@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -175,6 +176,14 @@ public class MondodbRestController {
     	
     	final List<Object> data = Lists.newArrayList();
     	
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+		
+		List<Entity> r = mongoTemplate.findAll(Entity.class, id);
+		for(Entity e : r){
+			logger.debug(e);
+		}
+		
+    	
     	EntityTimestampSupport.handle(datetime, interval, new IntervalHandler() {
 			
     		private Object value;
@@ -203,9 +212,9 @@ public class MondodbRestController {
 
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 
-		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("id").gte(min.getMillis()).lte(max.getMillis()));
+		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("_id").gte(min.getMillis()).lte(max.getMillis()));
 		AggregationOperation operation2 = null;
-
+		
 		if(Calculation.AVG.equals(calculation)){
 			operation2 = TypedAggregation.group("payload").avg("value").as("calculation");
 			
@@ -224,8 +233,11 @@ public class MondodbRestController {
 		AggregationResults<DBObject> result = mongoTemplate.aggregate(aggregation, id, DBObject.class);
 		
 		DBObject obj = result.getUniqueMappedResult();
+//		logger.info(index+" "+aggregation);
+//		logger.info(index+" "+obj);
+		
 		if(obj != null) {
-    		logger.info(index+" "+min+" ~ "+max+": calculationValue: "+obj.get("calculation"));
+    		logger.info(index+" "+min+"~"+max+": calculationValue: "+obj.get("calculation"));
 			return obj.get("calculation");
 
 		}else{
