@@ -1,49 +1,66 @@
 package io.github.u2ware.xd.data;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 
-public class EntityQuerySupport {
+import com.google.common.collect.Lists;
 
-    //protected Log logger = LogFactory.getLog(getClass());
-	
-    public static enum CalculationType{
-    	MIN, MAX, AVG;
-    }
-    public static enum IntervalType{
-    	//REALTIME, // 60 개 
+public class EntityTimestampSupport {
+
+    public static enum Interval{
+    	REALTIME, //  
     	HOUR, //24
     	DAY, //total day of month
     	MONTH //12
     }
-    
-    public interface DatetimeIntervalHandler {
+	
+	
+	public static List<DateTime> getPartical(DateTime datetime, Interval interval) {
+		final List<DateTime> partical = Lists.newArrayList();
 
+		DateTime criterion = datetime == null ? DateTime.now() : datetime;
+		
+		if(Interval.HOUR.equals(interval)){
+			hour(criterion, new DatetimeIntervalHandler(){
+				public void interval(int index, DateTime min, DateTime max) {
+					partical.add(max);
+				}
+			});
+		
+		}else if(Interval.DAY.equals(interval)){
+			day(criterion, new DatetimeIntervalHandler(){
+				public void interval(int index, DateTime min, DateTime max) {
+					partical.add(max);
+				}
+			});
+
+		}else if(Interval.MONTH.equals(interval)){
+			month(criterion, new DatetimeIntervalHandler(){
+				public void interval(int index, DateTime min, DateTime max) {
+					partical.add(max);
+				}
+			});
+			
+		}else if(Interval.REALTIME.equals(interval)){
+			realtime(DateTime.now(), new DatetimeIntervalHandler(){
+				public void interval(int index, DateTime min, DateTime max) {
+					partical.add(max);
+				}
+			});
+
+		}
+		
+		return partical;
+	}
+
+	
+	
+	private interface DatetimeIntervalHandler {
     	void interval(int index, DateTime min, DateTime max);
     }
-    
-	public void handle(IntervalType criterionType, DateTime criterionDatetime, DatetimeIntervalHandler handler){
 	
-		DateTime datetime = criterionDatetime == null ? DateTime.now() : criterionDatetime;
-		
-		if(IntervalType.HOUR.equals(criterionType)){
-			hour(datetime, handler);
-		
-		}else if(IntervalType.DAY.equals(criterionType)){
-			day(datetime, handler);
-		
-		}else if(IntervalType.MONTH.equals(criterionType)){
-			month(datetime, handler);
-
-		}else{
-			return;//realtime(DateTime.now(), handler);
-		}
-	}
-    
-    
-    
-    
-    
-	private void hour(DateTime d, DatetimeIntervalHandler handler){
+	private static void hour(DateTime d, DatetimeIntervalHandler handler){
     	DateTime x = d.hourOfDay().withMinimumValue();
     	DateTime min , max = null;
     	int index = 0;
@@ -65,7 +82,7 @@ public class EntityQuerySupport {
     		index++;
     	}
 	}
-	private void day(DateTime d, DatetimeIntervalHandler handler){
+	private static void day(DateTime d, DatetimeIntervalHandler handler){
 
 		DateTime x = d.dayOfMonth().withMinimumValue();
     	DateTime min , max = null;
@@ -92,7 +109,7 @@ public class EntityQuerySupport {
     	}
 	}
 	
-	private void month(DateTime d, DatetimeIntervalHandler handler){
+	private static void month(DateTime d, DatetimeIntervalHandler handler){
 
     	DateTime x = d.monthOfYear().withMinimumValue();
     	DateTime min , max = null;
@@ -119,5 +136,17 @@ public class EntityQuerySupport {
     		index++;
     	}
 	}
-	
+
+	private static void realtime(DateTime d, DatetimeIntervalHandler handler){
+
+		int c = 60;
+		int i = 3;
+		
+    	DateTime x = d.minusSeconds(c*i - i);
+    	for(int index = 0 ; index < c; index++){
+    		handler.interval(index, x, x);
+    		x = x.plusSeconds(i);
+    		//index++;
+    	}
+	}
 }

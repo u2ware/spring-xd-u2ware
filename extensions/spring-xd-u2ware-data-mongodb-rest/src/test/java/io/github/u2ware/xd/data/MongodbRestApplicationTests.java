@@ -98,14 +98,6 @@ public class MongodbRestApplicationTests {
 		
 		
 		this.mvc.perform(
-				get("/data/person")
-		).andDo(
-				print()
-		).andExpect(
-				status().isOk()
-		);
-		
-		this.mvc.perform(
 				get("/data/person/Mina")
 		).andDo(
 				print()
@@ -115,13 +107,36 @@ public class MongodbRestApplicationTests {
 		
 		this.mvc.perform(
 				get("/chart/person/Mina")
-				.param("interval", "HOUR")
-				.param("calculation", "AVG")
+				.param("datetime", "2016-01-11")
+				.param("interval", "REALTIME")
+				//.param("calculation", "AVG")
 		).andDo(
 				print()
 		).andExpect(
 				status().isOk()
 		);
+		
+		
+		/*
+		this.mvc.perform(
+				get("/alarm/person/Mina")
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		);
+
+		MvcResult mvcResult = this.mockMvc.perform(get("/async/callable/response-body"))
+				.andExpect(request().asyncStarted())
+				.andExpect(request().asyncResult("Callable result"))
+				.andReturn();
+
+			this.mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("text/plain;charset=ISO-8859-1"))
+				.andExpect(content().string("Callable result"));
+		*/
+    
     }    
 
 }

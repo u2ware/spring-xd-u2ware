@@ -1,13 +1,18 @@
 package io.github.u2ware.xd.data;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
@@ -68,9 +73,9 @@ public class MongodbServer implements Runnable{
 		template.save(history(new DateTime(2016, 1, 3, 10, 0), new Person("Mina",   9)), "Mina");
 		template.save(history(new DateTime(2016, 1, 3, 8, 0), new Person("Mina",  86)), "Mina");
 		
-		template.save(history(new DateTime(2016, 1, 7, 12, 0), new Person("Mina", 13)), "Mina");		
-		template.save(history(new DateTime(2016, 1, 7, 10, 0), new Person("Mina",   7)), "Mina");
-		template.save(history(new DateTime(2016, 1, 7, 8, 0), new Person("Mina",  40)), "Mina");
+		template.save(history(new DateTime(2016, 1, 11, 12, 0), new Person("Mina", 13)), "Mina");		
+		template.save(history(new DateTime(2016, 1, 11, 10, 0), new Person("Mina",   7)), "Mina");
+		template.save(history(new DateTime(2016, 1, 11, 8, 0), new Person("Mina",  40)), "Mina");
 		
 		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Mina", 13)), "person");
 		template.save(base(new DateTime(2016, 1, 7, 13, 0), new Person("Yok",  14)), "person");
@@ -90,6 +95,18 @@ public class MongodbServer implements Runnable{
 		System.err.println(result.getRawResults());
 		System.err.println(result.getUniqueMappedResult());
 		
+		
+		
+		BasicDBObject q = new BasicDBObject();
+		q.append("timestamp", new BasicDBObject("$lt", max));
+		Query query = new BasicQuery(q);
+
+		MongoTemplate minaTemplate = new MongoTemplate(mongoClient, "person");
+		List<Entity> entities = minaTemplate.findAll(Entity.class, "Mina");
+		System.err.println(entities);
+
+		Entity entity = minaTemplate.findOne(query, Entity.class, "Mina");
+		System.err.println(entity);
 	}
 	
 	private static Entity history(DateTime datetime, Person payload){
