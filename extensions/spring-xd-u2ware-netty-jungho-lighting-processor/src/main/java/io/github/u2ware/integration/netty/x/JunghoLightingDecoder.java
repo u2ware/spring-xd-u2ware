@@ -1,18 +1,21 @@
 package io.github.u2ware.integration.netty.x;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.CharsetUtil;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.google.common.collect.Maps;
 
 public class JunghoLightingDecoder extends ByteToMessageDecoder{
 
@@ -25,14 +28,14 @@ public class JunghoLightingDecoder extends ByteToMessageDecoder{
 	private byte NAK = (byte)0x15;
 	private byte EOT = (byte)0x04;
 
-	private ByteBuf frame;
-
 	private AtomicInteger msgNumber = new AtomicInteger(0);
 	private AtomicInteger lcuNumber = new AtomicInteger(0);
 	private NumberFormat msgFormat = new DecimalFormat("000");
 	private NumberFormat lcuFormat = new DecimalFormat("00");
 	private AtomicInteger pollingCount = new AtomicInteger(0);
 	
+	private ByteBuf frame;
+	private Map<String,Object> dataSet = Maps.newHashMap();
 	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -203,7 +206,7 @@ public class JunghoLightingDecoder extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			out.add(new JunghoLightingResponse(id,value));
+			dataSet.put(id, value);
 			//logger.debug(id+"="+value);
 			
 			no++;
@@ -211,11 +214,12 @@ public class JunghoLightingDecoder extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			out.add(new JunghoLightingResponse(id,value));
-			//logger.debug(id+"="+value);
+			dataSet.put(id, value);
 
 			if(no == 4) no = 0;
 		}
+		
+		out.add(dataSet);
 	}
 
 	private String toBinaryString(byte b){

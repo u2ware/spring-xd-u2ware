@@ -36,11 +36,11 @@ public class HyundaiElevatorMaster2Test {
 	@Test
 	public void test() throws Exception{
 
-		Message<?> message = elevatorResponse.receive(10000);
+		Message<?> message = elevatorResponse.receive(20000);
 		Assert.assertNotNull(message);
 
 		logger.debug(message.getClass());
-		logger.debug(message.getPayload().getClass());
+		logger.debug(message.getPayload());
 	}
 }
 

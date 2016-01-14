@@ -42,12 +42,12 @@ public class HyundaiElevatorMaster1Test {
 
 		Thread.sleep(3000);
 		elevatorRequest.send(MessageBuilder.withPayload(new HyundaiElevatorRequest()).build());
-		
+
 		Message<?> message = elevatorResponse.receive(10000);
 		Assert.assertNotNull(message);
 
 		logger.debug(message.getClass());
-		logger.debug(message.getPayload().getClass());
+		logger.debug(message.getPayload());
 	}
 }
 
