@@ -5,21 +5,16 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.CharsetUtil;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 
-import com.google.common.collect.Maps;
-
-public class JunghoLightingDecoder extends ByteToMessageDecoder{
-
-	private Log logger = LogFactory.getLog(getClass());
 	
 	//private byte STX = (byte)0x02;
 	private byte ETX = (byte)0x03;
@@ -35,7 +30,15 @@ public class JunghoLightingDecoder extends ByteToMessageDecoder{
 	private AtomicInteger pollingCount = new AtomicInteger(0);
 	
 	private ByteBuf frame;
-	private Map<String,Object> dataSet = Maps.newHashMap();
+
+	private final InternalLogger logger;
+	private final List<Object> dataSet;
+	
+	public JunghoLightingHostHandler(Class<?> clazz, List<Object> dataSet){
+		this.logger = InternalLoggerFactory.getInstance(clazz);
+		this.dataSet = dataSet;
+	}
+	
 	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -187,6 +190,7 @@ public class JunghoLightingDecoder extends ByteToMessageDecoder{
 		byte bcc = res.readByte();//System.out.println("BCC :"+Integer.toHexString(stx));
 
 		logger.info("# RECEIVED TEXT (msgNumber:"+msgNumber.get()+",  lcuNumber:"+lcuNumber.get()+")");
+		dataSet.clear();		
 		
 		String id = null;
 		String state = null;
@@ -206,7 +210,7 @@ public class JunghoLightingDecoder extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			dataSet.put(id, value);
+			dataSet.add(new JunghoLightingResponse(id, value));
 			//logger.debug(id+"="+value);
 			
 			no++;
@@ -214,7 +218,7 @@ public class JunghoLightingDecoder extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			dataSet.put(id, value);
+			dataSet.add(new JunghoLightingResponse(id, value));
 
 			if(no == 4) no = 0;
 		}

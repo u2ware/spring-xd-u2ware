@@ -5,11 +5,16 @@
 	   xmlns:int="http://www.springframework.org/schema/integration"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
+	<int:channel id="elevatorRequest">
+		<int:queue/>
+	</int:channel>
+
 	<bean id="elevator1" class="io.github.u2ware.integration.netty.x.HyundaiElevatorMaster">
 		<property name="host" value="127.0.0.1"/>
 		<property name="port" value="9899"/>
 		<property name="idleTimeout" value="3000"/>
 
+		<property name="receiveChannel" ref="elevatorRequest"/>
 		<property name="sendChannel" ref="elevatorResponse"/>
 	</bean>
 	

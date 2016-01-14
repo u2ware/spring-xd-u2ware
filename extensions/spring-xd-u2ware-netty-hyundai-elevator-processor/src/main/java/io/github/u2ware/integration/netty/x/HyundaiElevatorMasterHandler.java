@@ -50,31 +50,30 @@ public class HyundaiElevatorMasterHandler extends MessageToMessageCodec<ByteBuf,
 	
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-		logger.debug("userEventTriggered ");
+		//logger.debug("userEventTriggered ");
 		ctx.channel().writeAndFlush(new HyundaiElevatorRequest());
 	}
 	
 	@Override
 	protected void encode(ChannelHandlerContext ctx, HyundaiElevatorRequest msg, List<Object> out) throws Exception {
-		logger.debug("encode "+msg.getClass());
+		//logger.debug("encode: "+msg.getClass());
 		ByteBuf buf = Unpooled.wrappedBuffer("STXRETX".getBytes());
 		out.add(buf);
 	}
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		logger.debug("decode "+in.getClass());
+		//logger.debug("decode: "+in.getClass());
 		if(in.readableBytes() == 0){
 			return;
 		}
 
-
+		List<HyundaiElevatorResponse> result = Lists.newArrayList(); 
+		
 		@SuppressWarnings("unused")
 		String stx = in.readBytes(3).toString(Charset.defaultCharset());
 		//logger.debug(stx+" "+in.readableBytes());
-		
-		List<HyundaiElevatorResponse> result = Lists.newArrayList();
-		
+
 		while(in.readableBytes() > 3){
 			String 동 = in.readBytes(4).toString(Charset.defaultCharset());
 			String 호기 = in.readBytes(2).toString(Charset.defaultCharset());
