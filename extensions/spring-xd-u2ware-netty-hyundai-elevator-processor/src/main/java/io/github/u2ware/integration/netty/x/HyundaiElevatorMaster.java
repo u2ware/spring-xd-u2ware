@@ -36,6 +36,6 @@ public class HyundaiElevatorMaster extends AbstractTcpClient{
 		}
 		pipeline.addLast(new DelimiterBasedFrameDecoder(2048, false, HyundaiElevatorMasterHandler.ETX));
 		pipeline.addLast(new HyundaiElevatorMasterHandler(getClass()));
-		pipeline.addLast(new NettyMessagingHandler(getClass(), receiveChannel, sendChannel, (idleTimeout > 1000)));
+		pipeline.addLast(new NettyMessagingHandler(getClass(), receiveChannel, sendChannel));
 	}
 }

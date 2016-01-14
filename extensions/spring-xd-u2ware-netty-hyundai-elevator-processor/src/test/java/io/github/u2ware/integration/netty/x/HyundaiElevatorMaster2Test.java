@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -41,14 +40,13 @@ public class HyundaiElevatorMaster2Test {
 	@Test
 	public void test() throws Exception{
 
-		for(int i=0; i < 10; i++){
-			elevatorRequest.send(MessageBuilder.withPayload("").build());
-
-			Message<?> message = elevatorResponse.receive(10000);
+		Thread.sleep(4000);
+		for(int i=0; i < 3; i++){
+			Message<?> message = elevatorResponse.receive();
 			Assert.assertNotNull(message);
 			logger.debug(message.getPayload());
 			
-			Thread.sleep(1000);
+			Thread.sleep(3000);
 		}
 	}
 }

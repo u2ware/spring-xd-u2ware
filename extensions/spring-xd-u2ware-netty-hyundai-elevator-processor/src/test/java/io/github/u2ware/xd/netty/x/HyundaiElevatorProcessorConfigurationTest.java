@@ -47,23 +47,18 @@ public class HyundaiElevatorProcessorConfigurationTest {
 	@Test
 	public void test() throws Exception{
 
-		Thread.sleep(4000);
-		
-		
+		Thread.sleep(3000);
 		input.send(MessageBuilder.withPayload(new HyundaiElevatorRequest()).build());
 		Message<?> message = output.receive(100000);
 		logger.debug(message.getPayload());
 		Assert.assertEquals(String.class, message.getPayload().getClass());
 
+
 		Thread.sleep(3000);
-		
 		input.send(MessageBuilder.withPayload("{}").build());
 		message = output.receive(100000);
 		logger.debug(message.getPayload());
 		Assert.assertEquals(String.class, message.getPayload().getClass());
-		
-		
-		//input.send(MessageBuilder.withPayload("aaaas").build());
 		
 	}
 }
