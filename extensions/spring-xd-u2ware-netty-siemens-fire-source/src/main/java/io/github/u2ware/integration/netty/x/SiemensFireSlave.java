@@ -70,7 +70,7 @@ public class SiemensFireSlave extends AbstractTcpServer{
 				ctx.writeAndFlush(ACK.copy());
 			}
 		});
-		pipeline.addLast("channelHandler", new NettyMessagingHandler(sendChannel, null, 1000));
+		pipeline.addLast("channelHandler", new NettyMessagingHandler(getClass(), null, sendChannel));
 	}
 	
 	private static final ByteBuf ETX = Unpooled.copiedBuffer(new byte[]{0x03});

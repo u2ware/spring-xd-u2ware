@@ -29,6 +29,6 @@ public class SampleEchoClient extends AbstractTcpClient{
 		pipeline.addLast(new StringEncoder());
 		pipeline.addLast(new LineBasedFrameDecoder(256));
 		pipeline.addLast(new StringDecoder());
-		pipeline.addLast(new NettyMessagingHandler(sendChannel, receiveChannel, 100));
+		pipeline.addLast(new NettyMessagingHandler(getClass(), receiveChannel, sendChannel));
 	}
 }
