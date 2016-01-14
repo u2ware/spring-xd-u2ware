@@ -1,7 +1,5 @@
 package io.github.u2ware.xd.netty.x;
 
-import io.github.u2ware.integration.netty.x.JunghoLightingResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
@@ -16,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-@ActiveProfiles({"dont_use_json_output"})
+@ActiveProfiles({"use_json_input", "dont_use_splitter", "use_json_output"})
 public class JunghoLightingSourceConfigurationTest {
 
     protected Log logger = LogFactory.getLog(getClass());
@@ -25,12 +23,15 @@ public class JunghoLightingSourceConfigurationTest {
 	PollableChannel output;
 
 	@Test
-	public void test() {
+	public void test() throws Exception{
 
-		Message<?> message = output.receive(10000);
-		logger.debug(message.getPayload());
-
-		Assert.assertEquals(JunghoLightingResponse.class, message.getPayload().getClass());
+		for(int i=0; i<10; i++){
+			Message<?> message = output.receive(100000);
+			Assert.assertNotNull(message);
+			logger.debug(message.getPayload());
+			
+			Thread.sleep(1000);
+		}
 	}
 }
 

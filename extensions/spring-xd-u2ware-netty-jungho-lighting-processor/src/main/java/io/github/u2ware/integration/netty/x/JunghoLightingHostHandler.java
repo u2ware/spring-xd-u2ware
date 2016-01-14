@@ -11,7 +11,10 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.google.common.collect.Maps;
 
 public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 
@@ -32,11 +35,11 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 	private ByteBuf frame;
 
 	private final InternalLogger logger;
-	private final List<Object> dataSet;
+	private final Map<String, JunghoLightingResponse> dataSet;
 	
-	public JunghoLightingHostHandler(Class<?> clazz, List<Object> dataSet){
+	public JunghoLightingHostHandler(Class<?> clazz){
 		this.logger = InternalLoggerFactory.getInstance(clazz);
-		this.dataSet = dataSet;
+		this.dataSet = Maps.newHashMap();
 	}
 	
 	
@@ -190,7 +193,6 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 		byte bcc = res.readByte();//System.out.println("BCC :"+Integer.toHexString(stx));
 
 		logger.info("# RECEIVED TEXT (msgNumber:"+msgNumber.get()+",  lcuNumber:"+lcuNumber.get()+")");
-		dataSet.clear();		
 		
 		String id = null;
 		String state = null;
@@ -210,7 +212,7 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			dataSet.add(new JunghoLightingResponse(id, value));
+			dataSet.put(id,  new JunghoLightingResponse(id, value));
 			//logger.debug(id+"="+value);
 			
 			no++;
@@ -218,12 +220,12 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			dataSet.add(new JunghoLightingResponse(id, value));
+			dataSet.put(id,  new JunghoLightingResponse(id, value));
 
 			if(no == 4) no = 0;
 		}
 		
-		out.add(dataSet);
+		out.add(dataSet.values());
 	}
 
 	private String toBinaryString(byte b){

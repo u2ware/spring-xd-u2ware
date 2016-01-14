@@ -1,7 +1,5 @@
 package io.github.u2ware.xd.netty.x;
 
-import io.github.u2ware.integration.netty.x.JunghoLightingResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.AfterClass;
@@ -37,7 +35,7 @@ public class JunghoLightingSourceModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.source, "siemens-fireview-source"));
+				new SingletonModuleRegistry(ModuleType.processor, "jungho-lighting-processor"));
 	}
 
 	
@@ -52,9 +50,9 @@ public class JunghoLightingSourceModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "siemens-fireview-source "
-				+ " --port=10903 "
-				+ " --jsonOutput=false ";
+		String processingChainUnderTest = "jungho-lighting-processor "
+				+ " --host=192.168.245.3 "
+				+ " --port=10808 ";
 
 		logger.debug(processingChainUnderTest);
 		
@@ -62,8 +60,10 @@ public class JunghoLightingSourceModuleIntegrationTest {
 		//SingleNodeProcessingChain chain = SingleNodeProcessingChainSupport.chain(application, streamName, processingChainUnderTest);
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
+		Thread.sleep(10000);
+		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
-		Assert.assertEquals(JunghoLightingResponse.class, payload.getClass());
+		Assert.assertNotNull(payload);
 
 		chain.destroy();
 	}

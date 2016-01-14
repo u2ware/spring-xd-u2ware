@@ -8,8 +8,8 @@
 	<context:property-placeholder properties-ref="props"/>
 
 	<util:properties id="props">
-		<prop key="host">10902</prop>
-		<prop key="port">10902</prop>
+		<prop key="host">192.168.245.3</prop>
+		<prop key="port">10808</prop>
 	</util:properties>
 
 	<import resource="classpath:config/netty-jungho-lighting-source.xml"/>
