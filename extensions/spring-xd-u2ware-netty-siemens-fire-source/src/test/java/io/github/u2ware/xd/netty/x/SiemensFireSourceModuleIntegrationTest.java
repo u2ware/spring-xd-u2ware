@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.springframework.xd.dirt.server.singlenode.SingleNodeApplication;
 import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.dirt.test.SingletonModuleRegistry;
-import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainConsumer;
+import org.springframework.xd.dirt.test.process.SingleNodeProcessingChain;
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
@@ -39,7 +39,7 @@ public class SiemensFireSourceModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.source, "siemens-fireview-source"));
+				new SingletonModuleRegistry(ModuleType.processor, "siemens-fireview-processor"));
 	}
 
 	
@@ -55,14 +55,14 @@ public class SiemensFireSourceModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "siemens-fireview-source "
+		String processingChainUnderTest = "siemens-fireview-processor "
 				+ " --port=10903 "
 				+ " --jsonOutput=false ";
 
 		logger.debug(processingChainUnderTest);
 		
-		SingleNodeProcessingChainConsumer chain = SingleNodeProcessingChainSupport.chainConsumer(application, streamName, processingChainUnderTest);
-		//SingleNodeProcessingChain chain = SingleNodeProcessingChainSupport.chain(application, streamName, processingChainUnderTest);
+		//SingleNodeProcessingChainConsumer chain = SingleNodeProcessingChainSupport.chainConsumer(application, streamName, processingChainUnderTest);
+		SingleNodeProcessingChain chain = SingleNodeProcessingChainSupport.chain(application, streamName, processingChainUnderTest);
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);

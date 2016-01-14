@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -30,6 +31,7 @@ public class JunghoLightingHostTest {
 
 		for(int i=0; i < 10; i++){
 
+			lightingRequest.send(MessageBuilder.withPayload(new JunghoLightingRequest()).build());
 			Message<?> message = lightingResponse.receive();
 			Assert.assertNotNull(message);
 			logger.debug(message.getPayload());

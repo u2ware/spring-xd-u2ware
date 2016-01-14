@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.timeout.IdleStateHandler;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class SiemensFireMaster extends AbstractTcpClient {
@@ -45,27 +46,6 @@ public class SiemensFireMaster extends AbstractTcpClient {
 	}
 	
 	
-
-	private static final ByteBuf ACK = Unpooled.copiedBuffer(new byte[]{0x02, (byte)0x81, (byte)0x86, 0x03 });
-	private static final ByteBuf FIRE = Unpooled.copiedBuffer(new byte[]{
-			0x02, //byte stx = in.readByte();
-			0x07, //short length = in.readShort();
-			0x07,
-			0x07, //byte tx = in.readByte();
-			0x07, //byte rx = in.readByte();
-			(byte)0x91, //byte op = in.readByte();
-			0x07, //byte seq = in.readByte();
-			(byte)'a', //String data = in.readBytes(in.readableBytes() - 1).toString(Charset.defaultCharset());
-			(byte)',',
-			(byte)'b',
-			(byte)',',
-			(byte)'c',
-			(byte)',',
-			(byte)'d',
-			0x03 //byte etx = in.readByte();
-	});
-	
-	
 	
 	@Override
 	protected void initChannelPipeline(ChannelPipeline pipeline) throws Exception {
@@ -74,15 +54,16 @@ public class SiemensFireMaster extends AbstractTcpClient {
 		pipeline.addLast("message_channel", new ChannelDuplexHandler(){
 
 			private int seq = 0;
+			private Random random = new Random();
 			
 			@Override
 			public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
 				
 				if(seq % 2 == 0){
-					ctx.writeAndFlush(ACK.copy());
+					ctx.writeAndFlush(ACK());
 				}else{
-	    			System.err.println("SiemensFireMaster ...");
-					ctx.writeAndFlush(FIRE.copy());
+	    			//System.err.println("SiemensFireMaster ...");
+					ctx.writeAndFlush(FIRE());
 				}
 				
 				seq++;
@@ -96,6 +77,33 @@ public class SiemensFireMaster extends AbstractTcpClient {
     	    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
     	    	cause.printStackTrace();
     	    }
-        });
+    	    
+    	    
+    	    public ByteBuf ACK(){
+    	    	return Unpooled.copiedBuffer(new byte[]{0x02, (byte)0x81, (byte)0x86, 0x03 });
+    	    }
+    	    public ByteBuf FIRE(){
+    	    	
+    	    	return Unpooled.copiedBuffer(new byte[]{
+    	    			0x02, //byte stx = in.readByte();
+    	    			0x07, //short length = in.readShort();
+    	    			0x07,
+    	    			0x07, //byte tx = in.readByte();
+    	    			0x07, //byte rx = in.readByte();
+    	    			(byte)0x91, //byte op = in.readByte();
+    	    			0x07, //byte seq = in.readByte();
+    	    			(byte)random.nextInt(), //String data = in.readBytes(in.readableBytes() - 1).toString(Charset.defaultCharset());
+    	    			(byte)',',
+    	    			(byte)random.nextInt(),
+    	    			(byte)',',
+    	    			(byte)random.nextInt(),
+    	    			(byte)',',
+    	    			(byte)random.nextInt(),
+    	    			0x03 //byte etx = in.readByte();
+    	    	});
+    	    }
+		});
 	}
+	
+	
 }

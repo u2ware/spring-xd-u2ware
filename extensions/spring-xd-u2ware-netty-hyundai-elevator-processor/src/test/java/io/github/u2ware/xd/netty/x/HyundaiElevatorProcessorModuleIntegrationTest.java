@@ -64,11 +64,6 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 
-		Thread.sleep(4000);
-		logger.debug(processingChainUnderTest);
-		
-		chain.sendPayload("{}");
-		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
 		Assert.assertEquals(String.class, payload.getClass());
 

@@ -5,9 +5,13 @@
 	   xmlns:int="http://www.springframework.org/schema/integration"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
+	<int:channel id="fireRequest">
+		<int:queue/>
+	</int:channel>
 	
 	<bean id="fire" class="io.github.u2ware.integration.netty.x.SiemensFireSlave">
 		<property name="port" value="10901"/>
+		<property name="receiveChannel" ref="fireRequest"/>
 		<property name="sendChannel" ref="fireResponse"/>
 	</bean>
 	

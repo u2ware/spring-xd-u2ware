@@ -16,6 +16,8 @@
 		<int:queue/>
 	</int:channel>
 	
+	<int:channel id="nettyResponse"/>
+	
 	<bean class="io.github.u2ware.integration.netty.x.HyundaiElevatorMaster">
 		<property name="host" value="${host}"/>
 		<property name="port" value="${port}"/>
@@ -24,7 +26,6 @@
 		<property name="sendChannel" ref="nettyResponse"/>
 	</bean>
 	
-	<int:channel id="nettyResponse"/>
 
 	<beans profile="use_json_input">
 		<int:payload-type-router input-channel="input">
