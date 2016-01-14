@@ -29,7 +29,7 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		HyundaiElevatorSlave.startup(9992);
+		HyundaiElevatorSlave.startup(9990);
 
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -54,7 +54,7 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 
 		String processingChainUnderTest = "hyundai-elevator-processor "
 				+ " --host=127.0.0.1 "
-				+ " --port=9992 "
+				+ " --port=9990 "
 				+ " --idleTimeout=3000 ";
 
 		logger.debug(processingChainUnderTest);
@@ -64,7 +64,10 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 
-		Thread.sleep(3000);
+		Thread.sleep(4000);
+		logger.debug(processingChainUnderTest);
+		
+		chain.sendPayload("{}");
 		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
 		Assert.assertEquals(String.class, payload.getClass());

@@ -1,7 +1,6 @@
 package io.github.u2ware.integration.netty.x;
 
 import io.github.u2ware.integration.netty.core.AbstractTcpServer;
-import io.github.u2ware.integration.netty.support.NettyLoggingHandler;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -37,12 +36,12 @@ public class HyundaiElevatorSlave extends AbstractTcpServer{
 
 	@Override
 	protected void initChannelPipeline(ChannelPipeline pipeline) throws Exception {
-		pipeline.addLast(new NettyLoggingHandler(getClass()));
+		//pipeline.addLast(new NettyLoggingHandler(getClass()));
 		pipeline.addLast(new DelimiterBasedFrameDecoder(2048, false, Unpooled.wrappedBuffer("ETX".getBytes())));
         pipeline.addLast(new ChannelDuplexHandler(){
     		@Override
     		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    			System.err.println("HyundaiElevatorSlave ...");
+    			//System.err.println("HyundaiElevatorSlave ...");
     			String res = "STX444422"+randomRange(10000000, 99999999)+"000000000000000000000000000000000000000000000000ETX";
     			ctx.writeAndFlush(Unpooled.wrappedBuffer(res.getBytes()));
     		}

@@ -27,7 +27,7 @@ public class HyundaiElevatorProcessorConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		HyundaiElevatorSlave.startup(9897);
+		HyundaiElevatorSlave.startup(9991);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
@@ -46,6 +46,9 @@ public class HyundaiElevatorProcessorConfigurationTest {
 
 	@Test
 	public void test() throws Exception{
+
+		Thread.sleep(4000);
+		
 		
 		input.send(MessageBuilder.withPayload(new HyundaiElevatorRequest()).build());
 		Message<?> message = output.receive(100000);
