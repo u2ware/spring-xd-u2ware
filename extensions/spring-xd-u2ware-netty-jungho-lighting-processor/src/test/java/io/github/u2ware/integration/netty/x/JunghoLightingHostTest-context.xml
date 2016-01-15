@@ -12,7 +12,13 @@
 	<bean id="fire" class="io.github.u2ware.integration.netty.x.JunghoLightingHost">
 		<property name="host" value="192.168.245.3"/>
 		<property name="port" value="10808"/>
+		<property name="receiveChannel" ref="lightingRequest"/>
+		<property name="sendChannel" ref="lightingResponse"/>
+		<property name="messageKeep" value="false"/>
 	</bean>
 	
+	<int:channel id="lightingResponse">
+		<int:queue/>
+	</int:channel>
 
 </beans>

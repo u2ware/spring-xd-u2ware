@@ -16,6 +16,7 @@ public class JunghoLightingProcessorOptions implements ProfileNamesProvider{
 
 	private String host;
 	private int port;
+	private boolean messageKeep = false;
 	private boolean split = true;
 	private boolean jsonInput = true;
 	private boolean jsonOutput = true;
@@ -33,6 +34,13 @@ public class JunghoLightingProcessorOptions implements ProfileNamesProvider{
 	@ModuleOption("setPort")
 	public void setPort(int port) {
 		this.port = port;
+	}
+	public boolean isMessageKeep() {
+		return messageKeep;
+	}
+	@ModuleOption("setMessageKeep")
+	public void setMessageKeep(boolean messageKeep) {
+		this.messageKeep = messageKeep;
 	}
 	public boolean isSplit() {
 		return split;

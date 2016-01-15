@@ -1,5 +1,7 @@
 package io.github.u2ware.integration.netty.x;
 
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -29,12 +30,14 @@ public class JunghoLightingHostTest {
 	@Test
 	public void test() throws Exception{
 
-		for(int i=0; i < 10; i++){
+		for(int i=0; i < 4; i++){
 
-			lightingRequest.send(MessageBuilder.withPayload(new JunghoLightingRequest()).build());
+			//lightingRequest.send(MessageBuilder.withPayload(new JunghoLightingRequest()).build());
 			Message<?> message = lightingResponse.receive();
 			Assert.assertNotNull(message);
-			logger.debug(message.getPayload());
+			
+			Collection<?> c = (Collection<?>)message.getPayload();
+			logger.debug("############"+c.size());
 			
 			Thread.sleep(1000);
 		}

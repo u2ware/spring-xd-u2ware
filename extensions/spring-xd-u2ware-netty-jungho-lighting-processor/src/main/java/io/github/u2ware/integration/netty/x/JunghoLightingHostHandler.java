@@ -66,7 +66,7 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 				}else{
 					ctx.writeAndFlush( EOT() );
 					logger.debug("# SEND EOT  #");
-					Thread.sleep(1000);
+					Thread.sleep(300);
 					
 					pollingCount.set(0);
 					ctx.writeAndFlush( POLLING() );
@@ -78,7 +78,7 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 				
 				ctx.writeAndFlush( EOT() );
 				logger.debug("# SEND EOT #");
-				Thread.sleep(1000);
+				Thread.sleep(300);
 
 				pollingCount.set(0);
 				ctx.writeAndFlush( POLLING() );
@@ -88,7 +88,7 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 				pollingCount.set(pollingCount.get()+1);
 				logger.debug("# RECEIVED EOT #");
 
-				Thread.sleep(1000);
+				Thread.sleep(300);
 
 				if(pollingCount.get() > 3){
 					pollingCount.set(0);
@@ -177,28 +177,27 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 	@SuppressWarnings("unused")
 	private void TEXT(ByteBuf res, List<Object> out){
 
-		logger.info(res.toString(CharsetUtil.UTF_8));
 		
 		int length = res.readableBytes();
 		byte stx = res.readByte(); //System.out.println("ETX :"+Integer.toHexString(stx));
 		byte sa = res.readByte();//System.out.println("SA :"+Integer.toHexString(stx));
 		byte ua = res.readByte();//System.out.println("UA :"+Integer.toHexString(stx));
 		byte si = res.readByte();//System.out.println("SI :"+Integer.toHexString(stx));
-		byte[] msg = new byte[3]; res.readBytes(msg);//System.out.println("MSG :"+new String(msg));
-		byte[] cmd = new byte[3]; res.readBytes(cmd);//System.out.println("CMD :"+new String(cmd));
-		byte[] txt_lcu = new byte[2]; res.readBytes(txt_lcu);//System.out.println("txt_lcu :"+new String(txt_lcu));
-		byte[] txt_status= new byte[1]; res.readBytes(txt_status);//System.out.println("txt_status :"+new String(txt_lcu));
+		String msg = res.readBytes(3).toString(CharsetUtil.UTF_8);
+		String cmd = res.readBytes(3).toString(CharsetUtil.UTF_8);
+		String txt_lcu = res.readBytes(2).toString(CharsetUtil.UTF_8);
+		String txt_status = res.readBytes(1).toString(CharsetUtil.UTF_8);
 		byte[] txt_body = new byte[res.readableBytes() - 9];res.readBytes(txt_body);//System.out.println("TXT :"+new String(txt_body));
 		byte etx = res.readByte();//System.out.println("ETX :"+Integer.toHexString(stx));
 		byte bcc = res.readByte();//System.out.println("BCC :"+Integer.toHexString(stx));
 
-		logger.info("# RECEIVED TEXT (msgNumber:"+msgNumber.get()+",  lcuNumber:"+lcuNumber.get()+")");
+		logger.info("# RECEIVED TEXT (msgNumber:"+msgNumber.get()+",  lcuNumber:"+lcuNumber.get()+")" + new String(txt_body));
 		
 		String id = null;
 		String state = null;
 		Object value = null;
 		
-		int lcu = Integer.parseInt(new String(txt_lcu));
+		int lcu = Integer.parseInt(txt_lcu);
 		int sw  = 0;
 		int no  = 0;
 

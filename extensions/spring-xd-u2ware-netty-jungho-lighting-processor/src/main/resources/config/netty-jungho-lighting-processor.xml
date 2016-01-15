@@ -21,6 +21,7 @@
 	<bean class="io.github.u2ware.integration.netty.x.JunghoLightingHost">
 		<property name="host" value="${host}"/>
 		<property name="port" value="${port}"/>
+		<property name="messageKeep" value="${messageKeep:false}"/>
 		<property name="receiveChannel" ref="nettyRequest"/>
 		<property name="sendChannel" ref="nettyResponse"/>
 	</bean>
@@ -43,10 +44,10 @@
 
 	
 	<beans profile="use_splitter">
-		<int:splitter input-channel="elevatorResponse" output-channel="outputResponse"/>
+		<int:splitter input-channel="nettyResponse" output-channel="outputResponse"/>
 	</beans>
 	<beans profile="dont_use_splitter">
-		<int:bridge input-channel="elevatorResponse" output-channel="outputResponse"/>
+		<int:bridge input-channel="nettyResponse" output-channel="outputResponse"/>
 	</beans>
 
 	<beans profile="use_json_output">
