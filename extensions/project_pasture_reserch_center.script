@@ -9,6 +9,12 @@ stream create --name "hvac" --definition "u2ware-bacnet-source  --remoteAddress=
 ////////////////
 stream create --name "electric" --definition "u2ware-bacnet-source  --remoteAddress=192.168.245.92:47808  --remoteInstanceNumber=4560  --localPort=47809 --fixedDelay=5000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=electric --idExpression=payload.id --valueExpression=payload.value" --deploy
 
+///////////////
+// 조명 
+////////////////
+stream create --name "lighting" --definition "queue:fire > u2ware-netty-jungho-lighting-processor --host=192.168.245.3 --port=10808 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=lighting --idExpression=payload.id --valueExpression=payload.value --valueLogging=false"
+
+
 
 ///////////////
 // REST 
