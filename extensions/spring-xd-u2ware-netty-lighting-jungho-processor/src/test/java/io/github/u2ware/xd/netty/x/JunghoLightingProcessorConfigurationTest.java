@@ -1,6 +1,6 @@
 package io.github.u2ware.xd.netty.x;
 
-import io.github.u2ware.integration.netty.x.JunghoLightingRequest;
+import io.github.u2ware.integration.netty.x.LightingJunghoRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,10 +33,14 @@ public class JunghoLightingProcessorConfigurationTest {
 	@Test
 	public void test() throws Exception{
 
-		input.send(MessageBuilder.withPayload(new JunghoLightingRequest()).build());
-		Message<?> message = output.receive();
-		Assert.assertNotNull(message);
-		logger.debug(message.getPayload());
+		for(int i=0 ; i < 10; i++){
+			input.send(MessageBuilder.withPayload(new LightingJunghoRequest()).build());
+			Message<?> message = output.receive();
+			Assert.assertNotNull(message);
+			logger.debug(message.getPayload());
+			
+			Thread.sleep(1000);
+		}
 	}
 }
 

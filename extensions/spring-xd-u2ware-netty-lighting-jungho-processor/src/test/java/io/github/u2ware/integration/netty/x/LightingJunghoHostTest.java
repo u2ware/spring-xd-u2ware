@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class JunghoLightingHostTest {
+public class LightingJunghoHostTest {
 
     protected Log logger = LogFactory.getLog(getClass());
 
@@ -32,14 +32,11 @@ public class JunghoLightingHostTest {
 
 		for(int i=0; i < 4; i++){
 
-			//lightingRequest.send(MessageBuilder.withPayload(new JunghoLightingRequest()).build());
 			Message<?> message = lightingResponse.receive();
 			Assert.assertNotNull(message);
 			
 			Collection<?> c = (Collection<?>)message.getPayload();
 			logger.debug("############"+c.size());
-			
-			Thread.sleep(1000);
 		}
 	}
 }

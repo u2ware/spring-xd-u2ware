@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.common.collect.Maps;
 
-public class JunghoLightingHostHandler extends ByteToMessageDecoder{
+public class LightingJunghoHostHandler extends ByteToMessageDecoder{
 
 	
 	//private byte STX = (byte)0x02;
@@ -35,9 +35,9 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 	private ByteBuf frame;
 
 	private final InternalLogger logger;
-	private final Map<String, JunghoLightingResponse> dataSet;
+	private final Map<String, LightingJunghoResponse> dataSet;
 	
-	public JunghoLightingHostHandler(Class<?> clazz){
+	public LightingJunghoHostHandler(Class<?> clazz){
 		this.logger = InternalLoggerFactory.getInstance(clazz);
 		this.dataSet = Maps.newHashMap();
 	}
@@ -211,7 +211,7 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			dataSet.put(id,  new JunghoLightingResponse(id, value));
+			dataSet.put(id,  new LightingJunghoResponse(id, value));
 			//logger.debug(id+"="+value);
 			
 			no++;
@@ -219,7 +219,7 @@ public class JunghoLightingHostHandler extends ByteToMessageDecoder{
 
 			value = toValueString(state);
 			id = lcu+"_"+sw+"_"+no;
-			dataSet.put(id,  new JunghoLightingResponse(id, value));
+			dataSet.put(id,  new LightingJunghoResponse(id, value));
 
 			if(no == 4) no = 0;
 		}

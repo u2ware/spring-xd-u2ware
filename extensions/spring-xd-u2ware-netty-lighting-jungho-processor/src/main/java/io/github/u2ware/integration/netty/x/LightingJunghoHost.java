@@ -7,11 +7,11 @@ import io.netty.channel.ChannelPipeline;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
 
-public class JunghoLightingHost extends AbstractTcpClient{
+public class LightingJunghoHost extends AbstractTcpClient{
 
 	private MessageChannel sendChannel;
 	private PollableChannel receiveChannel;
-	private boolean messageKeep;
+	private boolean messagingPreservation;
 	
 	public void setSendChannel(MessageChannel sendChannel) {
 		this.sendChannel = sendChannel;
@@ -19,14 +19,19 @@ public class JunghoLightingHost extends AbstractTcpClient{
 	public void setReceiveChannel(PollableChannel receiveChannel) {
 		this.receiveChannel = receiveChannel;
 	}
-	public void setMessageKeep(boolean messageKeep) {
-		this.messageKeep = messageKeep;
+	public void setMessagingPreservation(boolean messagingPreservation) {
+		this.messagingPreservation = messagingPreservation;
 	}
 
 	@Override
 	protected void initChannelPipeline(ChannelPipeline pipeline) throws Exception {
 		//pipeline.addLast(new NettyLoggingHandler(getClass(), false));
-		pipeline.addLast(new JunghoLightingHostHandler(getClass()));
-		pipeline.addLast(new NettyMessagingHandler(getClass(), receiveChannel, sendChannel, messageKeep));
+		pipeline.addLast(new LightingJunghoHostHandler(getClass()));
+		pipeline.addLast(new NettyMessagingHandler(
+				getClass(), 
+				(messagingPreservation ? receiveChannel : null), 
+				sendChannel, 
+				messagingPreservation)
+		);
 	}
 }

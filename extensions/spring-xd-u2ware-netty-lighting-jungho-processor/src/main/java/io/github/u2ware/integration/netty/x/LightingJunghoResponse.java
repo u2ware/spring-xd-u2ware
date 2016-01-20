@@ -1,15 +1,15 @@
 package io.github.u2ware.integration.netty.x;
 
-public class JunghoLightingResponse {
+public class LightingJunghoResponse {
 
 	private String id;
 	private Object value;
 	
-	public JunghoLightingResponse(){
+	public LightingJunghoResponse(){
 		
 	}
 	
-	public JunghoLightingResponse(String id, Object value) {
+	public LightingJunghoResponse(String id, Object value) {
 		this.id = id;
 		this.value = value;
 	}
@@ -28,6 +28,6 @@ public class JunghoLightingResponse {
 	}
 	@Override
 	public String toString() {
-		return "JunghoLightingResponse [id=" + id + ", value=" + value + "]";
+		return "LightingJunghoResponse [id=" + id + ", value=" + value + "]";
 	}
 }

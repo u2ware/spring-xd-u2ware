@@ -35,7 +35,7 @@ public class JunghoLightingProcessorModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.processor, "jungho-lighting-processor"));
+				new SingletonModuleRegistry(ModuleType.processor, "lighting-jungho-processor"));
 	}
 
 	
@@ -52,8 +52,7 @@ public class JunghoLightingProcessorModuleIntegrationTest {
 
 		String processingChainUnderTest = "jungho-lighting-processor "
 				+ " --host=192.168.245.3 "
-				+ " --port=10808 "
-				+ " --messageKeep=true ";
+				+ " --port=10808 ";
 
 		logger.debug(processingChainUnderTest);
 		

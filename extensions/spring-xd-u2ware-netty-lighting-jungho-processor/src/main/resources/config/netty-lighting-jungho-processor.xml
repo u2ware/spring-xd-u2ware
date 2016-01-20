@@ -18,10 +18,13 @@
 
 	<int:channel id="nettyResponse"/>
 
-	<bean class="io.github.u2ware.integration.netty.x.JunghoLightingHost">
+	<bean class="io.github.u2ware.integration.netty.x.LightingJunghoHost">
 		<property name="host" value="${host}"/>
 		<property name="port" value="${port}"/>
-		<property name="messageKeep" value="${messageKeep:false}"/>
+		<property name="autoConnection" value="true"/>
+		
+		<property name="messagingPreservation" value="${messagingPreservation:false}"/>
+
 		<property name="receiveChannel" ref="nettyRequest"/>
 		<property name="sendChannel" ref="nettyResponse"/>
 	</bean>
@@ -30,13 +33,13 @@
 	<beans profile="use_json_input">
 		<int:payload-type-router input-channel="input">
 		    <int:mapping type="java.lang.String" channel="jsonRequest" />
-		    <int:mapping type="io.github.u2ware.integration.netty.x.JunghoLightingRequest" channel="nettyRequest" />
+		    <int:mapping type="io.github.u2ware.integration.netty.x.LightingJunghoRequest" channel="nettyRequest" />
 		</int:payload-type-router>
 	
 		<int:json-to-object-transformer 
 			input-channel="jsonRequest" 
 			output-channel="nettyRequest"
-	    	type="io.github.u2ware.integration.netty.x.JunghoLightingRequest"/>
+	    	type="io.github.u2ware.integration.netty.x.LightingJunghoRequest"/>
 	</beans>
 	<beans profile="dont_use_json_input">
 		<int:bridge input-channel="input" output-channel="nettyRequest"/>

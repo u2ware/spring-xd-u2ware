@@ -16,9 +16,9 @@ public class JunghoLightingProcessorModuleUploadMain {
 	
     protected static Log logger = LogFactory.getLog(JunghoLightingProcessorModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-netty-jungho-lighting-processor";
+    private static final String moduleName     = "u2ware-netty-lighting-jungho-processor";
     private static final String moduleType     = "processor";
-    private static final String moduleResource = "target/spring-xd-u2ware-netty-jungho-lighting-processor-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-netty-lighting-jungho-processor-1.0.0.jar";
 
     private static final String sourceResource     = "../../xd/custom-modules/";
     private static final String targetResource     = "../../xd/custom-modules/";
