@@ -25,15 +25,15 @@ public class ElevatorHpnrtServerMock extends AbstractTcpServer{
 		ElevatorHpnrtServerMock.startup(port);
 	}
 	
-	private static ElevatorHpnrtServerMock hyundaiElevatorSlave;
+	private static ElevatorHpnrtServerMock mockServer;
 	
 	public static void startup(int port) throws Exception{
-		hyundaiElevatorSlave = new ElevatorHpnrtServerMock();
-		hyundaiElevatorSlave.setPort(port);
-		hyundaiElevatorSlave.afterPropertiesSet();
+		mockServer = new ElevatorHpnrtServerMock();
+		mockServer.setPort(port);
+		mockServer.afterPropertiesSet();
 	}
 	public static void shutdown() throws Exception{
-		hyundaiElevatorSlave.destroy();
+		mockServer.destroy();
 	}
 	
 
