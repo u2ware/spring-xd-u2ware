@@ -7,9 +7,7 @@
 	</appender>
 
 
-	<logger name="io.netty" level="trace" />
-	<logger name="org.springframework" level="OFF" />
-	<logger name="io.github.u2ware.integration" level="DEBUG" />
+	<logger name="io.github.u2ware" level="DEBUG" />
 
 	<root level="OFF">
 		<appender-ref ref="STDOUT" />

@@ -16,7 +16,7 @@ public class ElevatorHpnrtServerMock extends AbstractTcpServer{
 
 	public static void main(String[] args) throws Exception{
 		
-		int port = 5001;
+		int port = 15001;
 		try{
 			port = Integer.parseInt(args[0]);
 		}catch(Exception e){

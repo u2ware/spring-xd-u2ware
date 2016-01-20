@@ -8,19 +8,56 @@
 		http://www.springframework.org/schema/integration 
 		http://www.springframework.org/schema/integration/spring-integration.xsd">
 	
-	<int:channel id="output"/>
+	<int:channel id="input"/>
 
-	<bean class="io.github.u2ware.integration.netty.x.SiemensFireSlave">
+	<int:channel id="output"/>
+	
+	<int:channel id="nettyRequest">
+		<int:queue/>
+	</int:channel>
+	
+	<int:channel id="nettyResponse"/>
+
+	<bean class="io.github.u2ware.integration.netty.x.ElevatorHpnrtClient">
+		<property name="host" value="${host}"/>
 		<property name="port" value="${port}"/>
+		<property name="autoConnection" value="true"/>
+
+		<property name="messagingPreservation" value="${messagingPreservation:false}"/>
+
+		<property name="receiveChannel" ref="nettyRequest"/>
 		<property name="sendChannel" ref="nettyResponse"/>
 	</bean>
 
-	<beans profile="use_json_output">
-		<int:object-to-json-transformer input-channel="nettyResponse" output-channel="output" content-type="application/json" />
+
+	<beans profile="use_json_input">
+		<int:payload-type-router input-channel="input">
+		    <int:mapping type="java.lang.String" channel="jsonRequest" />
+		    <int:mapping type="io.github.u2ware.integration.netty.x.ElevatorHpnrtRequest" channel="nettyRequest" />
+		</int:payload-type-router>
+	
+		<int:json-to-object-transformer 
+			input-channel="jsonRequest" 
+			output-channel="nettyRequest"
+	    	type="io.github.u2ware.integration.netty.x.ElevatorHpnrtRequest"/>
 	</beans>
-	<beans profile="dont_use_json_output">
-		<int:bridge input-channel="nettyResponse" output-channel="output"/>
+	<beans profile="dont_use_json_input">
+		<int:bridge input-channel="input" output-channel="nettyRequest"/>
 	</beans>
 
+	
+	<beans profile="use_splitter">
+		<int:splitter input-channel="nettyResponse" output-channel="outputResponse"/>
+	</beans>
+	<beans profile="dont_use_splitter">
+		<int:bridge input-channel="nettyResponse" output-channel="outputResponse"/>
+	</beans>
+
+	<beans profile="use_json_output">
+		<int:object-to-json-transformer input-channel="outputResponse" output-channel="output" content-type="application/json" />
+	</beans>
+	<beans profile="dont_use_json_output">
+		<int:bridge input-channel="outputResponse" output-channel="output"/>
+	</beans>
 
 </beans>

@@ -5,23 +5,18 @@
 	   xmlns:int="http://www.springframework.org/schema/integration"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-	<int:channel id="elevatorRequest">
+	<context:property-placeholder properties-ref="props"/>
+
+	<util:properties id="props">
+		<prop key="host">127.0.0.1</prop>
+		<prop key="port">15002</prop>
+		<prop key="messagingPreservation">true</prop>
+	</util:properties>
+
+	<import resource="classpath:config/netty-elevator-hpnrt-processor.xml"/>
+
+	<!-- Override direct channel with a queue channel so the test will block until a message is received -->
+	<int:channel id="output">
 		<int:queue/>
 	</int:channel>
-
-	
-	<bean id="elevator1" class="io.github.u2ware.integration.netty.x.ElevatorHpnrtClient">
-		<property name="host" value="127.0.0.1"/>
-		<property name="port" value="15001"/>
-		<property name="autoConnection" value="true"/>
-
-		<property name="receiveChannel" ref="elevatorRequest"/>
-		<property name="sendChannel" ref="elevatorResponse"/>
-	</bean>
-	
-	<int:channel id="elevatorResponse">
-		<int:queue/>
-	</int:channel>
-
-
 </beans>
