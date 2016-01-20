@@ -15,7 +15,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class HyundaiElevatorMasterHandler extends MessageToMessageCodec<ByteBuf, HyundaiElevatorRequest>{
+public class ElevatorHyundaiClientHandler extends MessageToMessageCodec<ByteBuf, ElevatorHyundaiRequest>{
 
 	static final ByteBuf ETX = Unpooled.wrappedBuffer("ETX".getBytes());
 	static final Map<String,String> 운행s = Maps.newHashMap();
@@ -44,18 +44,18 @@ public class HyundaiElevatorMasterHandler extends MessageToMessageCodec<ByteBuf,
 
 	protected final InternalLogger logger ;
 	
-	public HyundaiElevatorMasterHandler(Class<?> clazz){
+	public ElevatorHyundaiClientHandler(Class<?> clazz){
 		this.logger = InternalLoggerFactory.getInstance(clazz);
 	}
 	
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
 		//logger.debug("userEventTriggered ");
-		ctx.channel().writeAndFlush(new HyundaiElevatorRequest());
+		ctx.channel().writeAndFlush(new ElevatorHyundaiRequest());
 	}
 	
 	@Override
-	protected void encode(ChannelHandlerContext ctx, HyundaiElevatorRequest msg, List<Object> out) throws Exception {
+	protected void encode(ChannelHandlerContext ctx, ElevatorHyundaiRequest msg, List<Object> out) throws Exception {
 		//logger.debug("encode: "+msg.getClass());
 		ByteBuf buf = Unpooled.wrappedBuffer("STXRETX".getBytes());
 		out.add(buf);
@@ -68,7 +68,7 @@ public class HyundaiElevatorMasterHandler extends MessageToMessageCodec<ByteBuf,
 			return;
 		}
 
-		List<HyundaiElevatorResponse> result = Lists.newArrayList(); 
+		List<ElevatorHyundaiResponse> result = Lists.newArrayList(); 
 		
 		@SuppressWarnings("unused")
 		String stx = in.readBytes(3).toString(Charset.defaultCharset());
@@ -90,11 +90,11 @@ public class HyundaiElevatorMasterHandler extends MessageToMessageCodec<ByteBuf,
 			Map<String, Object> headers = Maps.newHashMap();
 			headers.put(NettyHeaders.REMOTE_ADDRESS, ctx.channel().remoteAddress().toString());
 
-			result.add(new HyundaiElevatorResponse(동+"_"+호기+"_3", 운행, "운행", 운행s.get(운행)));
-			result.add(new HyundaiElevatorResponse(동+"_"+호기+"_4", 층수, "층수", null         ));
-			result.add(new HyundaiElevatorResponse(동+"_"+호기+"_5", 방향, "방향", 방향s.get(방향)));
-			result.add(new HyundaiElevatorResponse(동+"_"+호기+"_6", 도어, "도어", 도어s.get(도어)));
-			result.add(new HyundaiElevatorResponse(동+"_"+호기+"_7", 정지예정층, "정지예정층", null ));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_3", 운행, "운행", 운행s.get(운행)));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_4", 층수, "층수", null         ));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_5", 방향, "방향", 방향s.get(방향)));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_6", 도어, "도어", 도어s.get(도어)));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_7", 정지예정층, "정지예정층", null ));
 			
 		}
 

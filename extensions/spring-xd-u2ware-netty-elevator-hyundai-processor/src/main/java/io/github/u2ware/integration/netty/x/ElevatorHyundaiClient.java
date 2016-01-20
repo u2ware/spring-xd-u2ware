@@ -12,11 +12,13 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
 
-public class HyundaiElevatorMaster extends AbstractTcpClient{
+public class ElevatorHyundaiClient extends AbstractTcpClient{
 	
 	private MessageChannel sendChannel;
 	private PollableChannel receiveChannel;
-	private int idleTimeout;
+	
+	private int messagingTimeout;
+	private boolean messagingPreservation = false;
 
 	public void setSendChannel(MessageChannel sendChannel) {
 		this.sendChannel = sendChannel;
@@ -24,18 +26,21 @@ public class HyundaiElevatorMaster extends AbstractTcpClient{
 	public void setReceiveChannel(PollableChannel receiveChannel) {
 		this.receiveChannel = receiveChannel;
 	}
-	public void setIdleTimeout(int idleTimeout) {
-		this.idleTimeout = idleTimeout;
+	public void setMessagingTimeout(int messagingTimeout) {
+		this.messagingTimeout = messagingTimeout;
 	}
-
+//	public void setMessagingPreservation(boolean messagingPreservation) {
+//		this.messagingPreservation = messagingPreservation;
+//	}
+	
 	@Override
 	protected void initChannelPipeline(ChannelPipeline pipeline) throws Exception {
 		pipeline.addLast(new NettyLoggingHandler(getClass(), false));
-		if(idleTimeout > 1000){
-			pipeline.addLast(new IdleStateHandler(idleTimeout, 0, 0, TimeUnit.MILLISECONDS));
+		if(messagingTimeout > 1000){
+			pipeline.addLast(new IdleStateHandler(messagingTimeout, 0, 0, TimeUnit.MILLISECONDS));
 		}
-		pipeline.addLast(new DelimiterBasedFrameDecoder(2048, false, HyundaiElevatorMasterHandler.ETX));
-		pipeline.addLast(new HyundaiElevatorMasterHandler(getClass()));
-		pipeline.addLast(new NettyMessagingHandler(getClass(), receiveChannel, sendChannel));
+		pipeline.addLast(new DelimiterBasedFrameDecoder(2048, false, ElevatorHyundaiClientHandler.ETX));
+		pipeline.addLast(new ElevatorHyundaiClientHandler(getClass()));
+		pipeline.addLast(new NettyMessagingHandler(getClass(), receiveChannel, sendChannel, messagingPreservation));
 	}
 }

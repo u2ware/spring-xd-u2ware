@@ -18,15 +18,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class HyundaiElevatorMaster1Test {
+public class ElevatorHyundaiClientTest {
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		HyundaiElevatorSlave.startup(9898);
+		ElevatorHyundaiServerMock.startup(9898);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
-		HyundaiElevatorSlave.shutdown();
+		ElevatorHyundaiServerMock.shutdown();
 	}
 	
     protected Log logger = LogFactory.getLog(getClass());
@@ -41,7 +41,7 @@ public class HyundaiElevatorMaster1Test {
 	public void test() throws Exception{
 
 		Thread.sleep(3000);
-		elevatorRequest.send(MessageBuilder.withPayload(new HyundaiElevatorRequest()).build());
+		elevatorRequest.send(MessageBuilder.withPayload(new ElevatorHyundaiRequest()).build());
 
 		Message<?> message = elevatorResponse.receive(10000);
 		Assert.assertNotNull(message);

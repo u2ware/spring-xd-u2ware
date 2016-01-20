@@ -1,6 +1,6 @@
 package io.github.u2ware.xd.netty.x;
 
-import io.github.u2ware.integration.netty.x.HyundaiElevatorSlave;
+import io.github.u2ware.integration.netty.x.ElevatorHyundaiServerMock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,7 +29,7 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		HyundaiElevatorSlave.startup(9990);
+		ElevatorHyundaiServerMock.startup(9990);
 
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -37,13 +37,13 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.processor, "hyundai-elevator-processor"));
+				new SingletonModuleRegistry(ModuleType.processor, "elevator-hyundai-processor"));
 	}
 
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		HyundaiElevatorSlave.shutdown();
+		ElevatorHyundaiServerMock.shutdown();
 	}
 	
 
@@ -52,10 +52,10 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "hyundai-elevator-processor "
+		String processingChainUnderTest = "elevator-hyundai-processor "
 				+ " --host=127.0.0.1 "
 				+ " --port=9990 "
-				+ " --idleTimeout=3000 ";
+				+ " --messagingTimeout=3000 ";
 
 		logger.debug(processingChainUnderTest);
 		
@@ -63,10 +63,9 @@ public class HyundaiElevatorProcessorModuleIntegrationTest {
 		SingleNodeProcessingChain chain = SingleNodeProcessingChainSupport.chain(application, streamName, processingChainUnderTest);
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
-		Thread.sleep(6000);
-		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
 		Assert.assertEquals(String.class, payload.getClass());
+		logger.debug(payload);
 
 		chain.destroy();
 	}

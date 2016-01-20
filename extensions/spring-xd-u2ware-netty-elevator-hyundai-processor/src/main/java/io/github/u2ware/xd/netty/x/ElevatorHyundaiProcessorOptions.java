@@ -3,7 +3,7 @@ package io.github.u2ware.xd.netty.x;
 import org.springframework.xd.module.options.spi.ModuleOption;
 import org.springframework.xd.module.options.spi.ProfileNamesProvider;
 
-public class HyundaiElevatorProcessorOptions implements ProfileNamesProvider{
+public class ElevatorHyundaiProcessorOptions implements ProfileNamesProvider{
 
 	private static final String use_json_input = "use_json_input";
 	private static final String dont_use_json_input = "dont_use_json_input";
@@ -16,7 +16,8 @@ public class HyundaiElevatorProcessorOptions implements ProfileNamesProvider{
 
 	private String host;
 	private int port;
-	private int idleTimeout = 0;
+	private int messagingTimeout;
+
 	private boolean split = true;
 	private boolean jsonInput = true;
 	private boolean jsonOutput = true;
@@ -35,12 +36,12 @@ public class HyundaiElevatorProcessorOptions implements ProfileNamesProvider{
 	public void setPort(int port) {
 		this.port = port;
 	}
-	public int getIdleTimeout() {
-		return idleTimeout;
+	public int getMessagingTimeout() {
+		return messagingTimeout;
 	}
-	@ModuleOption("setIdleTimeout")
-	public void setIdleTimeout(int idleTimeout) {
-		this.idleTimeout = idleTimeout;
+	@ModuleOption("setMessagingTimeout")
+	public void setMessagingTimeout(int messagingTimeout) {
+		this.messagingTimeout = messagingTimeout;
 	}
 	public boolean isSplit() {
 		return split;

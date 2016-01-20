@@ -2,7 +2,7 @@ package io.github.u2ware.integration.netty.x;
 
 import java.io.Serializable;
 
-public class HyundaiElevatorResponse implements Serializable{
+public class ElevatorHyundaiResponse implements Serializable{
 
 	private static final long serialVersionUID = 1325956282725736704L;
 
@@ -11,11 +11,11 @@ public class HyundaiElevatorResponse implements Serializable{
 	private String name;
 	private String description;
 	
-	public HyundaiElevatorResponse(){
+	public ElevatorHyundaiResponse(){
 		
 	}
 
-	public HyundaiElevatorResponse(String id, String value, String name, String description){
+	public ElevatorHyundaiResponse(String id, String value, String name, String description){
 		this.id = id;
 		this.value = value;
 		this.name = name;

@@ -1,7 +1,6 @@
 package io.github.u2ware.xd.netty.x;
 
-import io.github.u2ware.integration.netty.x.HyundaiElevatorRequest;
-import io.github.u2ware.integration.netty.x.HyundaiElevatorSlave;
+import io.github.u2ware.integration.netty.x.ElevatorHyundaiServerMock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,11 +25,11 @@ public class HyundaiElevatorProcessorConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		HyundaiElevatorSlave.startup(9991);
+		ElevatorHyundaiServerMock.startup(9991);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
-		HyundaiElevatorSlave.shutdown();
+		ElevatorHyundaiServerMock.shutdown();
 	}
 	
     protected Log logger = LogFactory.getLog(getClass());
@@ -48,18 +46,9 @@ public class HyundaiElevatorProcessorConfigurationTest {
 	public void test() throws Exception{
 
 		Thread.sleep(3000);
-		input.send(MessageBuilder.withPayload(new HyundaiElevatorRequest()).build());
-		Message<?> message = output.receive(100000);
+		Message<?> message = output.receive();
 		logger.debug(message.getPayload());
 		Assert.assertEquals(String.class, message.getPayload().getClass());
-
-
-		Thread.sleep(3000);
-		input.send(MessageBuilder.withPayload("{}").build());
-		message = output.receive(100000);
-		logger.debug(message.getPayload());
-		Assert.assertEquals(String.class, message.getPayload().getClass());
-		
 	}
 }
 

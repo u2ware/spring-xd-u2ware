@@ -16,9 +16,9 @@ public class HyundaiElevatorProcessorModuleUploadMain {
 	
     protected static Log logger = LogFactory.getLog(HyundaiElevatorProcessorModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-netty-hyundai-elevator-processor";
+    private static final String moduleName     = "u2ware-netty-elevator-hyundai-processor";
     private static final String moduleType     = "processor";
-    private static final String moduleResource = "target/spring-xd-u2ware-netty-hyundai-elevator-processor-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-netty-elevator-hyundai-processor-1.0.0.jar";
 
     private static final String sourceResource     = "../../xd/custom-modules/";
     private static final String targetResource     = "../../xd/custom-modules/";

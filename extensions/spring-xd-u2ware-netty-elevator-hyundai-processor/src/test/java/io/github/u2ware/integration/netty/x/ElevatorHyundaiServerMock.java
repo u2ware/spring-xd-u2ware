@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
-public class HyundaiElevatorSlave extends AbstractTcpServer{
+public class ElevatorHyundaiServerMock extends AbstractTcpServer{
 
 	public static void main(String[] args) throws Exception{
 		
@@ -17,13 +17,13 @@ public class HyundaiElevatorSlave extends AbstractTcpServer{
 		}catch(Exception e){
 		}
 
-		HyundaiElevatorSlave.startup(port);
+		ElevatorHyundaiServerMock.startup(port);
 	}
 	
-	private static HyundaiElevatorSlave hyundaiElevatorSlave;
+	private static ElevatorHyundaiServerMock hyundaiElevatorSlave;
 	
 	public static void startup(int port) throws Exception{
-		hyundaiElevatorSlave = new HyundaiElevatorSlave();
+		hyundaiElevatorSlave = new ElevatorHyundaiServerMock();
 		hyundaiElevatorSlave.setPort(port);
 		hyundaiElevatorSlave.afterPropertiesSet();
 		System.err.println("HyundaiElevatorSlave Startup "+hyundaiElevatorSlave.getPort());

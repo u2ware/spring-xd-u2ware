@@ -10,10 +10,9 @@
 	</int:channel>
 
 	
-	<bean id="elevator1" class="io.github.u2ware.integration.netty.x.HyundaiElevatorMaster">
+	<bean id="elevator1" class="io.github.u2ware.integration.netty.x.ElevatorHyundaiClient">
 		<property name="host" value="127.0.0.1"/>
 		<property name="port" value="9898"/>
-		<property name="idleTimeout" value="0"/>
 
 		<property name="receiveChannel" ref="elevatorRequest"/>
 		<property name="sendChannel" ref="elevatorResponse"/>
