@@ -15,15 +15,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class HpnrtElevatorClientTest {
+public class ElevatorHpnrtClientTest {
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		//HyundaiElevatorSlave.startup(10902);
+		ElevatorHpnrtServerMock.startup(15001);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
-		//HyundaiElevatorSlave.shutdown();
+		ElevatorHpnrtServerMock.shutdown();
 	}
 	
     protected Log logger = LogFactory.getLog(getClass());

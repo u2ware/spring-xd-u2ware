@@ -9,11 +9,11 @@ import io.netty.handler.codec.FixedLengthFrameDecoder;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
 
-public class HpnrtElevatorClient extends AbstractTcpClient{
+public class ElevatorHpnrtClient extends AbstractTcpClient{
 	
 	private MessageChannel sendChannel;
 	private PollableChannel receiveChannel;
-	private boolean messageKeep = false;
+	private boolean messagingPreservation;
 
 	public void setSendChannel(MessageChannel sendChannel) {
 		this.sendChannel = sendChannel;
@@ -21,14 +21,23 @@ public class HpnrtElevatorClient extends AbstractTcpClient{
 	public void setReceiveChannel(PollableChannel receiveChannel) {
 		this.receiveChannel = receiveChannel;
 	}
-	public void setMessageKeep(boolean messageKeep) {
-		this.messageKeep = messageKeep;
+	public boolean isMessagingPreservation() {
+		return messagingPreservation;
 	}
+	public void setMessagingPreservation(boolean messagingPreservation) {
+		this.messagingPreservation = messagingPreservation;
+	}
+	
 	@Override
 	protected void initChannelPipeline(ChannelPipeline pipeline) throws Exception {
 		pipeline.addLast(new NettyLoggingHandler(getClass()));
 		pipeline.addLast(new FixedLengthFrameDecoder( 1 + 2 + (4*8) + 1 + 1  ) );
-		pipeline.addLast(new HpnrtElevatorClientHandler(getClass()));		
-		pipeline.addLast(new NettyMessagingHandler(getClass(), receiveChannel, sendChannel, messageKeep));
+		pipeline.addLast(new ElevatorHpnrtClientHandler(getClass()));		
+		pipeline.addLast(new NettyMessagingHandler(
+					getClass(), 
+					(messagingPreservation ? receiveChannel : null), 
+					sendChannel, 
+					messagingPreservation)
+		);
 	}
 }

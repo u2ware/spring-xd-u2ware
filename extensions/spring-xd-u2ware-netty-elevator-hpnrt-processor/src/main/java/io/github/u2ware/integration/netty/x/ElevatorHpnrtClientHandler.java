@@ -12,13 +12,13 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-public class HpnrtElevatorClientHandler extends MessageToMessageDecoder<ByteBuf>{
+public class ElevatorHpnrtClientHandler extends MessageToMessageDecoder<ByteBuf>{
 
 	static final ByteBuf ETX = Unpooled.wrappedBuffer(new byte[]{0x03});
 	
 	protected InternalLogger logger;
 	
-	public HpnrtElevatorClientHandler(Class<?> clazz){
+	public ElevatorHpnrtClientHandler(Class<?> clazz){
 		logger = InternalLoggerFactory.getInstance(clazz);
 	}
 	
@@ -26,7 +26,7 @@ public class HpnrtElevatorClientHandler extends MessageToMessageDecoder<ByteBuf>
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		
-		List<HpnrtElevatorRequest> result = Lists.newArrayList();
+		List<ElevatorHpnrtRequest> result = Lists.newArrayList();
 		
 		byte STX = in.readByte();//System.out.println(STX);
 		short LENGTH = in.readShort();//System.out.println(LENGTH);
@@ -42,10 +42,10 @@ public class HpnrtElevatorClientHandler extends MessageToMessageDecoder<ByteBuf>
 			
 			//logger.debug(호기번호+"/ "+운행모드+" / "+운행방향+" / "+운행층+" : "+운행층문자+ " "+문열림);
 			
-			result.add(new HpnrtElevatorRequest(호기번호+"_0", 운행모드,  호기번호+"호기 운행모드",   운행모드(운행모드)));
-			result.add(new HpnrtElevatorRequest(호기번호+"_1", 운행방향,  호기번호+"호기 운행방향",   운행방향(운행방향)));
-			result.add(new HpnrtElevatorRequest(호기번호+"_2", 운행층문자, 호기번호+"호기 운행층문자", 운행층문자));
-			result.add(new HpnrtElevatorRequest(호기번호+"_3", 문열림,    호기번호+"호기 문열림",    문열림(문열림)));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_0", 운행모드,  호기번호+"호기 운행모드",   운행모드(운행모드)));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_1", 운행방향,  호기번호+"호기 운행방향",   운행방향(운행방향)));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_2", 운행층문자, 호기번호+"호기 운행층문자", 운행층문자));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_3", 문열림,    호기번호+"호기 문열림",    문열림(문열림)));
 		}
 
 		byte CHECKSUM = in.readByte();//System.out.println(CHECKSUM);

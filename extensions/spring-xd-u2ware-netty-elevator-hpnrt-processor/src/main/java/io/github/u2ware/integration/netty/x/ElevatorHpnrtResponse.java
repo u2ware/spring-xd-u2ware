@@ -2,20 +2,20 @@ package io.github.u2ware.integration.netty.x;
 
 import java.io.Serializable;
 
-public class ElevatorHyundaiResponse implements Serializable{
+public class ElevatorHpnrtResponse implements Serializable{
 
-	private static final long serialVersionUID = 1325956282725736704L;
+	private static final long serialVersionUID = 3559048063821747436L;
 
 	private String id;
 	private Object value;
 	private String idDesc;
 	private String valueDesc;
 	
-	public ElevatorHyundaiResponse(){
+	public ElevatorHpnrtResponse(){
 		
 	}
 
-	public ElevatorHyundaiResponse(String id, Object value, String idDesc, String valueDesc){
+	public ElevatorHpnrtResponse(String id, Object value, String idDesc, String valueDesc){
 		this.id = id;
 		this.value = value;
 		this.idDesc = idDesc;
@@ -48,7 +48,7 @@ public class ElevatorHyundaiResponse implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ElevatorHyundaiResponse [id=" + id + ", value=" + value
+		return "ElevatorHpnrtResponse [id=" + id + ", value=" + value
 				+ ", idDesc=" + idDesc + ", valueDesc=" + valueDesc + "]";
 	}
 }
