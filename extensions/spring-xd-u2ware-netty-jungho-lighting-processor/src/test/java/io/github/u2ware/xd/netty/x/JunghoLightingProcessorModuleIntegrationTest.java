@@ -62,8 +62,8 @@ public class JunghoLightingProcessorModuleIntegrationTest {
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 		
-		//Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
-		//Assert.assertNotNull(payload);
+		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
+		Assert.assertNotNull(payload);
 
 		chain.destroy();
 	}
