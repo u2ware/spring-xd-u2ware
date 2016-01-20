@@ -1,0 +1,11 @@
+
+stream create --name "testStream" --definition "u2ware-http-source --httpPort=9898 --resourceLocation=file:/Users/U2ware/Dropbox/Develop/u2ware/spring-xd-u2ware/extensions/spring-xd-u2ware-netty-http-source/src/test/resources"
+
+stream deploy --name "testStream"
+
+http get --target http://localhost:9898/com/yourcompany/yourproject/index.html 
+
+stream undeploy --name "testStream"
+
+stream destroy --name "testStream"
+

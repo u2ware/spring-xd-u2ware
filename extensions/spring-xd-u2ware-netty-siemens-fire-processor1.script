@@ -1,6 +1,6 @@
 
 
-stream create --name "testStream1" --definition "queue:myHttpRes > u2ware-netty-http-processor --httpPort=9898  --httpTimeout=10000 > queue:myHttpReq"
+stream create --name "testStream1" --definition "queue:myHttpRes > u2ware-http-processor --httpPort=9898  --httpTimeout=10000 > queue:myHttpReq"
 
 stream create --name "testStream2" --definition "queue:myHttpReq > u2ware-netty-siemens-fire-processor --port=10902 --messageKeep=true> queue:myHttpRes"
 
