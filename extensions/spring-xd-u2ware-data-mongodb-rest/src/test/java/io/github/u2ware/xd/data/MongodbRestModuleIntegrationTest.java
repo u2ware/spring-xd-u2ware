@@ -72,9 +72,6 @@ public class MongodbRestModuleIntegrationTest {
 		chain.destroy();
 
 		
-
-		Thread.sleep(5000);
-
 	}
 }
 
