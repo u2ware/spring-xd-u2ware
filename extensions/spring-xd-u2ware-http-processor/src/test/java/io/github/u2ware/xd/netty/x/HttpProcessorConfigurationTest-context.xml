@@ -12,7 +12,7 @@
 		<prop key="httpTimeout">10000</prop>
 	</util:properties>
 
-	<import resource="classpath:config/netty-http-processor.xml"/>
+	<import resource="classpath:config/http-processor.xml"/>
 
 	<!-- Override direct channel with a queue channel so the test will block until a message is received -->
 	<int:channel id="output">

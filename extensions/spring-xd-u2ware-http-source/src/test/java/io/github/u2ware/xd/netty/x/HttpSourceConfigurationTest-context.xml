@@ -12,7 +12,7 @@
 		<prop key="resourceLocation">classpath:</prop>
 	</util:properties>
 
-	<import resource="classpath:config/netty-http-source.xml"/>
+	<import resource="classpath:config/http-source.xml"/>
 
 	<!-- Override direct channel with a queue channel so the test will block until a message is received -->
 	<int:channel id="output">
