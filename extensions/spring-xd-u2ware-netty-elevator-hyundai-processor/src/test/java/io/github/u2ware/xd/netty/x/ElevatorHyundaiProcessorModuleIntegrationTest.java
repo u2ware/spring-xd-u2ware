@@ -15,7 +15,7 @@ import org.springframework.xd.dirt.test.process.SingleNodeProcessingChain;
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
-public class HyundaiElevatorProcessorModuleIntegrationTest {
+public class ElevatorHyundaiProcessorModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 

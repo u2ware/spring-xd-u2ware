@@ -12,9 +12,9 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class HyundaiElevatorProcessorModuleUploadMain {
+public class ElevatorHyundaiProcessorModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(HyundaiElevatorProcessorModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(ElevatorHyundaiProcessorModuleUploadMain.class);
 
     private static final String moduleName     = "u2ware-netty-elevator-hyundai-processor";
     private static final String moduleType     = "processor";

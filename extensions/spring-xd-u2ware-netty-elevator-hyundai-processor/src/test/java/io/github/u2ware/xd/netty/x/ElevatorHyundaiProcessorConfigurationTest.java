@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @ActiveProfiles({"use_json_input", "dont_use_splitter", "use_json_output"})
-public class HyundaiElevatorProcessorConfigurationTest {
+public class ElevatorHyundaiProcessorConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
