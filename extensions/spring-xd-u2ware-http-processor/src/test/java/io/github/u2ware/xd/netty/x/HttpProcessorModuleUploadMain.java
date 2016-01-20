@@ -16,9 +16,9 @@ public class HttpProcessorModuleUploadMain {
 	
     protected static Log logger = LogFactory.getLog(HttpProcessorModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-netty-http-processor";
+    private static final String moduleName     = "u2ware-http-processor";
     private static final String moduleType     = "processor";
-    private static final String moduleResource = "target/spring-xd-u2ware-netty-http-processor-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-http-processor-1.0.0.jar";
 
     private static final String sourceResource     = "../../xd/custom-modules/";
     private static final String targetResource     = "../../xd/custom-modules/";
