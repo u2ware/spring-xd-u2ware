@@ -13,7 +13,7 @@
 		<prop key="messageKeep">true</prop>
 	</util:properties>
 
-	<import resource="classpath:config/netty-jungho-lighting-processor.xml"/>
+	<import resource="classpath:config/netty-lighting-jungho-processor.xml"/>
 
 	<!-- Override direct channel with a queue channel so the test will block until a message is received -->
 	<int:channel id="output">
