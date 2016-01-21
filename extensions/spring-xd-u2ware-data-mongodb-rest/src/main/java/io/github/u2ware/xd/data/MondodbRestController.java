@@ -133,6 +133,23 @@ public class MondodbRestController {
     //////////////////////////////
 	// DATA, AlARM, CHART
 	//////////////////////////////
+    @RequestMapping(value="/data/{entityName}", method=RequestMethod.GET)
+	public Page<Entity> datas(
+			@PathVariable("entityName") String entityName, 
+			Pageable pageable) throws Exception{
+    	
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+		
+		BasicDBObject q = new BasicDBObject();
+		q.append("_class", Entity.class.getName());
+		Query query = new BasicQuery(q).with(pageable);
+
+		Long count = mongoTemplate.count(query, Entity.class, entityName);
+		List<Entity> content = mongoTemplate.find(query, Entity.class, entityName);
+		return new PageImpl<Entity>(content, pageable, count);
+	}
+    
+    
     @RequestMapping(value="/data/{entityName}/{id}", method=RequestMethod.GET)
 	public Entity data(
 			@PathVariable("entityName") String entityName, 
