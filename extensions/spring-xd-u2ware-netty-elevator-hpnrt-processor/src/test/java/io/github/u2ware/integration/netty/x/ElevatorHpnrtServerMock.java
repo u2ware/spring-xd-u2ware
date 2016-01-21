@@ -31,9 +31,11 @@ public class ElevatorHpnrtServerMock extends AbstractTcpServer{
 		mockServer = new ElevatorHpnrtServerMock();
 		mockServer.setPort(port);
 		mockServer.afterPropertiesSet();
+		System.err.println("ElevatorHpnrtServerMock Startup <localhost>:"+mockServer.getPort());
 	}
 	public static void shutdown() throws Exception{
 		mockServer.destroy();
+		System.err.println("ElevatorHpnrtServerMock Shutdown <localhost>:"+mockServer.getPort());
 	}
 	
 

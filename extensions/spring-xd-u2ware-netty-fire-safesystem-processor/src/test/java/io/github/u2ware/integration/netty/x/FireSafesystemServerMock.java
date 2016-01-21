@@ -24,17 +24,17 @@ public class FireSafesystemServerMock extends AbstractTcpServer {
 		FireSafesystemServerMock.startup(port);
 	}
 	
-	private static FireSafesystemServerMock siemensFireMaster;
+	private static FireSafesystemServerMock mockServer;
 	
 	public static void startup(int port) throws Exception{
-		siemensFireMaster = new FireSafesystemServerMock();
-		siemensFireMaster.setPort(port);
-		siemensFireMaster.afterPropertiesSet();
-		System.err.println("FireSafesystemServerMock Startup <localhost>:"+siemensFireMaster.getPort());
+		mockServer = new FireSafesystemServerMock();
+		mockServer.setPort(port);
+		mockServer.afterPropertiesSet();
+		System.err.println("FireSafesystemServerMock Startup <localhost>:"+mockServer.getPort());
 	}
 	public static void shutdown() throws Exception{
-		siemensFireMaster.destroy();
-		System.err.println("FireSafesystemServerMock Shutdown <localhost>:"+siemensFireMaster.getPort());
+		mockServer.destroy();
+		System.err.println("FireSafesystemServerMock Shutdown <localhost>:"+mockServer.getPort());
 	}
 	
 	

@@ -30,19 +30,19 @@ public class FireSiemensClientMock extends AbstractTcpClient {
 		FireSiemensClientMock.startup(host, port);
 	}
 	
-	private static FireSiemensClientMock siemensFireMaster;
+	private static FireSiemensClientMock mockClient;
 	
 	public static void startup(String host, int port) throws Exception{
-		siemensFireMaster = new FireSiemensClientMock();
-		siemensFireMaster.setHost(host);
-		siemensFireMaster.setPort(port);
-		siemensFireMaster.setAutoConnection(true);
-		siemensFireMaster.afterPropertiesSet();
-		System.err.println("SiemensFireMaster Startup "+siemensFireMaster.getHost()+":"+siemensFireMaster.getPort());
+		mockClient = new FireSiemensClientMock();
+		mockClient.setHost(host);
+		mockClient.setPort(port);
+		mockClient.setAutoConnection(true);
+		mockClient.afterPropertiesSet();
+		System.err.println("FireSiemensClientMock Startup "+mockClient.getHost()+":"+mockClient.getPort());
 	}
 	public static void shutdown() throws Exception{
-		siemensFireMaster.destroy();
-		System.err.println("SiemensFireMaster Shutdown "+siemensFireMaster.getHost()+":"+siemensFireMaster.getPort());
+		mockClient.destroy();
+		System.err.println("FireSiemensClientMock Shutdown "+mockClient.getHost()+":"+mockClient.getPort());
 	}
 	
 	

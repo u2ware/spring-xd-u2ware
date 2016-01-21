@@ -20,17 +20,17 @@ public class ElevatorHyundaiServerMock extends AbstractTcpServer{
 		ElevatorHyundaiServerMock.startup(port);
 	}
 	
-	private static ElevatorHyundaiServerMock hyundaiElevatorSlave;
+	private static ElevatorHyundaiServerMock mockServer;
 	
 	public static void startup(int port) throws Exception{
-		hyundaiElevatorSlave = new ElevatorHyundaiServerMock();
-		hyundaiElevatorSlave.setPort(port);
-		hyundaiElevatorSlave.afterPropertiesSet();
-		System.err.println("HyundaiElevatorSlave Startup "+hyundaiElevatorSlave.getPort());
+		mockServer = new ElevatorHyundaiServerMock();
+		mockServer.setPort(port);
+		mockServer.afterPropertiesSet();
+		System.err.println("ElevatorHyundaiServerMock Startup <localhost>:"+mockServer.getPort());
 	}
 	public static void shutdown() throws Exception{
-		hyundaiElevatorSlave.destroy();
-		System.err.println("HyundaiElevatorSlave Shutdown "+hyundaiElevatorSlave.getPort());
+		mockServer.destroy();
+		System.err.println("ElevatorHyundaiServerMock Shutdown "+mockServer.getPort());
 	}
 	
 
