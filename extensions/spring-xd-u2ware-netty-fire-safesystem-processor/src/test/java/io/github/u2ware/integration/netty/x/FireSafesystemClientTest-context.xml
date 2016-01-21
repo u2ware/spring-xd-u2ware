@@ -9,12 +9,17 @@
 		<int:queue/>
 	</int:channel>
 	
-	<bean id="fire" class="io.github.u2ware.integration.netty.x.SafesystemFireClient">
+	<bean id="fire" class="io.github.u2ware.integration.netty.x.FireSafesystemClient">
+		<property name="host" value="127.0.0.1"/>
+		<property name="port" value="12000"/>
+		<property name="autoConnection" value="true"/>
+		<property name="messagingPreservation" value="true"/>
+<!-- 
 		<property name="host" value="192.168.245.161"/>
 		<property name="port" value="2000"/>
+ -->
 		<property name="receiveChannel" ref="fireRequest"/>
 		<property name="sendChannel" ref="fireResponse"/>
-		<property name="messageKeep" value="true"/>
 	</bean>
 	
 	<int:channel id="fireResponse">

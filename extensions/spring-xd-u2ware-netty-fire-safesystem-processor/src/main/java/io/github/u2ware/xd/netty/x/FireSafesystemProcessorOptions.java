@@ -3,7 +3,7 @@ package io.github.u2ware.xd.netty.x;
 import org.springframework.xd.module.options.spi.ModuleOption;
 import org.springframework.xd.module.options.spi.ProfileNamesProvider;
 
-public class SafesystemFireSourceOptions implements ProfileNamesProvider{
+public class FireSafesystemProcessorOptions implements ProfileNamesProvider{
 
 	private static final String use_json_input = "use_json_input";
 	private static final String dont_use_json_input = "dont_use_json_input";
@@ -13,7 +13,7 @@ public class SafesystemFireSourceOptions implements ProfileNamesProvider{
 
 	private String host;
 	private int port;
-	private boolean messageKeep = false;
+	private boolean messagingPreservation;
 	
 	private boolean jsonInput = true;
 	private boolean jsonOutput = true;
@@ -33,15 +33,15 @@ public class SafesystemFireSourceOptions implements ProfileNamesProvider{
 	public void setPort(int port) {
 		this.port = port;
 	}
+	public boolean isMessagingPreservation() {
+		return messagingPreservation;
+	}
+	@ModuleOption("setMessagingPreservation")
+	public void setMessagingPreservation(boolean messagingPreservation) {
+		this.messagingPreservation = messagingPreservation;
+	}
 	public boolean isJsonInput() {
 		return jsonInput;
-	}
-	public boolean isMessageKeep() {
-		return messageKeep;
-	}
-	@ModuleOption("setMessageKeep")
-	public void setMessageKeep(boolean messageKeep) {
-		this.messageKeep = messageKeep;
 	}
 	@ModuleOption("setJsonInput")
 	public void setJsonInput(boolean jsonInput) {

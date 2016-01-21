@@ -1,5 +1,7 @@
 package io.github.u2ware.xd.netty.x;
 
+import io.github.u2ware.integration.netty.x.FireSafesystemServerMock;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.AfterClass;
@@ -13,7 +15,7 @@ import org.springframework.xd.dirt.test.process.SingleNodeProcessingChain;
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
-public class SafesystemFireProcessorModuleIntegrationTest {
+public class FireSafesystemProcessorModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
@@ -28,7 +30,7 @@ public class SafesystemFireProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		//SafesystemFireServerMock.startup("127.0.0.1", 10904);
+		FireSafesystemServerMock.startup(12002);
 		
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -36,14 +38,14 @@ public class SafesystemFireProcessorModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.processor, "safesystem-fire-processor"));
+				new SingletonModuleRegistry(ModuleType.processor, "fire-safesystem-processor"));
 	}
 
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
 		application.close();
-		//SafesystemFireServerMock.shutdown();
+		FireSafesystemServerMock.shutdown();
 	}
 	
 
@@ -52,9 +54,9 @@ public class SafesystemFireProcessorModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "safesystem-fire-processor "
-				+ " --host=192.168.245.161 "
-				+ " --port=2000 ";
+		String processingChainUnderTest = "fire-safesystem-processor "
+				+ " --host=127.0.0.1 "
+				+ " --port=12002 ";
 
 		logger.debug(processingChainUnderTest);
 		

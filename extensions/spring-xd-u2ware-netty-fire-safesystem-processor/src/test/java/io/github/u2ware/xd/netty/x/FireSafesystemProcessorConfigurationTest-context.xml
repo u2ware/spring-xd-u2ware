@@ -8,8 +8,8 @@
 	<context:property-placeholder properties-ref="props"/>
 
 	<util:properties id="props">
-		<prop key="host">192.168.245.161</prop>
-		<prop key="port">2000</prop>
+		<prop key="host">127.0.0.1</prop>
+		<prop key="port">12001</prop>
 	</util:properties>
 
 	<import resource="classpath:config/netty-fire-safesystem-processor.xml"/>

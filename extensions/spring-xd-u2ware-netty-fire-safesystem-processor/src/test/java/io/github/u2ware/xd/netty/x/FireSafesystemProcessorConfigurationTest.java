@@ -1,8 +1,11 @@
-package io.github.u2ware.integration.netty.x;
+package io.github.u2ware.xd.netty.x;
+
+import io.github.u2ware.integration.netty.x.FireSafesystemServerMock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,41 +14,38 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class SafesystemFireClient2Test {
+@ActiveProfiles({"use_json_input", "dont_use_json_output"})
+public class FireSafesystemProcessorConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		//SafesystemFireServerMock.startup("127.0.0.1",10902);
+		FireSafesystemServerMock.startup(12001);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
-		//SafesystemFireServerMock.shutdown();
+		FireSafesystemServerMock.shutdown();
 	}
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-    
-    @Autowired @Qualifier("fireRequest")
-	private MessageChannel fireRequest;
-    
-    @Autowired @Qualifier("fireResponse")
-	private PollableChannel fireResponse;
+    @Autowired @Qualifier("input")
+	MessageChannel input;
+
+    @Autowired @Qualifier("output")
+	PollableChannel output;
 
 	@Test
 	public void test() throws Exception{
-
-		for(int i=0; i< 10; i++){
-			fireRequest.send(MessageBuilder.withPayload(new SafesystemFireRequest()).build());
-			Message<?> message = fireResponse.receive();
-			logger.debug(message.getPayload());
-			Thread.sleep(1000);
-		}
+		
+		Message<?> message = output.receive();
+		logger.debug(message.getPayload());
+		Assert.assertNotNull(message);
 	}
 }
 

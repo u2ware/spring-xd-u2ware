@@ -2,18 +2,18 @@ package io.github.u2ware.integration.netty.x;
 
 import java.io.Serializable;
 
-public class SafesystemFireResponse implements Serializable{
+public class FireSafesystemResponse implements Serializable{
 
 	private static final long serialVersionUID = 1325956282725736704L;
 
 	private String id = "alarm";
 	private Object value;
 	
-	public SafesystemFireResponse(){
+	public FireSafesystemResponse(){
 		
 	}
 
-	public SafesystemFireResponse(Object value){
+	public FireSafesystemResponse(Object value){
 		this.id = "alarm";
 		this.value = value;
 	}

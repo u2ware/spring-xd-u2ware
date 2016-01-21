@@ -12,13 +12,13 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class SafesystemFireProcessorModuleUploadMain {
+public class FireSafesystemProcessorModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(SafesystemFireProcessorModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(FireSafesystemProcessorModuleUploadMain.class);
 
-    private static final String moduleName     = "u2ware-netty-safesystem-fire-processor";
+    private static final String moduleName     = "u2ware-netty-fire-safesystem-processor";
     private static final String moduleType     = "processor";
-    private static final String moduleResource = "target/spring-xd-u2ware-netty-safesystem-fire-processor-1.0.0.jar";
+    private static final String moduleResource = "target/spring-xd-u2ware-netty-fire-safesystem-processor-1.0.0.jar";
 
     private static final String sourceResource     = "../../xd/custom-modules/";
     private static final String targetResource     = "../../xd/custom-modules/";

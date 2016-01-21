@@ -1,6 +1,6 @@
 package io.github.u2ware.integration.netty.x;
 
-import io.github.u2ware.integration.netty.core.AbstractTcpClient;
+import io.github.u2ware.integration.netty.core.AbstractTcpServer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelDuplexHandler;
@@ -11,38 +11,30 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class SafesystemFireServerMock extends AbstractTcpClient {
+public class FireSafesystemServerMock extends AbstractTcpServer {
 
 	public static void main(String[] args) throws Exception{
 		
-		String host = "127.0.0.1";
+		int port = 12000;
 		try{
-			host = args[0];
+			port = Integer.parseInt(args[0]);
 		}catch(Exception e){
 		}
 
-		int port = 10902;
-		try{
-			port = Integer.parseInt(args[1]);
-		}catch(Exception e){
-		}
-
-		SafesystemFireServerMock.startup(host, port);
+		FireSafesystemServerMock.startup(port);
 	}
 	
-	private static SafesystemFireServerMock siemensFireMaster;
+	private static FireSafesystemServerMock siemensFireMaster;
 	
-	public static void startup(String host, int port) throws Exception{
-		siemensFireMaster = new SafesystemFireServerMock();
-		siemensFireMaster.setHost(host);
+	public static void startup(int port) throws Exception{
+		siemensFireMaster = new FireSafesystemServerMock();
 		siemensFireMaster.setPort(port);
-		siemensFireMaster.setAutoConnection(true);
 		siemensFireMaster.afterPropertiesSet();
-		System.err.println("SafesystemFireServerMock Startup "+siemensFireMaster.getHost()+":"+siemensFireMaster.getPort());
+		System.err.println("FireSafesystemServerMock Startup <localhost>:"+siemensFireMaster.getPort());
 	}
 	public static void shutdown() throws Exception{
 		siemensFireMaster.destroy();
-		System.err.println("SafesystemFireServerMock Shutdown "+siemensFireMaster.getHost()+":"+siemensFireMaster.getPort());
+		System.err.println("FireSafesystemServerMock Shutdown <localhost>:"+siemensFireMaster.getPort());
 	}
 	
 	
@@ -76,8 +68,13 @@ public class SafesystemFireServerMock extends AbstractTcpClient {
     	    
     	    
     	    public ByteBuf FIRE(){
-    	    	String msg = "[ALM]YYYY/MM/DD HH:MM:SS ["+System.currentTimeMillis()+" "+ random.nextInt()+" ] [CR]";
-    	    	return Unpooled.copiedBuffer(msg.getBytes());
+    	    	String msg = "[ALM]YYYY/MM/DD HH:MM:SS ["+System.currentTimeMillis()+" "+ random.nextInt()+"]";
+    	    	
+    	    	ByteBuf buf = Unpooled.buffer();
+    	    	buf.writeBytes(msg.getBytes());
+    	    	buf.writeByte((byte)0x0D);
+    	    	
+    	    	return buf;
     	    }
 		});
 	}
