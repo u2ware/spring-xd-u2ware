@@ -61,6 +61,7 @@ public class MongodbSinkConfigurationTest {
 		Thread.sleep(1000);
 
 		
+		//Thread.sleep(1000000);
 		
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
@@ -74,12 +75,14 @@ public class MongodbSinkConfigurationTest {
 		}
 
 		
-		r = template.findAll(DBObject.class, "Mina");
+		r = template.findAll(DBObject.class, "MyDatabase_Mina");
 		logger.debug("\tMina");
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}
 		Assert.assertEquals(3, r.size());
+		
+		
 	}
 }
 

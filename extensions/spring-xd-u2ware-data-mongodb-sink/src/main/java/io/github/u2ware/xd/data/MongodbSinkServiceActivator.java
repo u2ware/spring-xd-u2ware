@@ -93,6 +93,8 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		long timestamp = requestMessage.getHeaders().get(MessageHeaders.TIMESTAMP, Long.class);
 
 		if(id == null || value == null) return;
+				
+		id = collectionName+"_"+id;
 
 //		logger.info("id: "+id);
 //		logger.info("value: "+value);
@@ -101,16 +103,18 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 //		logger.debug("mongoTemplate: "+mongoTemplate);
 		
 		
-		BasicDBObject q = new BasicDBObject();
-		Sort sort = new Sort(Direction.DESC, "id");
-		Query query = new BasicQuery(q).with(sort);
-		
-		
-		//DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
-		Entity post = mongoTemplate.findOne(query, Entity.class, id.toString());
-		
-//		logger.debug("past : "+post);
 		if(valueLogging){
+			
+			BasicDBObject q = new BasicDBObject();
+			Sort sort = new Sort(Direction.DESC, "id");
+			Query query = new BasicQuery(q).with(sort);
+			
+			
+			//DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
+			Entity post = mongoTemplate.findOne(query, Entity.class, id.toString());
+			
+//			logger.debug("past : "+post);
+			
 			boolean history = false;
 			if(post != null){
 				Object pastValue = post.getValue();
