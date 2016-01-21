@@ -54,6 +54,8 @@ public class ElevatorHpnrtProcessorModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "elevator-hpnrt-processor "
+//				+ " --host=192.168.245.121 "
+//				+ " --port=5001 ";
 				+ " --host=127.0.0.1 "
 				+ " --port=15003 ";
 

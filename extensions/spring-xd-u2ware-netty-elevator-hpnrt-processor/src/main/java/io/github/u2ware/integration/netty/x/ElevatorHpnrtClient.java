@@ -30,7 +30,7 @@ public class ElevatorHpnrtClient extends AbstractTcpClient{
 	
 	@Override
 	protected void initChannelPipeline(ChannelPipeline pipeline) throws Exception {
-		pipeline.addLast(new NettyLoggingHandler(getClass()));
+		pipeline.addLast(new NettyLoggingHandler(getClass(), false));
 		pipeline.addLast(new FixedLengthFrameDecoder( 1 + 2 + (4*8) + 1 + 1  ) );
 		pipeline.addLast(new ElevatorHpnrtClientHandler(getClass()));		
 		pipeline.addLast(new NettyMessagingHandler(

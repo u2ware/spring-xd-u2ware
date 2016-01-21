@@ -3,7 +3,7 @@ package io.github.u2ware.integration.netty.x;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.CharsetUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-public class ElevatorHpnrtClientHandler extends MessageToMessageDecoder<ByteBuf>{
+public class ElevatorHpnrtClientHandler extends ByteToMessageDecoder{
 
 	static final ByteBuf ETX = Unpooled.wrappedBuffer(new byte[]{0x03});
 	
@@ -28,6 +28,8 @@ public class ElevatorHpnrtClientHandler extends MessageToMessageDecoder<ByteBuf>
 		
 		List<ElevatorHpnrtRequest> result = Lists.newArrayList();
 		
+		//logger.debug("decode: "+in.readableBytes());
+		
 		byte STX = in.readByte();//System.out.println(STX);
 		short LENGTH = in.readShort();//System.out.println(LENGTH);
 
@@ -42,10 +44,10 @@ public class ElevatorHpnrtClientHandler extends MessageToMessageDecoder<ByteBuf>
 			
 			//logger.debug(호기번호+"/ "+운행모드+" / "+운행방향+" / "+운행층+" : "+운행층문자+ " "+문열림);
 			
-			result.add(new ElevatorHpnrtRequest(호기번호+"_0", 운행모드,  호기번호+"호기 운행모드",   운행모드(운행모드)));
-			result.add(new ElevatorHpnrtRequest(호기번호+"_1", 운행방향,  호기번호+"호기 운행방향",   운행방향(운행방향)));
-			result.add(new ElevatorHpnrtRequest(호기번호+"_2", 운행층문자, 호기번호+"호기 운행층문자", 운행층문자));
-			result.add(new ElevatorHpnrtRequest(호기번호+"_3", 문열림,    호기번호+"호기 문열림",    문열림(문열림)));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_mode",  운행모드,  호기번호+"호기 운행모드",   운행모드(운행모드)));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_axis",  운행방향,  호기번호+"호기 운행방향",   운행방향(운행방향)));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_floor", 운행층문자, 호기번호+"호기 운행층문자", 운행층문자));
+			result.add(new ElevatorHpnrtRequest(호기번호+"_door",  문열림,    호기번호+"호기 문열림",    문열림(문열림)));
 		}
 
 		byte CHECKSUM = in.readByte();//System.out.println(CHECKSUM);

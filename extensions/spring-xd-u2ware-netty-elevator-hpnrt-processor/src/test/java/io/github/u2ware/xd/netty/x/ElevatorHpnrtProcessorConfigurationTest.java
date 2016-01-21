@@ -3,6 +3,8 @@ package io.github.u2ware.xd.netty.x;
 import io.github.u2ware.integration.netty.x.ElevatorHpnrtRequest;
 import io.github.u2ware.integration.netty.x.ElevatorHpnrtServerMock;
 
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.AfterClass;
@@ -22,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-@ActiveProfiles({"use_json_input", "dont_use_splitter", "use_json_output"})
+@ActiveProfiles({"use_json_input", "dont_use_splitter", "dont_use_json_output"})
 public class ElevatorHpnrtProcessorConfigurationTest {
 
 	@BeforeClass
@@ -54,7 +56,12 @@ public class ElevatorHpnrtProcessorConfigurationTest {
 			Message<?> message = output.receive();
 			Assert.assertNotNull(message);
 
-			logger.debug(message.getPayload());
+			if(message.getPayload() instanceof Collection){
+				Collection<?> payload = (Collection<?>)message.getPayload();
+				logger.debug(payload.size());
+			}else{
+				logger.debug(0);
+			}
 			Thread.sleep(1000);
 		}
 	}

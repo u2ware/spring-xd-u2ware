@@ -11,8 +11,14 @@
 
 	
 	<bean id="elevator1" class="io.github.u2ware.integration.netty.x.ElevatorHpnrtClient">
+		
 		<property name="host" value="127.0.0.1"/>
 		<property name="port" value="15001"/>
+		
+<!-- 
+		<property name="host" value="192.168.245.121"/>
+		<property name="port" value="5001"/>
+ -->
 		<property name="autoConnection" value="true"/>
 
 		<property name="receiveChannel" ref="elevatorRequest"/>
