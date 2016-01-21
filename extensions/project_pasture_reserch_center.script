@@ -15,7 +15,13 @@ stream create --name "electric" --definition "u2ware-bacnet-source  --remoteAddr
 ///////////////
 // 조명 
 ////////////////
-stream create --name "lighting" --definition "queue:fire > u2ware-netty-jungho-lighting-processor --host=192.168.245.3 --port=10808 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=lighting --idExpression=payload.id --valueExpression=payload.value --valueLogging=false" --deploy
+stream create --name "lighting" --definition "queue:fire > u2ware-netty-lighting-jungho-processor --host=192.168.245.3 --port=10808 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=lighting --idExpression=payload.id --valueExpression=payload.value --valueLogging=false" --deploy
+
+
+///////////////
+// 엘리베이터 
+////////////////
+stream create --name "elevator" --definition "queue:elevator > u2ware-netty-elevator-hpnrt-processor --host=192.168.245.121 --port=5001 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=elevator --idExpression=payload.id --valueExpression=payload.value --valueLogging=false" --deploy
 
 
 ///////////////
