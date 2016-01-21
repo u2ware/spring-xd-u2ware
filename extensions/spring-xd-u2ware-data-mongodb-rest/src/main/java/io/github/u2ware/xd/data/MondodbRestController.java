@@ -57,6 +57,8 @@ public class MondodbRestController {
 //	private static HttpServletRequest request(){
 //		return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 //	}
+
+    
     
     //////////////////////////////
 	// RAW
@@ -75,7 +77,6 @@ public class MondodbRestController {
 		}
 		return new PageImpl<DBObject>(content);
 	}
-    
     @RequestMapping(value="/raw/{databaseName}", method=RequestMethod.GET)
 	public Page<DBObject> collections(
 			@PathVariable("databaseName") String databaseName) throws Exception{
@@ -92,14 +93,12 @@ public class MondodbRestController {
 			Long documentCount = mongoTemplate.count(query, Entity.class, collectionName);
 			
 			BasicDBObject obj = new BasicDBObject();
-			obj.put("databaseName", databaseName);
 			obj.put("collectionName", collectionName);
 			obj.put("documentCount", documentCount);
 			content.add(obj);
 		}
 		return new PageImpl<DBObject>(content);
 	}
-
     @RequestMapping(value="/raw/{databaseName}/{collectionName}", method=RequestMethod.GET)
 	public Page<Entity> documents(
 			@PathVariable("databaseName") String databaseName, 
@@ -128,36 +127,39 @@ public class MondodbRestController {
 		Entity result = mongoTemplate.findById(id, Entity.class, collectionName);
 		return result;
 	}
-
     
+    /*
     //////////////////////////////
-	// DATA, AlARM, CHART
+	// Status
 	//////////////////////////////
-    @RequestMapping(value="/data/{entityName}", method=RequestMethod.GET)
-	public Page<Entity> datas(
+    @RequestMapping(value="/status/{entityName}", method=RequestMethod.GET)
+	public Page<DBObject> status(
+			@PathVariable("entityName") String entityName) throws Exception{
+
+		return collections(entityName);
+	}
+
+    //////////////////////////////
+	// Monitor
+	//////////////////////////////
+    @RequestMapping(value="/monitor/{entityName}", method=RequestMethod.GET)
+	public Page<Entity> monitor(
 			@PathVariable("entityName") String entityName, 
 			Pageable pageable) throws Exception{
     	
-		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-		
-		BasicDBObject q = new BasicDBObject();
-		q.append("_class", Entity.class.getName());
-		Query query = new BasicQuery(q).with(pageable);
-
-		Long count = mongoTemplate.count(query, Entity.class, entityName);
-		List<Entity> content = mongoTemplate.find(query, Entity.class, entityName);
-		return new PageImpl<Entity>(content, pageable, count);
+    	return documents(entityName, entityName, pageable);
 	}
+	*/
     
-    
-    @RequestMapping(value="/data/{entityName}/{id}", method=RequestMethod.GET)
-	public Entity data(
+    //////////////////////////////
+	// History
+	//////////////////////////////
+    @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.GET)
+	public Entity monitor(
 			@PathVariable("entityName") String entityName, 
 			@PathVariable("id") String id) throws Exception{
 
-		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-		Entity result = mongoTemplate.findById(id, Entity.class, entityName);
-		return result;
+    	return document(entityName, entityName, id);
 	}
     
     @RequestMapping(value="/alarm/{entityName}/{id}", method=RequestMethod.GET)
@@ -181,7 +183,15 @@ public class MondodbRestController {
 			}};
 	}
 
-
+    @RequestMapping(value="/history/{entityName}/{id}", method=RequestMethod.GET)
+	public Page<Entity> history(
+			@PathVariable("entityName") String entityName, 
+			@PathVariable("id") String id,
+			Pageable pageable) throws Exception{
+		
+    	return documents(entityName, id, pageable);
+	}
+    
     @RequestMapping(value="/chart/{entityName}/{id}", method=RequestMethod.GET)
 	public DBObject chart(
 			final @PathVariable("entityName") String entityName, 

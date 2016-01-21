@@ -64,16 +64,12 @@ public class MongodbRestApplicationTests {
 			}
 		}
 
-		this.mvc.perform(
-						get("/raw")
-				).andDo(
-						print()
-				).andExpect(
-						status().isOk()
-				);
 
+		//////////////////////////////
+		//
+		//////////////////////////////
 		this.mvc.perform(
-				get("/raw/person")
+				get("/monitor/person/Mina")
 		).andDo(
 				print()
 		).andExpect(
@@ -81,15 +77,7 @@ public class MongodbRestApplicationTests {
 		);
 
 		this.mvc.perform(
-				get("/raw/person/person")
-		).andDo(
-				print()
-		).andExpect(
-				status().isOk()
-		);
-
-		this.mvc.perform(
-				get("/raw/person/person/Mina")
+				get("/alarm/person/Mina")
 		).andDo(
 				print()
 		).andExpect(
@@ -98,7 +86,7 @@ public class MongodbRestApplicationTests {
 		
 		
 		this.mvc.perform(
-				get("/data/person/Mina")
+				get("/history/person/Mina")
 		).andDo(
 				print()
 		).andExpect(
