@@ -11,7 +11,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class SiemensFireMaster extends AbstractTcpClient {
+public class FireSiemensClientMock extends AbstractTcpClient {
 
 	public static void main(String[] args) throws Exception{
 		
@@ -27,13 +27,13 @@ public class SiemensFireMaster extends AbstractTcpClient {
 		}catch(Exception e){
 		}
 
-		SiemensFireMaster.startup(host, port);
+		FireSiemensClientMock.startup(host, port);
 	}
 	
-	private static SiemensFireMaster siemensFireMaster;
+	private static FireSiemensClientMock siemensFireMaster;
 	
 	public static void startup(String host, int port) throws Exception{
-		siemensFireMaster = new SiemensFireMaster();
+		siemensFireMaster = new FireSiemensClientMock();
 		siemensFireMaster.setHost(host);
 		siemensFireMaster.setPort(port);
 		siemensFireMaster.setAutoConnection(true);
@@ -50,6 +50,7 @@ public class SiemensFireMaster extends AbstractTcpClient {
 	@Override
 	protected void initChannelPipeline(ChannelPipeline pipeline) throws Exception {
 		
+		//pipeline.addLast("msg", new NettyLoggingHandler(getClass()));
 		pipeline.addLast("idle", new IdleStateHandler(3000, 0, 0, TimeUnit.MILLISECONDS));
 		pipeline.addLast("message_channel", new ChannelDuplexHandler(){
 
@@ -59,10 +60,9 @@ public class SiemensFireMaster extends AbstractTcpClient {
 			@Override
 			public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
 				
-				if(seq % 2 == 0){
+    			if(seq % 2 == 0){
 					ctx.writeAndFlush(ACK());
 				}else{
-	    			//System.err.println("SiemensFireMaster ...");
 					ctx.writeAndFlush(FIRE());
 				}
 				

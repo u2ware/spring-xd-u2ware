@@ -39,7 +39,7 @@
 							<goal>java</goal>  
 						</goals>  
 						<configuration>  
-							<mainClass>io.github.u2ware.xd.netty.x.SiemensFireProcessorModuleUploadMain</mainClass>
+							<mainClass>io.github.u2ware.xd.netty.x.FireSiemensProcessorModuleUploadMain</mainClass>
 							<classpathScope>test</classpathScope>
 						</configuration>  
 					</execution>  

@@ -3,7 +3,7 @@ package io.github.u2ware.xd.netty.x;
 import org.springframework.xd.module.options.spi.ModuleOption;
 import org.springframework.xd.module.options.spi.ProfileNamesProvider;
 
-public class SiemensFireProcessorOptions implements ProfileNamesProvider{
+public class FireSiemensProcessorOptions implements ProfileNamesProvider{
 
 	private static final String use_json_input = "use_json_input";
 	private static final String dont_use_json_input = "dont_use_json_input";
@@ -12,8 +12,7 @@ public class SiemensFireProcessorOptions implements ProfileNamesProvider{
 	private static final String dont_use_json_output = "dont_use_json_output";
 
 	private int port;
-	
-	private boolean messageKeep = false;
+	private boolean messagingPreservation;
 	
 	private boolean jsonInput = true;
 	private boolean jsonOutput = true;
@@ -28,12 +27,12 @@ public class SiemensFireProcessorOptions implements ProfileNamesProvider{
 	public boolean isJsonInput() {
 		return jsonInput;
 	}
-	public boolean isMessageKeep() {
-		return messageKeep;
+	public boolean isMessagingPreservation() {
+		return messagingPreservation;
 	}
-	@ModuleOption("setMessageKeep")
-	public void setMessageKeep(boolean messageKeep) {
-		this.messageKeep = messageKeep;
+	@ModuleOption("setMessagingPreservation")
+	public void setMessagingPreservation(boolean messagingPreservation) {
+		this.messagingPreservation = messagingPreservation;
 	}
 	@ModuleOption("setJsonInput")
 	public void setJsonInput(boolean jsonInput) {

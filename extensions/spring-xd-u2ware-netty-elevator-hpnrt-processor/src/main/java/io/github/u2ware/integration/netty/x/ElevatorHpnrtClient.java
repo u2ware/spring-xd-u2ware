@@ -21,9 +21,6 @@ public class ElevatorHpnrtClient extends AbstractTcpClient{
 	public void setReceiveChannel(PollableChannel receiveChannel) {
 		this.receiveChannel = receiveChannel;
 	}
-	public boolean isMessagingPreservation() {
-		return messagingPreservation;
-	}
 	public void setMessagingPreservation(boolean messagingPreservation) {
 		this.messagingPreservation = messagingPreservation;
 	}

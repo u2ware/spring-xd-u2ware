@@ -4,16 +4,16 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.util.CharsetUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class SiemensFireSlaveHandler extends ByteToMessageDecoder{
+public class FireSiemensSlaveHandler extends ByteToMessageDecoder{
 
 	static final ByteBuf ETX = Unpooled.copiedBuffer(new byte[]{0x03});
 	static final ByteBuf ACK = Unpooled.copiedBuffer(new byte[]{0x02, (byte)0x81, (byte)0x86, 0x03 });
@@ -33,7 +33,7 @@ public class SiemensFireSlaveHandler extends ByteToMessageDecoder{
 	
 	protected InternalLogger logger;
 	
-	public SiemensFireSlaveHandler(Class<?> clazz){
+	public FireSiemensSlaveHandler(Class<?> clazz){
 		logger = InternalLoggerFactory.getInstance(clazz);
 	}
 	
@@ -57,7 +57,7 @@ public class SiemensFireSlaveHandler extends ByteToMessageDecoder{
 			byte rx = in.readByte();
 			byte op = in.readByte();
 			byte seq = in.readByte();
-			String data = in.readBytes(in.readableBytes() - 1).toString(Charset.defaultCharset());
+			String data = in.readBytes(in.readableBytes() - 1).toString(CharsetUtil.US_ASCII);
 			byte etx = in.readByte();
 			
 			//logger.debug("op: "+op+" "+OP_Codes.get(op));
@@ -69,7 +69,7 @@ public class SiemensFireSlaveHandler extends ByteToMessageDecoder{
 			logger.debug("Area Name : "+args[2]);
 			logger.debug("User Message : "+args[3]);
 			*/
-			out.add(new SiemensFireResponse(data, op, OP_Codes.get(op)));
+			out.add(new FireSiemensResponse(op, OP_Codes.get(op)+" "+data));
 		}
 		
 		ctx.writeAndFlush(ACK.copy());

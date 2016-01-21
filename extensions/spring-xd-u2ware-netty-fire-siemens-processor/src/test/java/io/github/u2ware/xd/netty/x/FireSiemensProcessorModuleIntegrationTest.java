@@ -1,6 +1,6 @@
 package io.github.u2ware.xd.netty.x;
 
-import io.github.u2ware.integration.netty.x.SiemensFireMaster;
+import io.github.u2ware.integration.netty.x.FireSiemensClientMock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,7 +15,7 @@ import org.springframework.xd.dirt.test.process.SingleNodeProcessingChain;
 import org.springframework.xd.dirt.test.process.SingleNodeProcessingChainSupport;
 import org.springframework.xd.module.ModuleType;
 
-public class SiemensFireProcessorModuleIntegrationTest {
+public class FireSiemensProcessorModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
@@ -30,7 +30,7 @@ public class SiemensFireProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		SiemensFireMaster.startup("127.0.0.1", 10904);
+		FireSiemensClientMock.startup("127.0.0.1", 10904);
 		
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -38,14 +38,14 @@ public class SiemensFireProcessorModuleIntegrationTest {
 		SingleNodeIntegrationTestSupport singleNodeIntegrationTestSupport 
 			= new SingleNodeIntegrationTestSupport(application);
 		singleNodeIntegrationTestSupport.addModuleRegistry(
-				new SingletonModuleRegistry(ModuleType.processor, "siemens-fireview-processor"));
+				new SingletonModuleRegistry(ModuleType.processor, "fire-siemens-processor"));
 	}
 
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
 		application.close();
-		SiemensFireMaster.shutdown();
+		FireSiemensClientMock.shutdown();
 	}
 	
 
@@ -54,17 +54,14 @@ public class SiemensFireProcessorModuleIntegrationTest {
 
 		String streamName = "streamTest";
 
-		String processingChainUnderTest = "siemens-fireview-processor "
-				+ " --port=10904 "
-				+ " --messageKeep=true ";
+		String processingChainUnderTest = "fire-siemens-processor "
+				+ " --port=10904 ";
 
 		logger.debug(processingChainUnderTest);
 		
 		//SingleNodeProcessingChainConsumer chain = SingleNodeProcessingChainSupport.chainConsumer(application, streamName, processingChainUnderTest);
 		SingleNodeProcessingChain chain = SingleNodeProcessingChainSupport.chain(application, streamName, processingChainUnderTest);
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
-		
-		chain.sendPayload("{}");
 		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
 		logger.debug(payload);

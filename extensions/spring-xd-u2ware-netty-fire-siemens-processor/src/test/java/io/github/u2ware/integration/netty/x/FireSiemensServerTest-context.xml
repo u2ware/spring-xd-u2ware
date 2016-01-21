@@ -9,9 +9,9 @@
 		<int:queue/>
 	</int:channel>
 	
-	<bean id="fire" class="io.github.u2ware.integration.netty.x.SiemensFireSlave">
-		<property name="port" value="10902"/>
-		<property name="messageKeep" value="true"/>
+	<bean id="fire" class="io.github.u2ware.integration.netty.x.FireSiemensServer">
+		<property name="port" value="10901"/>
+		<property name="messagingPreservation" value="true"/>
 		<property name="receiveChannel" ref="fireRequest"/>
 		<property name="sendChannel" ref="fireResponse"/>
 	</bean>
