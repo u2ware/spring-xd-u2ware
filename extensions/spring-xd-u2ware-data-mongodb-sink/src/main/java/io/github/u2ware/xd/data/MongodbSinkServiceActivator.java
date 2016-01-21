@@ -94,21 +94,17 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 
 		if(id == null || value == null) return;
 				
-		id = collectionName+"_"+id;
-
 //		logger.info("id: "+id);
 //		logger.info("value: "+value);
 //		logger.info("timestamp: "+timestamp);
 //		logger.info("collectionName: "+collectionName);
 //		logger.debug("mongoTemplate: "+mongoTemplate);
 		
-		
 		if(valueLogging){
 			
 			BasicDBObject q = new BasicDBObject();
 			Sort sort = new Sort(Direction.DESC, "id");
 			Query query = new BasicQuery(q).with(sort);
-			
 			
 			//DBObject past = mongoTemplate.getCollection(id.toString()).find().sort(new BasicDBObject("timestamp", -1)).limit(1).one();
 			Entity post = mongoTemplate.findOne(query, Entity.class, id.toString());

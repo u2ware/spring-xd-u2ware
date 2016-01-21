@@ -75,7 +75,7 @@ public class MongodbSinkConfigurationTest {
 		}
 
 		
-		r = template.findAll(DBObject.class, "MyDatabase_Mina");
+		r = template.findAll(DBObject.class, "Mina");
 		logger.debug("\tMina");
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
