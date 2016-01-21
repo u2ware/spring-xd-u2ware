@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "queue:fire > u2ware-netty-siemens-fire-processor --port=10902 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=fire --idExpression=payload.id --valueExpression=payload.value"
+stream create --name "testStream" --definition "queue:fire > u2ware-netty-fire-safesystem-processor --host=127.0.0.1 --port=12000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=fire --idExpression=payload.id --valueExpression=payload.value"
 
 stream deploy --name "testStream"
 
