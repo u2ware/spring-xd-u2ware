@@ -12,9 +12,9 @@ import org.springframework.xd.dirt.test.SingleNodeIntegrationTestSupport;
 import org.springframework.xd.module.ModuleType;
 
 
-public class JunghoLightingProcessorModuleUploadMain {
+public class LightingJunghoProcessorModuleUploadMain {
 	
-    protected static Log logger = LogFactory.getLog(JunghoLightingProcessorModuleUploadMain.class);
+    protected static Log logger = LogFactory.getLog(LightingJunghoProcessorModuleUploadMain.class);
 
     private static final String moduleName     = "u2ware-netty-lighting-jungho-processor";
     private static final String moduleType     = "processor";

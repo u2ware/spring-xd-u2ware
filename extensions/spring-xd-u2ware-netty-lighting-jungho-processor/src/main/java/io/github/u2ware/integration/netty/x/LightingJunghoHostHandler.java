@@ -112,7 +112,7 @@ public class LightingJunghoHostHandler extends ByteToMessageDecoder{
 			frame = frame.writeBytes(d);
 			
 			
-            if(d[d.length - 2] == ETX){
+            if(d.length > 2 && d[d.length - 2] == ETX){
             	
 				TEXT(frame, out);
 				frame = null;

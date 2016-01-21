@@ -30,7 +30,7 @@ public class LightingJunghoHostTest {
 	@Test
 	public void test() throws Exception{
 
-		for(int i=0; i < 4; i++){
+		for(int i=0; i < 3; i++){
 
 			Message<?> message = lightingResponse.receive();
 			Assert.assertNotNull(message);

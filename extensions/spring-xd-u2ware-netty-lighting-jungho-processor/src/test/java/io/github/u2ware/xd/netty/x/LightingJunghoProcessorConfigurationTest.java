@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @ActiveProfiles({"use_json_input", "dont_use_splitter", "dont_use_json_output"})
-public class JunghoLightingProcessorConfigurationTest {
+public class LightingJunghoProcessorConfigurationTest {
 
     protected Log logger = LogFactory.getLog(getClass());
 
