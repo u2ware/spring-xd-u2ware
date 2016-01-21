@@ -21,8 +21,8 @@
 	<bean class="io.github.u2ware.integration.netty.x.ElevatorHyundaiClient">
 		<property name="host" value="${host}"/>
 		<property name="port" value="${port}"/>
+		<property name="autoConnection" value="true"/>
 		<property name="messagingTimeout" value="${messagingTimeout}"/>
-		
 		<property name="receiveChannel" ref="nettyRequest"/>
 		<property name="sendChannel" ref="nettyResponse"/>
 	</bean>
