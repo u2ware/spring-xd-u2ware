@@ -187,9 +187,37 @@ public class MondodbRestController {
 	public Page<Entity> history(
 			@PathVariable("entityName") String entityName, 
 			@PathVariable("id") String id,
+			final @RequestParam(name="min", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime min, 
+			final @RequestParam(name="max", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime max, 
+			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime datetime, 
+			final @RequestParam(name="interval", required=false) Interval interval,
 			Pageable pageable) throws Exception{
 		
-    	return documents(entityName, id, pageable);
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+
+		DateTime s = null, e = null;
+		if(min != null && max != null){
+			s = min;
+			e = max;
+		}else{
+			DateTime x = datetime != null ? datetime : DateTime.now();
+			s = EntityTimestampSupport.minimumValue(x, interval);
+			e = EntityTimestampSupport.maximumValue(x, interval);
+		}
+		
+		Query query = null;
+		if(s != null && e != null){
+			query = new Query(Criteria.where("_id").gte(s.getMillis()).lte(e.getMillis())).with(pageable);
+		}else{
+			query = new Query();
+		}
+		
+		logger.debug(""+s);
+		logger.debug(""+e);
+
+		Long count = mongoTemplate.count(query, Entity.class, id);
+		List<Entity> content = mongoTemplate.find(query, Entity.class, id);
+		return new PageImpl<Entity>(content, pageable, count);
 	}
     
     @RequestMapping(value="/chart/{entityName}/{id}", method=RequestMethod.GET)

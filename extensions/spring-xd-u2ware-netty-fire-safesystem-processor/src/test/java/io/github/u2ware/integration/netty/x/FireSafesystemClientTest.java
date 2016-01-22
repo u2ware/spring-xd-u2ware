@@ -46,6 +46,8 @@ public class FireSafesystemClientTest {
 			logger.debug(message.getPayload());
 			Thread.sleep(1000);
 		}
+		
+		Thread.sleep(1000000000);
 	}
 }
 

@@ -87,6 +87,11 @@ public class MongodbRestApplicationTests {
 		
 		this.mvc.perform(
 				get("/history/person/Mina")
+				//.param("min", "2016-01-03 00:00:00")
+				//.param("max", "2016-01-05 00:00:00")
+				
+				.param("datetime", "2016-01-11 00:00:00")
+				.param("interval", "HOUR")
 		).andDo(
 				print()
 		).andExpect(
@@ -103,7 +108,6 @@ public class MongodbRestApplicationTests {
 		).andExpect(
 				status().isOk()
 		);
-		
 		
 		/*
 		this.mvc.perform(

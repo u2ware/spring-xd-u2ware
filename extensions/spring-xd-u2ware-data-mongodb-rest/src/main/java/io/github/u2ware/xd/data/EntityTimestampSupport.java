@@ -41,6 +41,81 @@ public class EntityTimestampSupport {
 		}
 	}
 
+	public static DateTime maximumValue(DateTime x, Interval interval) {
+		
+		
+		
+		if(Interval.MINUTE.equals(interval)){
+			
+		}else if(Interval.HOUR.equals(interval)){
+			
+    		return x.hourOfDay().withMaximumValue()
+    				.minuteOfHour().withMaximumValue()
+					.secondOfMinute().withMaximumValue()
+					.millisOfSecond().withMaximumValue();
+    		
+		}else if(Interval.DAY.equals(interval)){
+
+			return x.dayOfMonth().withMaximumValue()
+    				.hourOfDay().withMaximumValue()
+    				.minuteOfHour().withMaximumValue()
+					.secondOfMinute().withMaximumValue()
+					.millisOfSecond().withMaximumValue();
+			
+		}else if(Interval.MONTH.equals(interval)){
+
+			return x.monthOfYear().withMinimumValue()
+    				.dayOfMonth().withMinimumValue()
+    				.hourOfDay().withMaximumValue()
+    				.minuteOfHour().withMaximumValue()
+					.secondOfMinute().withMaximumValue()
+					.millisOfSecond().withMaximumValue();
+			
+		}else if(Interval.REALTIME.equals(interval)){
+
+		}else{
+
+		}
+		return null;
+	}
+	
+	public static DateTime minimumValue(DateTime x, Interval interval) {
+		
+		if(Interval.MINUTE.equals(interval)){
+			
+		}else if(Interval.HOUR.equals(interval)){
+			
+    		return x.hourOfDay().withMinimumValue()
+    				.minuteOfHour().withMinimumValue()
+					.secondOfMinute().withMinimumValue()
+					.millisOfSecond().withMinimumValue();
+    		
+		}else if(Interval.DAY.equals(interval)){
+
+			return x.dayOfMonth().withMinimumValue()
+    				.hourOfDay().withMinimumValue()
+    				.minuteOfHour().withMinimumValue()
+					.secondOfMinute().withMinimumValue()
+					.millisOfSecond().withMinimumValue();
+    		
+		}else if(Interval.MONTH.equals(interval)){
+
+    		return x.monthOfYear().withMinimumValue()
+    				.dayOfMonth().withMinimumValue()
+    				.hourOfDay().withMinimumValue()
+    				.minuteOfHour().withMinimumValue()
+					.secondOfMinute().withMinimumValue()
+					.millisOfSecond().withMinimumValue();
+    		
+		}else if(Interval.REALTIME.equals(interval)){
+
+		}else{
+
+		}
+		return null;
+	}
+	
+	
 	private static void minute(DateTime d, IntervalHandler handler){
 		
     	DateTime x = d.minuteOfHour().withMinimumValue();
