@@ -114,9 +114,24 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 			boolean history = false;
 			if(post != null){
 				Object pastValue = post.getValue();
-				if(! value.equals(pastValue)){
-					history = true;
+				
+				if(pastValue instanceof Number && value instanceof Number){
+					
+					Number o = (Number)pastValue;
+					Number n = (Number)value;
+					
+					double diff = Math.abs(o.doubleValue() - n.doubleValue());
+					double rule = n.doubleValue() * 0.1d;
+					if(diff > rule){
+						history = true;
+					}
+						
+				}else{
+					if(! value.equals(pastValue)){
+						history = true;
+					}
 				}
+				
 			}else{
 				history = true;
 			}
