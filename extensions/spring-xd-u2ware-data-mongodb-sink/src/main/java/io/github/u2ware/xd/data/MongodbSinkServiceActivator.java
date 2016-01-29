@@ -1,5 +1,6 @@
 package io.github.u2ware.xd.data;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -100,7 +101,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 //		logger.info("collectionName: "+collectionName);
 //		logger.debug("mongoTemplate: "+mongoTemplate);
 		
-		if(valueLogging){
+		if(valueLogging && mongoTemplate.getDb().collectionExists(id.toString())){
 			
 			BasicDBObject q = new BasicDBObject();
 			Sort sort = new Sort(Direction.DESC, "id");
@@ -115,23 +116,20 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 			if(post != null){
 				Object pastValue = post.getValue();
 				
-				if(pastValue instanceof Number && value instanceof Number){
-					
-					Number o = (Number)pastValue;
-					Number n = (Number)value;
-					
-					double diff = Math.abs(o.doubleValue() - n.doubleValue());
-					double rule = n.doubleValue() * 0.1d;
-					if(diff > rule){
-						history = true;
-					}
-						
-				}else{
-					if(! value.equals(pastValue)){
+				String newText = value.toString();
+				String oldText = pastValue.toString();
+				
+				if(! oldText.equals(newText)){
+					if(pastValue instanceof Number && value instanceof Number){
+						double diff = Math.abs(NumberUtils.createDouble(newText) - NumberUtils.createDouble(oldText));
+						if(0.01 < diff){
+							history = true;
+						}
+					}else{
 						history = true;
 					}
 				}
-				
+
 			}else{
 				history = true;
 			}

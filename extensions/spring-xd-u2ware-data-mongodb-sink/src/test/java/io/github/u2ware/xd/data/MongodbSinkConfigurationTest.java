@@ -47,6 +47,10 @@ public class MongodbSinkConfigurationTest {
 	@Test
 	public void test() throws Exception{
 
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
+		template.createCollection("Mina");
+		
 		
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18 }").build());
 		Thread.sleep(1000);
@@ -63,8 +67,6 @@ public class MongodbSinkConfigurationTest {
 		
 		//Thread.sleep(1000000);
 		
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
-		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
 		List<DBObject> r = null;
 		
 		r= template.findAll(DBObject.class, "MyDatabase");

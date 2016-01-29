@@ -53,6 +53,11 @@ public class MongodbSinkModuleIntegrationTest {
 	@Test
 	public void test() throws Exception {
 
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
+		template.createCollection("Mina");
+		
+		
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "data-mongodb-sink "
@@ -83,8 +88,6 @@ public class MongodbSinkModuleIntegrationTest {
 		Thread.sleep(1000);
 		
 		
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
-		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
 		List<DBObject> r = null;
 		
 		r= template.findAll(DBObject.class, "MyDatabase");
