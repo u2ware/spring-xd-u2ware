@@ -71,21 +71,21 @@ public class MondodbRestController {
 		
     	List<DBObject> content = Lists.newArrayList();
     	
-		Long documentCount = 0l;
     	
 		for(String databaseName : mongo.getDatabaseNames()){
 
 			DB database = mongo.getDB(databaseName);
+			Long totalDocumentCount = 0l;
 			Set<String> collectionNames = database.getCollectionNames();
 			for(String collectionName : collectionNames){
 				DBCollection collection = database.getCollection(collectionName);
-				documentCount = documentCount + collection.count();
+				totalDocumentCount = totalDocumentCount + collection.count();
 			}
 
 			BasicDBObject d = new BasicDBObject();
 			d.put("databaseName", databaseName);
 			d.put("collectionCount", collectionNames.size());
-			d.put("documentCount", documentCount);
+			d.put("totalDocumentCount", totalDocumentCount);
 			content.add(d);
 		}
 		return new PageImpl<DBObject>(content);
