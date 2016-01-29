@@ -6,6 +6,7 @@ import io.github.u2ware.xd.data.EntityTimestampSupport.IntervalHandler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
@@ -35,6 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
@@ -67,36 +70,44 @@ public class MondodbRestController {
 	public Page<DBObject> database() throws Exception{
 		
     	List<DBObject> content = Lists.newArrayList();
+    	
+		Long documentCount = 0l;
+    	
 		for(String databaseName : mongo.getDatabaseNames()){
-			
-			int collectionCount = mongo.getDB(databaseName).getCollectionNames().size();
-			BasicDBObject obj = new BasicDBObject();
-			obj.put("databaseName", databaseName);
-			obj.put("collectionCount", collectionCount);
-			content.add(obj);
+
+			DB database = mongo.getDB(databaseName);
+			Set<String> collectionNames = database.getCollectionNames();
+			for(String collectionName : collectionNames){
+				DBCollection collection = database.getCollection(collectionName);
+				documentCount = documentCount + collection.count();
+			}
+
+			BasicDBObject d = new BasicDBObject();
+			d.put("databaseName", databaseName);
+			d.put("collectionCount", collectionNames.size());
+			d.put("documentCount", documentCount);
+			content.add(d);
 		}
 		return new PageImpl<DBObject>(content);
 	}
+    
     @RequestMapping(value="/raw/{databaseName}", method=RequestMethod.GET)
 	public Page<DBObject> collections(
 			@PathVariable("databaseName") String databaseName) throws Exception{
 
-		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
+		DB database = mongo.getDB(databaseName);
 
     	List<DBObject> content = Lists.newArrayList();
-		for(String collectionName : mongoTemplate.getCollectionNames()){
+		for(String collectionName : database.getCollectionNames()){
 
-			BasicDBObject q = new BasicDBObject();
-			q.append("_class", Entity.class.getName());
-			
-			Query query = new BasicQuery(q);
-			Long documentCount = mongoTemplate.count(query, Entity.class, collectionName);
+			DBCollection collection = database.getCollection(collectionName);
 			
 			BasicDBObject obj = new BasicDBObject();
 			obj.put("collectionName", collectionName);
-			obj.put("documentCount", documentCount);
+			obj.put("documentCount", collection.count());
 			content.add(obj);
 		}
+		
 		return new PageImpl<DBObject>(content);
 	}
     @RequestMapping(value="/raw/{databaseName}/{collectionName}", method=RequestMethod.GET)
@@ -108,7 +119,6 @@ public class MondodbRestController {
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
 		
 		BasicDBObject q = new BasicDBObject();
-		q.append("_class", Entity.class.getName());
 		Query query = new BasicQuery(q).with(pageable);
 
 		Long count = mongoTemplate.count(query, Entity.class, collectionName);
@@ -147,7 +157,7 @@ public class MondodbRestController {
 
     	return document(entityName, entityName, id);
 	}
-    
+
     //////////////////////////////
 	// alarm
 	//////////////////////////////
@@ -171,6 +181,25 @@ public class MondodbRestController {
 				}
 			}};
 	}
+    
+    
+    //////////////////////////////////////////
+	// Reset for 'History', 'Chart'
+	//////////////////////////////////////////
+    @RequestMapping(value="/reset/{entityName}/{id}", method=RequestMethod.GET)
+	public Page<DBObject> reset(
+			final @PathVariable("entityName") String entityName, 
+			final @PathVariable("id") String id) throws Exception{
+    
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+  	
+    	if(! mongoTemplate.getDb().collectionExists(id)){
+    		mongoTemplate.createCollection(id);
+    	}
+    	
+    	return collections(entityName);
+    }    
+    
 
     //////////////////////////////
 	// History

@@ -108,6 +108,17 @@ public class MongodbRestApplicationTests {
 		).andExpect(
 				status().isOk()
 		);
+
+		
+		this.mvc.perform(
+				get("/reset/person/Ooops")
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		);
+		
+		
 		
 		/*
 		this.mvc.perform(

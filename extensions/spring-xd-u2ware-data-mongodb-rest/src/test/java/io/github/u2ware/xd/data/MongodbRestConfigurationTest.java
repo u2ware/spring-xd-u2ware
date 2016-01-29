@@ -37,11 +37,13 @@ public class MongodbRestConfigurationTest {
 		Thread.sleep(2000);
 		RestTemplate restTemplate = new RestTemplate();
 
-		
 		Map database = restTemplate.getForObject("http://localhost:9898/raw/", Map.class);
 		//logger.debug("database:"+database);
 		List<Map> databaseContent = (List<Map>)database.get("content");
 		
+		logger.debug("\t\t ");
+		logger.debug("\t\t ");
+		logger.debug("\t\t ");
 		for(Map db : databaseContent){
 			logger.debug(db);
 			
@@ -65,24 +67,10 @@ public class MongodbRestConfigurationTest {
 							collection.get("collectionName"),
 							e.get("id"));
 
-					logger.debug("\tcc\t"+entity);
-
+					logger.debug("\t\t"+entity);
 				}
 			}
 		}
-
-		/*
-		String entity = restTemplate.getForObject("http://localhost:9898/hvac/hvac/2001_4_2", String.class);
-		logger.debug(entity);
-		logger.debug(entity);
-		logger.debug(entity);
-		logger.debug(entity);
-		logger.debug(entity);
-			*/	
-		
-//		Map result4 = restTemplate.postForObject("http://localhost:9898/test/person","{'name':'Joe'}", Map.class);
-//		logger.debug(result4);
-//		Assert.assertEquals(1, result4.size());
 	}
 }
 
