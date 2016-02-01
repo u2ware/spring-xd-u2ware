@@ -82,7 +82,7 @@ public class MongodbSinkConfigurationTest {
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}
-		Assert.assertEquals(3, r.size());
+		Assert.assertEquals(1, r.size());
 		
 		
 	}

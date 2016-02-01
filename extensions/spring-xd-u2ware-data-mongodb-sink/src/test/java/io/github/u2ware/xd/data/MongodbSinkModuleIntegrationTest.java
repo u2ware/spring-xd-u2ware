@@ -99,7 +99,7 @@ public class MongodbSinkModuleIntegrationTest {
 
 		r = template.findAll(DBObject.class, "Mina");
 		logger.debug("\tMina");
-		Assert.assertEquals(3, r.size());
+		Assert.assertEquals(1, r.size());
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}

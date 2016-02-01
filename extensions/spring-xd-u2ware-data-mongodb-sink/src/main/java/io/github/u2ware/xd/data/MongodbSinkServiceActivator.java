@@ -1,6 +1,5 @@
 package io.github.u2ware.xd.data;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -115,19 +114,10 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 			boolean history = false;
 			if(post != null){
 				Object pastValue = post.getValue();
+				Long postTimestamp = (Long)post.getId();
 				
-				String newText = value.toString();
-				String oldText = pastValue.toString();
-				
-				if(! oldText.equals(newText)){
-					if(pastValue instanceof Number && value instanceof Number){
-						double diff = Math.abs(NumberUtils.createDouble(newText) - NumberUtils.createDouble(oldText));
-						if(0.01 < diff){
-							history = true;
-						}
-					}else{
-						history = true;
-					}
+				if(! pastValue.equals(value) && (timestamp - postTimestamp >= 3*60*1000)){
+					history = true;
 				}
 
 			}else{

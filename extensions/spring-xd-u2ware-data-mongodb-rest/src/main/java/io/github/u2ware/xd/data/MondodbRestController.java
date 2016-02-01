@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.WebAsyncTask;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -133,7 +134,6 @@ public class MondodbRestController {
 			@PathVariable("id") String id) throws Exception{
     	
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
-
 		Entity result = mongoTemplate.findById(id, Entity.class, collectionName);
 		return result;
 	}
@@ -155,31 +155,29 @@ public class MondodbRestController {
 			@PathVariable("entityName") String entityName, 
 			@PathVariable("id") String id) throws Exception{
 
-    	return document(entityName, entityName, id);
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+		Entity result = mongoTemplate.findById(id, Entity.class, entityName);
+		return result;
 	}
 
     //////////////////////////////
 	// alarm
 	//////////////////////////////
     @RequestMapping(value="/alarm/{entityName}/{id}", method=RequestMethod.GET)
-	public Callable<Entity> alarm(
+	public WebAsyncTask<Entity> alarm(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id) throws Exception{
     	
-    	return new Callable<Entity>() {
+		Callable<Entity> callable =  new Callable<Entity>() {
 			public Entity call() throws Exception {
+				
+				Thread.sleep(3000);
 
 				MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 				Entity current = mongoTemplate.findById(id, Entity.class, entityName);
-				
-				while(true){
-					Thread.sleep(3000);
-					Entity alarm = mongoTemplate.findById(id, Entity.class, entityName);
-					if(! alarm.getValue().equals(current.getValue())){
-						return alarm;
-					}
-				}
+				return current;
 			}};
+		return new WebAsyncTask<>(4000, callable);
 	}
     
     
