@@ -116,7 +116,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 				Object pastValue = post.getValue();
 				Long postTimestamp = (Long)post.getId();
 				
-				if(! pastValue.equals(value) && (timestamp - postTimestamp >= 3*60*1000)){
+				if(! pastValue.equals(value) && (timestamp - postTimestamp >= 60*60*1000)){
 					history = true;
 				}
 
