@@ -1,14 +1,16 @@
 package io.github.u2ware.xd.data;
 
-import io.github.u2ware.xd.data.EntityTimestampSupport.Calculation;
-import io.github.u2ware.xd.data.EntityTimestampSupport.Interval;
-import io.github.u2ware.xd.data.EntityTimestampSupport.IntervalHandler;
+import io.github.u2ware.xd.data.Entity.Strategy;
+import io.github.u2ware.xd.data.MongodbRestControllerSupport.Calculation;
+import io.github.u2ware.xd.data.MongodbRestControllerSupport.Interval;
+import io.github.u2ware.xd.data.MongodbRestControllerSupport.IntervalHandler;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
@@ -43,7 +45,7 @@ import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 @RestController
-public class MondodbRestController {
+public class MongodbRestController {
 
     protected Log logger = LogFactory.getLog(getClass());
 
@@ -133,8 +135,9 @@ public class MondodbRestController {
 			@PathVariable("collectionName") String collectionName, 
 			@PathVariable("id") String id) throws Exception{
     	
+    	Object key = NumberUtils.isNumber(id) ? NumberUtils.createLong(id) : id ;	
 		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
-		Entity result = mongoTemplate.findById(id, Entity.class, collectionName);
+		Entity result = mongoTemplate.findById(key, Entity.class, collectionName);
 		return result;
 	}
     
@@ -148,23 +151,9 @@ public class MondodbRestController {
     	MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 		return mongoTemplate.findAll(Entity.class, entityName);
 	}
-    
-    
+
     @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.GET)
-	public Entity monitor(
-			@PathVariable("entityName") String entityName, 
-			@PathVariable("id") String id) throws Exception{
-
-		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-		Entity result = mongoTemplate.findById(id, Entity.class, entityName);
-		return result;
-	}
-
-    //////////////////////////////
-	// alarm
-	//////////////////////////////
-    @RequestMapping(value="/alarm/{entityName}/{id}", method=RequestMethod.GET)
-	public WebAsyncTask<Entity> alarm(
+	public WebAsyncTask<Entity> monitor(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id) throws Exception{
     	
@@ -181,21 +170,26 @@ public class MondodbRestController {
 	}
     
     
-    //////////////////////////////////////////
-	// Reset for 'History', 'Chart'
-	//////////////////////////////////////////
-    @RequestMapping(value="/reset/{entityName}/{id}", method=RequestMethod.GET)
-	public Page<DBObject> reset(
+    @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.POST)
+	public Entity monitorUpdate(
 			final @PathVariable("entityName") String entityName, 
-			final @PathVariable("id") String id) throws Exception{
+			final @PathVariable("id") String id,
+			final @RequestParam(name="name", required=false) String name,
+			final @RequestParam(name="strategy", required=false) Strategy strategy) throws Exception{
     
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-  	
-    	if(! mongoTemplate.getDb().collectionExists(id)){
-    		mongoTemplate.createCollection(id);
-    	}
-    	
-    	return collections(entityName);
+		Entity current = mongoTemplate.findById(id, Entity.class, entityName);
+
+		if(current != null){			
+			if(name != null){
+				current.setName(name);
+			}
+			if(strategy != null){
+				current.setStrategy(strategy);
+			}
+			mongoTemplate.save(current, entityName);
+		}
+    	return current;
     }    
     
 
@@ -220,8 +214,19 @@ public class MondodbRestController {
 			e = max;
 		}else{
 			DateTime x = datetime != null ? datetime : DateTime.now();
-			s = EntityTimestampSupport.minimumValue(x, interval);
-			e = EntityTimestampSupport.maximumValue(x, interval);
+
+	    	if(Interval.HOUR.equals(interval)){
+				s = MongodbRestControllerSupport.minimumHourOfDay(x);
+				e = MongodbRestControllerSupport.maximumHourOfDay(x);
+	    		
+	    	}else if(Interval.DAY.equals(interval)){
+				s = MongodbRestControllerSupport.minimumDayOfMonth(x);
+				e = MongodbRestControllerSupport.maximumDayOfMonth(x);
+
+	    	}else if(Interval.MONTH.equals(interval)){
+				s = MongodbRestControllerSupport.minimumMonthOfYear(x);
+				e = MongodbRestControllerSupport.maximumMonthOfYear(x);
+	    	}
 		}
 		
 		Query query = null;
@@ -245,26 +250,10 @@ public class MondodbRestController {
 			final @PathVariable("id") String id,
 			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime datetime, 
 			final @RequestParam(name="interval", required=false, defaultValue="HOUR") Interval interval,
-			final @RequestParam(name="calculation", required=false, defaultValue="AVG") Calculation calculation) throws Exception{
+			final @RequestParam(name="calculation", required=false, defaultValue="LAST") Calculation calculation) throws Exception{
     	
-//		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-//    	logger.info(datetime);
-//    	logger.info(interval);
-//    	logger.info(calculation);
-//		List<Entity> r = mongoTemplate.findAll(Entity.class, id);
-//		for(Entity e : r){
-//			logger.debug(e);
-//		}
-
-    	final List<Object> data = Lists.newArrayList();
-    	EntityTimestampSupport.handle(datetime, interval, new IntervalHandler() {
-    		private Object value;
-    		public void interval(int index, DateTime min, DateTime max) {
-	    		value = chartValue(value, entityName, id, index, min, max, calculation);
-				data.add(value);
-			}
-		});
-
+    	List<Object> data = chartValue(entityName, id, datetime, interval, calculation);
+    	
     	final BasicDBObject result = new BasicDBObject();
     	result.put("chartName", id);
     	result.put("dataCount", data.size());
@@ -272,6 +261,42 @@ public class MondodbRestController {
 		return result;
     }
 
+    
+	private List<Object> chartValue(final String entityName, final String id, final DateTime datetime, final Interval interval, final Calculation calculation) {
+		
+    	final List<Object> data = Lists.newArrayList();
+    	
+    	if(Interval.HOUR.equals(interval)){
+        	MongodbRestControllerSupport.hours(datetime, new IntervalHandler() {
+        		private Object value;
+        		public void interval(int index, DateTime min, DateTime max) {
+    	    		value = chartValue(value, entityName, id, index, min, max, calculation);
+    				data.add(value);
+    			}
+    		});
+
+    	}else if(Interval.DAY.equals(interval)){
+        	MongodbRestControllerSupport.days(datetime, new IntervalHandler() {
+        		private Object value;
+        		public void interval(int index, DateTime min, DateTime max) {
+    	    		value = chartValue(value, entityName, id, index, min, max, calculation);
+    				data.add(value);
+    			}
+    		});
+        	
+		}else if(Interval.MONTH.equals(interval)){
+	    	MongodbRestControllerSupport.months(datetime, new IntervalHandler() {
+	    		private Object value;
+	    		public void interval(int index, DateTime min, DateTime max) {
+		    		value = chartValue(value, entityName, id, index, min, max, calculation);
+					data.add(value);
+				}
+			});
+		}
+    	return data;
+	}
+    
+    
 	private Object chartValue(Object beforeValue, String entityName, String id, int index, DateTime min, DateTime max, Calculation calculation) {
 		if(min.isAfterNow()){
 			logger.info(index+": "+min+" ~ "+max+": isAfterNow=null");
@@ -283,14 +308,17 @@ public class MondodbRestController {
 		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("_id").gte(min.getMillis()).lte(max.getMillis()));
 		AggregationOperation operation2 = null;
 		
-		if(Calculation.AVG.equals(calculation)){
-			operation2 = TypedAggregation.group("payload").avg("value").as("calculation");
+		if(Calculation.LAST.equals(calculation)){
+			operation2 = TypedAggregation.group("name").last("value").as("calculation");
+			
+		}else if(Calculation.AVG.equals(calculation)){
+			operation2 = TypedAggregation.group("name").avg("value").as("calculation");
 			
 		}else if(Calculation.MAX.equals(calculation)){
-			operation2 = TypedAggregation.group("payload").max("value").as("calculation");
+			operation2 = TypedAggregation.group("name").max("value").as("calculation");
 		
 		}else if(Calculation.MIN.equals(calculation)){
-			operation2 = TypedAggregation.group("payload").min("value").as("calculation");
+			operation2 = TypedAggregation.group("name").min("value").as("calculation");
 		}
 		
 		Aggregation aggregation = TypedAggregation.newAggregation(operation1, operation2);	

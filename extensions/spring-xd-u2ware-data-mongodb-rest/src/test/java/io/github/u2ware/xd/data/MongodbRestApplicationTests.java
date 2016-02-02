@@ -1,12 +1,10 @@
 package io.github.u2ware.xd.data;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Arrays;
-
-import io.github.u2ware.xd.data.MongodbRestApplication;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +18,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -68,22 +67,19 @@ public class MongodbRestApplicationTests {
 		//////////////////////////////
 		//
 		//////////////////////////////
-		this.mvc.perform(
-				get("/monitor/person/Mina")
-		).andDo(
-				print()
-		).andExpect(
-				status().isOk()
-		);
+		MvcResult mvcResult = this.mvc.perform(
+					get("/monitor/person/Mina")
+				).andExpect(
+					request().asyncStarted()
+				).andReturn();
 
 		this.mvc.perform(
-				get("/alarm/person/Mina")
+				asyncDispatch(mvcResult)
 		).andDo(
 				print()
 		).andExpect(
 				status().isOk()
 		);
-		
 		
 		this.mvc.perform(
 				get("/history/person/Mina")
@@ -97,10 +93,12 @@ public class MongodbRestApplicationTests {
 		).andExpect(
 				status().isOk()
 		);
+
+		
 		
 		this.mvc.perform(
 				get("/chart/person/Mina")
-				.param("datetime", "2015-02-11 00:00:00")
+				.param("datetime", "2016-01-03 00:00:00")
 				.param("interval", "DAY")
 				.param("calculation", "AVG")
 		).andDo(
@@ -109,36 +107,5 @@ public class MongodbRestApplicationTests {
 				status().isOk()
 		);
 
-		
-		this.mvc.perform(
-				get("/reset/person/Ooops")
-		).andDo(
-				print()
-		).andExpect(
-				status().isOk()
-		);
-		
-		
-		/*
-		this.mvc.perform(
-				get("/alarm/person/Mina")
-		).andDo(
-				print()
-		).andExpect(
-				status().isOk()
-		);
-
-		MvcResult mvcResult = this.mockMvc.perform(get("/async/callable/response-body"))
-				.andExpect(request().asyncStarted())
-				.andExpect(request().asyncResult("Callable result"))
-				.andReturn();
-
-			this.mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType("text/plain;charset=ISO-8859-1"))
-				.andExpect(content().string("Callable result"));
-		*/
-    
     }    
-
 }

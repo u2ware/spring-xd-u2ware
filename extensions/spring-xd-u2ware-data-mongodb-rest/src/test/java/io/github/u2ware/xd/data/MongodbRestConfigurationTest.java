@@ -55,7 +55,7 @@ public class MongodbRestConfigurationTest {
 				logger.debug("\t"+collection);
 			
 				Map entities = restTemplate.getForObject("http://localhost:9898/raw/{database}/{collectionName}?size=17", Map.class, 
-										collection.get("databaseName"), 
+										db.get("databaseName"), 
 										collection.get("collectionName"));
 				//logger.debug("entities: "+entities);
 				List<Map> entitiesContent = (List<Map>)entities.get("content");
@@ -63,7 +63,7 @@ public class MongodbRestConfigurationTest {
 					
 					//logger.debug("entity: "+e);
 					String entity = restTemplate.getForObject("http://localhost:9898/raw/{database}/{collectionName}/{id}", String.class, 
-							collection.get("databaseName"), 
+							db.get("databaseName"), 
 							collection.get("collectionName"),
 							e.get("id"));
 
