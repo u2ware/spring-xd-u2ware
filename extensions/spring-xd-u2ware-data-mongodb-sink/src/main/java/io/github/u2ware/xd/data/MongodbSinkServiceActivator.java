@@ -2,8 +2,6 @@ package io.github.u2ware.xd.data;
 
 import io.github.u2ware.xd.data.Entity.Strategy;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -26,7 +24,7 @@ import com.mongodb.BasicDBObject;
 
 public class MongodbSinkServiceActivator implements InitializingBean, BeanFactoryAware{
 
-	private Log logger = LogFactory.getLog(getClass());
+	//private Log logger = LogFactory.getLog(getClass());
 
 	private BeanFactory beanFactory;
 	private volatile StandardEvaluationContext evaluationContext;
@@ -69,9 +67,22 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		this.evaluationContext = ExpressionUtils.createStandardEvaluationContext(this.beanFactory);
 	}
 
+	private <T> T parseValue(String name, Object rootObject, Class<T> returnType){
+		return spelExpressionParser.parseExpression(name).getValue(this.evaluationContext, rootObject, returnType);
+	}
+	private <T> T parseValue(String name, Object rootObject, Class<T> returnType, T defaultValue){
+
+		try{
+			return spelExpressionParser.parseExpression(name).getValue(this.evaluationContext, rootObject, returnType);
+			
+		}catch(Exception e){
+			return defaultValue;
+		}
+	}
+	
 	public void execute(Message<?> requestMessage) throws Exception{
 		
-//		Object payload = requestMessage.getPayload();
+		Object payload = requestMessage.getPayload();
 //		logger.info(requestMessage);
 //		logger.info(requestMessage.getHeaders());
 //		logger.info(payload.getClass());
@@ -84,19 +95,8 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 //		Object value = this.valueExpression != null 
 //				? this.valueExpression.getValue(this.evaluationContext, requestMessage, Object.class)
 //				: null;
-		
-
-//		BeanWrapper payload = new BeanWrapperImpl(requestMessage.getPayload());
-//		Object id = payload.getPropertyValue("id");
-//		Object value = payload.getPropertyValue("value");
-//		String name = payload.isReadableProperty("name") ? 
-//				payload.getPropertyValue("name").toString() : "";
-//		Strategy strategy = payload.isReadableProperty("strategy") ? 
-//				Strategy.valueOf(payload.getPropertyValue("strategy").toString()) : Strategy.NOMAL;
-
-		
-		Object id = spelExpressionParser.parseExpression("id").getValue(this.evaluationContext, requestMessage.getPayload(), Object.class);
-		Object value = spelExpressionParser.parseExpression("value").getValue(this.evaluationContext, requestMessage.getPayload(), Object.class);
+		Object id = parseValue("id", payload, Object.class);
+		Object value = parseValue("value", payload, Object.class);
 		
 
 		if(id == null || value == null) return;
@@ -117,36 +117,23 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		if(entity != null){
 			entity.setValue(value);
 			entity.setDatetime(new DateTime(timestamp).toString());
-			entity.setPayload(requestMessage.getPayload());
+			entity.setPayload(payload);
 
-			logger.debug("entity update: "+entity);
+			//logger.debug("entity update: "+entity);
 			
 		}else{
+			String name = parseValue("name", payload, String.class, "");
+			String strategy = parseValue("strategy", payload, String.class, Strategy.NOMAL.toString());
 			
-			String name = null;
-			try{
-				name = spelExpressionParser.parseExpression("name").getValue(this.evaluationContext, requestMessage.getPayload(), String.class);
-			}catch(Exception e){
-				name = "";
-			}
-
-			String strategy = null;
-			try{
-				strategy = spelExpressionParser.parseExpression("strategy").getValue(this.evaluationContext, requestMessage.getPayload(), String.class);
-			}catch(Exception e){
-				strategy = Strategy.NOMAL.toString();
-			}
-			
-
 			entity = new Entity();
 			entity.setId(id);
 			entity.setValue(value);
 			entity.setDatetime(new DateTime(timestamp).toString());
 			entity.setName(name);
 			entity.setStrategy(Strategy.valueOf(strategy));
-			entity.setPayload(requestMessage.getPayload());
+			entity.setPayload(payload);
 
-			logger.debug("entity create: "+entity);
+			//logger.debug("entity create: "+entity);
 		}
 		mongoTemplate.save(entity, collectionName);
 		
@@ -171,66 +158,23 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 				if(Strategy.ALARM.equals(entity.getStrategy())){
 
 					if( ! pastValue.equals(value)){
-						logger.debug("logging alarm: "+objectToSave);
+						//logger.debug("logging alarm: "+objectToSave);
 						mongoTemplate.save(objectToSave, id.toString());
 					}
 					
 				}else if(Strategy.HISTORY.equals(entity.getStrategy())){
 
 					if( !pastValue.equals(value) && timestamp - postTimestamp >= 60*60*1000){
-						logger.debug("logging history: "+objectToSave);
+						//logger.debug("logging history: "+objectToSave);
 						mongoTemplate.save(objectToSave, id.toString());
 					}
 				}
 				
 			}else{
-				logger.debug("logging first: "+objectToSave);
+				//logger.debug("logging first: "+objectToSave);
 				mongoTemplate.save(objectToSave, id.toString());
 			}
 		}
-		
-		
-		/*
-		if(valueLogging){
-			
-			BasicDBObject q = new BasicDBObject();
-			Sort sort = new Sort(Direction.DESC, "id");
-			Query query = new BasicQuery(q).with(sort);
-			Entity post = mongoTemplate.findOne(query, Entity.class, id.toString());
-			
-			boolean history = false;
-			if(post != null){
-				Object pastValue = post.getValue();
-				Long postTimestamp = (Long)post.getId();
-				
-				if(! pastValue.equals(value) && (timestamp - postTimestamp >= 60*60*1000)){
-					history = true;
-				}
-
-			}else{
-				history = true;
-			}
-
-			if(history){
-				Entity objectToSave = new Entity();
-				objectToSave.setId(timestamp);
-				objectToSave.setValue(value);
-				objectToSave.setDatetime(new DateTime(timestamp).toString());
-				objectToSave.setPayload(id.toString());
-
-				mongoTemplate.save(objectToSave, id.toString());
-				//logger.info("save: "+timestamp+" in "+id);
-			}
-		}
-
-		Entity objectToSave = new Entity();
-		objectToSave.setId(id);
-		objectToSave.setValue(value);
-		objectToSave.setDatetime(new DateTime(timestamp).toString());
-		objectToSave.setPayload(requestMessage.getPayload());
-
-		mongoTemplate.save(objectToSave, collectionName);
-		 */
 	}
 
 	
