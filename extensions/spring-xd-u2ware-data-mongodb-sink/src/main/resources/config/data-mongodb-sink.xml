@@ -36,6 +36,7 @@
 			<constructor-arg ref="mongoDbFactory"/>
 			<property name="mongoConverter" ref="mongoDbConverter"/>
 			<property name="collectionName" value="${databaseName}"/>
+			<!--  
 			<property name="idExpression">
 				<bean class="org.springframework.integration.config.ExpressionFactoryBean">
 					<constructor-arg value="${idExpression}"/>
@@ -46,7 +47,7 @@
 					<constructor-arg value="${valueExpression}"/>
 				</bean>
 			</property>
-			<property name="valueLogging" value="${valueLogging:true}"/>
+			-->
 		</bean>
 	</int:service-activator>
 	

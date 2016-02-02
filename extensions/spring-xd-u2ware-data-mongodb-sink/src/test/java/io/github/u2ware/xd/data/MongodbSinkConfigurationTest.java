@@ -52,7 +52,7 @@ public class MongodbSinkConfigurationTest {
 		template.createCollection("Mina");
 		
 		
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18 }").build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18, \"name\":\"가나다라\", \"strategy\":\"ALARM\" }").build());
 		Thread.sleep(1000);
 
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"b\", \"age\":19 }").build());
@@ -82,7 +82,7 @@ public class MongodbSinkConfigurationTest {
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}
-		Assert.assertEquals(1, r.size());
+		Assert.assertEquals(3, r.size());
 		
 		
 	}

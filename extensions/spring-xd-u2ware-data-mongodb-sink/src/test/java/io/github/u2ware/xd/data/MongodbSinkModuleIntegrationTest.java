@@ -61,11 +61,9 @@ public class MongodbSinkModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "data-mongodb-sink "
-				+ " --databaseName=MyDatabase "
 				+ " --host=127.0.0.1 "
 				+ " --port=27017 "
-				+ " --idExpression=payload.id "
-				+ " --valueExpression=payload.value ";
+				+ " --databaseName=MyDatabase ";
 
 		logger.debug(processingChainUnderTest);
 		
@@ -75,7 +73,7 @@ public class MongodbSinkModuleIntegrationTest {
 		
 		Thread.sleep(3000);
 
-		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18 }");
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18, \"name\":\"가나다라\", \"strategy\":\"ALARM\" }");
 		Thread.sleep(1000);
 
 		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"b\", \"age\":19 }");
@@ -99,7 +97,7 @@ public class MongodbSinkModuleIntegrationTest {
 
 		r = template.findAll(DBObject.class, "Mina");
 		logger.debug("\tMina");
-		Assert.assertEquals(1, r.size());
+		Assert.assertEquals(3, r.size());
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}

@@ -11,9 +11,6 @@ public class MongodbSinkOptions implements ProfileNamesProvider{
 	private String databaseName;
 	private String host;
 	private int port = 27017;
-	private String idExpression;
-	private String valueExpression;
-	private boolean valueLogging = true;
 	private boolean jsonInput = true;
 	
 	public String getDatabaseName() {
@@ -36,27 +33,6 @@ public class MongodbSinkOptions implements ProfileNamesProvider{
 	@ModuleOption("setPort")
 	public void setPort(int port) {
 		this.port = port;
-	}
-	public String getIdExpression() {
-		return idExpression;
-	}
-	@ModuleOption("setIdExpression")
-	public void setIdExpression(String idExpression) {
-		this.idExpression = idExpression;
-	}
-	public String getValueExpression() {
-		return valueExpression;
-	}
-	@ModuleOption("setValueExpression")
-	public void setValueExpression(String valueExpression) {
-		this.valueExpression = valueExpression;
-	}
-	public boolean isValueLogging() {
-		return valueLogging;
-	}
-	@ModuleOption("setValueLogging")
-	public void setValueLogging(boolean valueLogging) {
-		this.valueLogging = valueLogging;
 	}
 	public boolean isJsonInput() {
 		return jsonInput;
