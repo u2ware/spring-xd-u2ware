@@ -1,7 +1,7 @@
 package io.github.u2ware.xd.bacnet;
 
 import io.github.u2ware.integration.bacnet.core.BacnetRequest;
-import io.github.u2ware.integration.bacnet.core.BacnetSlave;
+import io.github.u2ware.integration.bacnet.core.BacnetDevice;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,11 +28,11 @@ public class BacnetProcessorConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		BacnetSlave.startup(47809);
+		BacnetDevice.startup(47809);
 	}    
 	@AfterClass
 	public static void afterClass() throws Exception{
-		BacnetSlave.shutdown();
+		BacnetDevice.shutdown(47809);
 	}	
 	
     protected Log logger = LogFactory.getLog(getClass());
@@ -46,7 +46,7 @@ public class BacnetProcessorConfigurationTest {
 	@Test
 	public void test() throws Exception{
 
-		Object payload = new BacnetRequest("127.0.0.1:47809", 47809);
+		Object payload = new BacnetRequest("127.0.0.1", 47809, 47809);
 		input.send(MessageBuilder.withPayload(payload).build());
 		//input.send(MessageBuilder.withPayload("{}").build());
 		//input.send(MessageBuilder.withPayload("aaaas").build());
@@ -56,7 +56,7 @@ public class BacnetProcessorConfigurationTest {
 		Assert.assertEquals(String.class, message.getPayload().getClass());
 
 	
-		payload = "{\"remoteAddress\":\"127.0.0.1:47809\", \"remoteInstanceNumber\":47809}";
+		payload = "{\"host\":\"127.0.0.1\", \"port\":47809, \"instanceNumber\":47809}";
 		input.send(MessageBuilder.withPayload(payload).build());
 		//input.send(MessageBuilder.withPayload("{}").build());
 		//input.send(MessageBuilder.withPayload("aaaas").build());

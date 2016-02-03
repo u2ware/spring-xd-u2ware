@@ -1,6 +1,6 @@
 package io.github.u2ware.xd.bacnet;
 
-import io.github.u2ware.integration.bacnet.core.BacnetSlave;
+import io.github.u2ware.integration.bacnet.core.BacnetDevice;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,7 +29,7 @@ public class BacnetProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		BacnetSlave.startup(47909);
+		BacnetDevice.startup(47909);
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
 		
@@ -42,7 +42,8 @@ public class BacnetProcessorModuleIntegrationTest {
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		BacnetSlave.shutdown();
+		application.close();
+		BacnetDevice.shutdown(47909);
 	}
 	
 
@@ -61,7 +62,7 @@ public class BacnetProcessorModuleIntegrationTest {
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
 		
 
-		chain.sendPayload("{\"remoteAddress\":\"127.0.0.1:47909\", \"remoteInstanceNumber\":47909}");
+		chain.sendPayload("{\"host\":\"127.0.0.1\", \"port\":47909, \"instanceNumber\":47909}");
 		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
 		Assert.assertEquals(String.class, payload.getClass());
