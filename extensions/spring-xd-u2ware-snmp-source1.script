@@ -1,0 +1,10 @@
+
+stream create --name "testStream" --definition "u2ware-snmp-source --localPort=10163 --fixedDelay=5000 --split=false --requestSupport=127.0.0.1:10162:1.3.6  | log"
+
+stream deploy --name "testStream"
+
+//stream undeploy --name "testStream"
+
+//stream destroy --name "testStream"
+
+
