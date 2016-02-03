@@ -3,7 +3,7 @@ stream create --name "testStream" --definition "http | u2ware-bacnet-processor -
 
 stream deploy --name "testStream"
 
-http post --target http://localhost:9000 --data "{\"remoteAddress\":\"127.0.0.1:47808\", \"remoteInstanceNumber\":47808}"
+http post --target http://localhost:9000 --data "{\"host\":\"127.0.0.1\", \"port\":47808, \"instanceNumber\":47808}"
 
 stream undeploy --name "testStream"
 
