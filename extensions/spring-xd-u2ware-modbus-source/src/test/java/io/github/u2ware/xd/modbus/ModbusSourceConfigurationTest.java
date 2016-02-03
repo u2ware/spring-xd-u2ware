@@ -22,17 +22,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles({"use_splitter", "dont_use_json_output"})
 public class ModbusSourceConfigurationTest {
 
-	private static ModbusSlave modbusSlave;
-	
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		modbusSlave = new ModbusSlave();
-		modbusSlave.setLocalPort(10502);
-		modbusSlave.afterPropertiesSet();
+		ModbusSlave.startup(10502);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
-		modbusSlave.destroy();
+		ModbusSlave.shutdown(10502);
 	}
 	
     protected Log logger = LogFactory.getLog(getClass());
@@ -41,10 +37,12 @@ public class ModbusSourceConfigurationTest {
 	PollableChannel output;
 
 	@Test
-	public void test() {
+	public void test() throws Exception{
 		Message<?> message = output.receive(1000);
 		logger.debug(message.getPayload());
 		Assert.assertEquals(ModbusResponse.class, message.getPayload().getClass());
+		
+		Thread.sleep(10000);
 	}
 }
 

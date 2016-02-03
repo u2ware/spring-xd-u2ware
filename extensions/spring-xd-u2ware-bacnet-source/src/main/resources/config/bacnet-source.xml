@@ -12,10 +12,14 @@
 
 	<int:channel id="output"/>
 
+	<bean id="bacnetRequest" class="io.github.u2ware.integration.bacnet.inbound.BacnetRequestSupport">
+		<constructor-arg value="${requestSupport}"/>
+	</bean>
+
 	<int-u2ware-bacnet:inbound-channel-adapter id="bacnetInboundChannelAdapter" 
-		localPort="${localPort}"
-		remoteAddress="${remoteAddress}" 
-		remoteInstanceNumber="${remoteInstanceNumber}" 
+		localPort="${localPort:47808}"
+		request-support="bacnetRequest"
+
 		channel="bacnetResponse">
 			<int:poller fixed-rate="${fixedDelay}"/>
 	</int-u2ware-bacnet:inbound-channel-adapter>

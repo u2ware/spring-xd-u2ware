@@ -1,7 +1,7 @@
 package io.github.u2ware.xd.bacnet;
 
 import io.github.u2ware.integration.bacnet.core.BacnetResponse;
-import io.github.u2ware.integration.bacnet.core.BacnetSlave;
+import io.github.u2ware.integration.bacnet.core.BacnetDevice;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,11 +24,13 @@ public class BacnetSourceConfigurationTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		BacnetSlave.startup(47908);
+		BacnetDevice.startup(47907);
+		BacnetDevice.startup(47908);
 	}    
 	@AfterClass
 	public static void afterClass() throws Exception{
-		BacnetSlave.shutdown();
+		BacnetDevice.shutdown(47907);
+		BacnetDevice.shutdown(47908);
 	}	
 	
     protected Log logger = LogFactory.getLog(getClass());
@@ -37,11 +39,13 @@ public class BacnetSourceConfigurationTest {
 	private PollableChannel output;
 
 	@Test
-	public void test() {
+	public void test() throws Exception{
 
 		Message<?> message = output.receive(1000);
 		logger.debug(message.getPayload());
 		Assert.assertEquals(BacnetResponse.class, message.getPayload().getClass());
+		
+		Thread.sleep(10000);
 	}
 }
 

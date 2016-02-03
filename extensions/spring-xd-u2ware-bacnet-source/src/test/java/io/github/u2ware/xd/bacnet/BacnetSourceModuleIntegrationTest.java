@@ -1,7 +1,7 @@
 package io.github.u2ware.xd.bacnet;
 
 import io.github.u2ware.integration.bacnet.core.BacnetResponse;
-import io.github.u2ware.integration.bacnet.core.BacnetSlave;
+import io.github.u2ware.integration.bacnet.core.BacnetDevice;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,7 +30,7 @@ public class BacnetSourceModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		BacnetSlave.startup(47909);
+		BacnetDevice.startup(47909);
 		
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -44,7 +44,8 @@ public class BacnetSourceModuleIntegrationTest {
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		BacnetSlave.shutdown();
+		application.close();
+		BacnetDevice.shutdown(47909);
 	}
 	
 
@@ -54,8 +55,9 @@ public class BacnetSourceModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "bacnet-source "
-				+ " --remoteAddress=127.0.0.1:47909 "
-				+ " --remoteInstanceNumber=47909 "
+				+ " --localPort=47808"
+				+ " --requestSupport=127.0.0.1:47909:47909 "
+				+ " --fixedDelay=5000"
 				+ " --jsonOutput=false ";
 
 		logger.debug(processingChainUnderTest);

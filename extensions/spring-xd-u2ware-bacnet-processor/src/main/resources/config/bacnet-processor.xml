@@ -16,7 +16,7 @@
 	<int:channel id="output"/>
 	
 	<int-u2ware-bacnet:outbound-gateway id="bacnetOutboundGateway" 
-		localPort="${localPort}"
+		localPort="${localPort:47808}"
 		request-channel="bacnetRequest"
 		reply-channel="bacnetResponse"/>
 

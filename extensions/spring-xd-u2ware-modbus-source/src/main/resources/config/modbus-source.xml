@@ -13,16 +13,15 @@
 
 	<int:channel id="output"/>
 
+	<bean id="modbusRequest" class="io.github.u2ware.integration.modbus.inbound.ModbusRequestSupport">
+		<constructor-arg value="${requestSupport}"/>
+	</bean>
+
 	<int-u2ware-modbus:inbound-channel-adapter id="modbusInboundChannelAdapter"
-			
 			host="${host}"
-			port="${port}"
-			
-			unitId="${unitId}"
-			functionCode="${functionCode}"
-			offset="${offset}"
-			count="${count}"
-			
+			port="${port:502}"
+			request-support="modbusRequest"
+				
 			channel="modbusResponse">	
 			<int:poller fixed-delay="${fixedDelay}"/>
 	</int-u2ware-modbus:inbound-channel-adapter>

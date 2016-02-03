@@ -14,7 +14,7 @@ public class BacnetProcessorOptions implements ProfileNamesProvider{
 	private static final String use_json_output = "use_json_output";
 	private static final String dont_use_json_output = "dont_use_json_output";
 
-	private int localPort = 47808;
+	private int localPort;
 	private boolean split = true;
 	private boolean jsonInput = true;
 	private boolean jsonOutput = true;

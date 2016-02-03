@@ -12,9 +12,10 @@ public class BacnetSourceOptions implements ProfileNamesProvider{
 	private static final String use_json_output = "use_json_output";
 	private static final String dont_use_json_output = "dont_use_json_output";
 
-	private int localPort = 47808;
-	private String remoteAddress;
-	private String remoteInstanceNumber;
+	private int localPort;
+	
+	private String requestSupport;
+
 	private int fixedDelay = 10000;
 	private boolean split = true;
 	private boolean jsonOutput = true;
@@ -26,19 +27,12 @@ public class BacnetSourceOptions implements ProfileNamesProvider{
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
 	}
-	public String getRemoteAddress() {
-		return remoteAddress;
+	public String getRequestSupport() {
+		return requestSupport;
 	}
-	@ModuleOption("setRemoteAddress")
-	public void setRemoteAddress(String remoteAddress) {
-		this.remoteAddress = remoteAddress;
-	}
-	public String getRemoteInstanceNumber() {
-		return remoteInstanceNumber;
-	}
-	@ModuleOption("setRemoteInstanceNumber")
-	public void setRemoteInstanceNumber(String remoteInstanceNumber) {
-		this.remoteInstanceNumber = remoteInstanceNumber;
+	@ModuleOption("setRequestSupport")
+	public void setRequestSupport(String requestSupport) {
+		this.requestSupport = requestSupport;
 	}
 	public int getFixedDelay() {
 		return fixedDelay;

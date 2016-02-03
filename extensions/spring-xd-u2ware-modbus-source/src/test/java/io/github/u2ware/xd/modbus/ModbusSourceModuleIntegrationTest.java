@@ -20,8 +20,6 @@ public class ModbusSourceModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-	private static ModbusSlave modbusSlave;
-    
     private static SingleNodeApplication application;
 
 	private static int RECEIVE_TIMEOUT = 6000;
@@ -32,9 +30,7 @@ public class ModbusSourceModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		modbusSlave = new ModbusSlave();
-		modbusSlave.setLocalPort(10503);
-		modbusSlave.afterPropertiesSet();
+		ModbusSlave.startup(10503);
 		
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -48,7 +44,8 @@ public class ModbusSourceModuleIntegrationTest {
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		modbusSlave.destroy();
+		application.close();
+		ModbusSlave.shutdown(10503);
 	}
 	
 
@@ -61,12 +58,7 @@ public class ModbusSourceModuleIntegrationTest {
 
 				+ " --host=127.0.0.1 "
 				+ " --port=10503 "
-
-				+ " --unitId=0 "
-				+ " --functionCode=4 "
-				+ " --offset=0 "
-				+ " --count=6 "
-				
+				+ " --requestSupport=0:4:0:6 "
 				+ " --fixedDelay=5000"
 				+ " --jsonOutput=false ";
 

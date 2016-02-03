@@ -10,11 +10,11 @@
 	<util:properties id="props">
 		<prop key="host">127.0.0.1</prop>
 		<prop key="port">10502</prop>
-		<prop key="unitId">0</prop>
-		<prop key="functionCode">4</prop>
-		<prop key="offset">0</prop>
-		<prop key="count">6</prop>
-		<prop key="fixedDelay">5000</prop>
+		<prop key="requestSupport">
+			0:4:0:6,
+			0:4:0:3
+		</prop>
+		<prop key="fixedDelay">3000</prop>
 	</util:properties>
 
 	<import resource="classpath:config/modbus-source.xml"/>

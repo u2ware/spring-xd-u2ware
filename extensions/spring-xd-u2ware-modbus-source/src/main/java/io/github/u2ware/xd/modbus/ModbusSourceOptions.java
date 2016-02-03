@@ -12,11 +12,10 @@ public class ModbusSourceOptions implements ProfileNamesProvider{
 	private static final String dont_use_json_output = "dont_use_json_output";
 
 	private String host;
-	private int port = 502;
-	private int unitId;
-	private int functionCode;
-	private int offset;
-	private int count;
+	private int port;
+	
+	private String requestSupport;
+
 	private int fixedDelay = 10000;
 	private boolean split = true;
 	private boolean jsonOutput = true;
@@ -35,33 +34,12 @@ public class ModbusSourceOptions implements ProfileNamesProvider{
 	public void setPort(int port) {
 		this.port = port;
 	}
-	public int getUnitId() {
-		return unitId;
+	public String getRequestSupport() {
+		return requestSupport;
 	}
-	@ModuleOption("setUnitId")
-	public void setUnitId(int unitId) {
-		this.unitId = unitId;
-	}
-	public int getFunctionCode() {
-		return functionCode;
-	}
-	@ModuleOption("setFunctionCode")
-	public void setFunctionCode(int functionCode) {
-		this.functionCode = functionCode;
-	}
-	public int getOffset() {
-		return offset;
-	}
-	@ModuleOption("setOffset")
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
-	public int getCount() {
-		return count;
-	}
-	@ModuleOption("setCount")
-	public void setCount(int count) {
-		this.count = count;
+	@ModuleOption("setRequestSupport")
+	public void setRequestSupport(String requestSupport) {
+		this.requestSupport = requestSupport;
 	}
 	public int getFixedDelay() {
 		return fixedDelay;
