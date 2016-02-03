@@ -18,7 +18,7 @@
 
 	<int-u2ware-modbus:outbound-gateway id="modbusOutboundGateway" 
 			host="${host}"
-			port="${port}"
+			port="${port:502}"
 			request-channel="modbusRequest"
 			reply-channel="modbusResponse"/>
 

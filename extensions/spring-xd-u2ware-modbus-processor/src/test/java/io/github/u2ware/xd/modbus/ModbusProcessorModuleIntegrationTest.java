@@ -19,8 +19,6 @@ public class ModbusProcessorModuleIntegrationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-	private static ModbusSlave modbusSlave;
-    
     private static SingleNodeApplication application;
 
 	private static int RECEIVE_TIMEOUT = 6000;
@@ -31,9 +29,7 @@ public class ModbusProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		modbusSlave = new ModbusSlave();
-		modbusSlave.setLocalPort(10503);
-		modbusSlave.afterPropertiesSet();
+		ModbusSlave.startup(10503);
 
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -47,7 +43,8 @@ public class ModbusProcessorModuleIntegrationTest {
 	
 	@AfterClass
 	public static void afterClass() throws Exception{
-		modbusSlave.destroy();
+		application.close();
+		ModbusSlave.shutdown(10503);
 	}
 	
 

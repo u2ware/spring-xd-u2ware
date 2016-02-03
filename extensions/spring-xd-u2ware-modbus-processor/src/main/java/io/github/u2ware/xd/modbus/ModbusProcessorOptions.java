@@ -15,7 +15,7 @@ public class ModbusProcessorOptions implements ProfileNamesProvider{
 	private static final String dont_use_json_output = "dont_use_json_output";
 	
 	private String host;
-	private int port = 502;
+	private int port;
 	
 	private boolean split = true;
 	private boolean jsonInput = true;

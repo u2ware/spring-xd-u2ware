@@ -24,17 +24,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles({"use_json_input", "dont_use_splitter", "use_json_output"})
 public class ModbusProcessorConfigurationTest {
 
-	private static ModbusSlave modbusSlave;
-	
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		modbusSlave = new ModbusSlave();
-		modbusSlave.setLocalPort(10502);
-		modbusSlave.afterPropertiesSet();
+		ModbusSlave.startup(10502);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
-		modbusSlave.destroy();
+		ModbusSlave.shutdown(10502);
 	}
 	
     protected Log logger = LogFactory.getLog(getClass());
