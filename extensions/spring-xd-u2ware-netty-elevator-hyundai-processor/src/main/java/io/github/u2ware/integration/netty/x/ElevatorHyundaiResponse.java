@@ -8,18 +8,18 @@ public class ElevatorHyundaiResponse implements Serializable{
 
 	private String id;
 	private Object value;
-	private String idDesc;
-	private String valueDesc;
+	private String name;
+	private String state;
 	
 	public ElevatorHyundaiResponse(){
 		
 	}
 
-	public ElevatorHyundaiResponse(String id, Object value, String idDesc, String valueDesc){
+	public ElevatorHyundaiResponse(String id, Object value, String name, String state){
 		this.id = id;
 		this.value = value;
-		this.idDesc = idDesc;
-		this.valueDesc = valueDesc;
+		this.name = name;
+		this.state = state;
 	}
 	public String getId() {
 		return id;
@@ -33,22 +33,22 @@ public class ElevatorHyundaiResponse implements Serializable{
 	public void setValue(Object value) {
 		this.value = value;
 	}
-	public String getIdDesc() {
-		return idDesc;
+	public String getName() {
+		return name;
 	}
-	public void setIdDesc(String idDesc) {
-		this.idDesc = idDesc;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getValueDesc() {
-		return valueDesc;
+	public String getState() {
+		return state;
 	}
-	public void setValueDesc(String valueDesc) {
-		this.valueDesc = valueDesc;
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	@Override
 	public String toString() {
 		return "ElevatorHyundaiResponse [id=" + id + ", value=" + value
-				+ ", idDesc=" + idDesc + ", valueDesc=" + valueDesc + "]";
+				+ ", name=" + name + ", state=" + state + "]";
 	}
 }

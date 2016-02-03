@@ -69,7 +69,7 @@ public class FireSiemensSlaveHandler extends ByteToMessageDecoder{
 			logger.debug("Area Name : "+args[2]);
 			logger.debug("User Message : "+args[3]);
 			*/
-			out.add(new FireSiemensResponse(op, OP_Codes.get(op)+" "+data));
+			out.add(new FireSiemensResponse(OP_Codes.get(op)+" "+data));
 		}
 		
 		ctx.writeAndFlush(ACK.copy());

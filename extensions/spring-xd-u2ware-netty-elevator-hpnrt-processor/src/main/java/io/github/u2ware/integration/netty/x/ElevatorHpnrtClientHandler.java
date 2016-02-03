@@ -26,7 +26,7 @@ public class ElevatorHpnrtClientHandler extends ByteToMessageDecoder{
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		
-		List<ElevatorHpnrtRequest> result = Lists.newArrayList();
+		List<ElevatorHpnrtResponse> result = Lists.newArrayList();
 		
 		//logger.debug("decode: "+in.readableBytes());
 		
@@ -44,10 +44,10 @@ public class ElevatorHpnrtClientHandler extends ByteToMessageDecoder{
 			
 			//logger.debug(호기번호+"/ "+운행모드+" / "+운행방향+" / "+운행층+" : "+운행층문자+ " "+문열림);
 			
-			result.add(new ElevatorHpnrtRequest(호기번호+"_mode",  운행모드,  호기번호+"호기 운행모드",   운행모드(운행모드)));
-			result.add(new ElevatorHpnrtRequest(호기번호+"_axis",  운행방향,  호기번호+"호기 운행방향",   운행방향(운행방향)));
-			result.add(new ElevatorHpnrtRequest(호기번호+"_floor", 운행층문자, 호기번호+"호기 운행층문자", 운행층문자));
-			result.add(new ElevatorHpnrtRequest(호기번호+"_door",  문열림,    호기번호+"호기 문열림",    문열림(문열림)));
+			result.add(new ElevatorHpnrtResponse(호기번호+"_mode",  운행모드,  호기번호+"호기 운행모드",   운행모드(운행모드)));
+			result.add(new ElevatorHpnrtResponse(호기번호+"_axis",  운행방향,  호기번호+"호기 운행방향",   운행방향(운행방향)));
+			result.add(new ElevatorHpnrtResponse(호기번호+"_floor", 운행층문자, 호기번호+"호기 운행층문자", 운행층문자));
+			result.add(new ElevatorHpnrtResponse(호기번호+"_door",  문열림,    호기번호+"호기 문열림",    문열림(문열림)));
 		}
 
 		byte CHECKSUM = in.readByte();//System.out.println(CHECKSUM);
