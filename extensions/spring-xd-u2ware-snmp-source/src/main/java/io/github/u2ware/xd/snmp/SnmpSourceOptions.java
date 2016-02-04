@@ -13,6 +13,7 @@ public class SnmpSourceOptions implements ProfileNamesProvider{
 	private static final String dont_use_json_output = "dont_use_json_output";
 
 	private int localPort;
+	private String mibFile;
 	private String requestSupport;
 	
 	private int fixedDelay = 10000;
@@ -25,6 +26,13 @@ public class SnmpSourceOptions implements ProfileNamesProvider{
 	@ModuleOption("setLocalPort")
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
+	}
+	public String getMibFile() {
+		return mibFile;
+	}
+	@ModuleOption("setMibFile")
+	public void setMibFile(String mibFile) {
+		this.mibFile = mibFile;
 	}
 	public String getRequestSupport() {
 		return requestSupport;

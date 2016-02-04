@@ -16,7 +16,8 @@
 	<int:channel id="output"/>
 	
 	<int-u2ware-snmp:outbound-gateway id="snmpOutboundGateway" 
-		localPort="${localPort:10162}"
+		local-port="${localPort:10162}"
+		mib-file="${mibFile: }"
 		request-channel="snmpRequest"
 		reply-channel="snmpResponse"/>
 

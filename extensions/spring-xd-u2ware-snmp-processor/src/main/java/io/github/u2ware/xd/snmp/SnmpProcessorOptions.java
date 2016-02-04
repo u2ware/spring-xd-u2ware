@@ -15,6 +15,8 @@ public class SnmpProcessorOptions implements ProfileNamesProvider{
 	private static final String dont_use_json_output = "dont_use_json_output";
 
 	private int localPort;
+	private String mibFile = "";
+	
 	private boolean split = true;
 	private boolean jsonInput = true;
 	private boolean jsonOutput = true;
@@ -25,6 +27,13 @@ public class SnmpProcessorOptions implements ProfileNamesProvider{
 	@ModuleOption("setLocalPort")
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
+	}
+	public String getMibFile() {
+		return mibFile;
+	}
+	@ModuleOption("setMibFile")
+	public void setMibFile(String mibFile) {
+		this.mibFile = mibFile;
 	}
 	public boolean isSplit() {
 		return split;

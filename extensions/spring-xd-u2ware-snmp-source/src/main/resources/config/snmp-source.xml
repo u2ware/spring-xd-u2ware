@@ -19,7 +19,8 @@
 	</bean>
 
 	<int-u2ware-snmp:inbound-channel-adapter id="snmpInboundChannelAdapter" 
-		localPort="${localPort:10162}"
+		local-port="${localPort:10162}"
+		mib-file="${mibFile: }"
 		request-support="snmpRequest"
 		channel="snmpResponse">
 			<int:poller fixed-rate="${fixedDelay}"/>
