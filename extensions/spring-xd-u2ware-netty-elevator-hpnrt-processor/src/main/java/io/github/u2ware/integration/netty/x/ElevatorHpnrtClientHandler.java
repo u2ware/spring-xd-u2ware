@@ -39,7 +39,7 @@ public class ElevatorHpnrtClientHandler extends ByteToMessageDecoder{
 			byte 운행모드 = in.readByte();//System.out.println("운행모드 : "+운행모드);
 			byte 운행방향 = in.readByte();//System.out.println("운행방향 : "+운행방향);
 			byte 운행층 = in.readByte();//System.out.println("운행층 : "+운행층);
-			String 운행층문자 = in.readBytes(3).toString(CharsetUtil.UTF_8);//System.out.println("운행층문자 : "+운행층문자);
+			String 운행층문자 = in.readBytes(3).toString(CharsetUtil.US_ASCII);//System.out.println("운행층문자 : "+운행층문자);
 			byte 문열림 = in.readByte();//System.out.println("문열림 : "+문열림);
 			
 			//logger.debug(호기번호+"/ "+운행모드+" / "+운행방향+" / "+운행층+" : "+운행층문자+ " "+문열림);
