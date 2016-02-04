@@ -21,7 +21,7 @@ public class FireSafesystemClientTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		FireSafesystemServerMock.startup(12000);
+		FireSafesystemServerMock.startup(12001);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{
@@ -46,8 +46,6 @@ public class FireSafesystemClientTest {
 			logger.debug(message.getPayload());
 			Thread.sleep(1000);
 		}
-		
-		Thread.sleep(1000000000);
 	}
 }
 

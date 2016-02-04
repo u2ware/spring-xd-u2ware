@@ -10,14 +10,14 @@
 	</int:channel>
 	
 	<bean id="fire" class="io.github.u2ware.integration.netty.x.FireSafesystemClient">
+<!-- 	
 		<property name="host" value="192.168.245.17"/>
 		<property name="port" value="2001"/>
+ -->		
+		<property name="host" value="127.0.0.1"/>
+		<property name="port" value="12001"/>
 		<property name="autoConnection" value="true"/>
 		<property name="messagingPreservation" value="true"/>
-<!-- 
-		<property name="host" value="127.0.0.1"/>
-		<property name="port" value="12000"/>
- -->
 		<property name="receiveChannel" ref="fireRequest"/>
 		<property name="sendChannel" ref="fireResponse"/>
 	</bean>

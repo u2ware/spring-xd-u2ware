@@ -8,6 +8,8 @@ public class FireSiemensResponse implements Serializable{
 
 	private String id = "alarm";
 	private Object value;
+	private String name = "화재알람";
+	private Long interval = 0l;
 	
 	public FireSiemensResponse(){
 		
@@ -29,11 +31,22 @@ public class FireSiemensResponse implements Serializable{
 	public void setValue(Object value) {
 		this.value = value;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Long getInterval() {
+		return interval;
+	}
+	public void setInterval(Long interval) {
+		this.interval = interval;
+	}
 
 	@Override
 	public String toString() {
-		return "FireSiemensResponse [id=" + id + ", value=" + value+ "]";
+		return "FireSiemensResponse [id=" + id + ", value=" + value + ", name="
+				+ name + ", interval=" + interval + "]";
 	}
-
-	
 }
