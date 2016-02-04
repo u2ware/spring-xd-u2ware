@@ -53,7 +53,7 @@ public class SnmpProcessorModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "snmp-processor "
-				+ " --localPort=10164 ";
+				+ " --port=10164 ";
 
 		logger.debug(processingChainUnderTest);
 		

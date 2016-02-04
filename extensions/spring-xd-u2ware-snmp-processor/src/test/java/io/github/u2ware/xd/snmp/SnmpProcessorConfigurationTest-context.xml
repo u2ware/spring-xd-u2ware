@@ -8,7 +8,7 @@
 	<context:property-placeholder properties-ref="props"/>
 
 	<util:properties id="props">
-		<prop key="localPort">10162</prop>
+		<prop key="port">10162</prop>
 	</util:properties>
 
 	<import resource="classpath:config/snmp-processor.xml"/>
