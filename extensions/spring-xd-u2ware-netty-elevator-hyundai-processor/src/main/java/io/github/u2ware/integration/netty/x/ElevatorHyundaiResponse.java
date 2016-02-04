@@ -10,16 +10,18 @@ public class ElevatorHyundaiResponse implements Serializable{
 	private Object value;
 	private String name;
 	private String state;
+	private Long interval;
 	
 	public ElevatorHyundaiResponse(){
 		
 	}
 
-	public ElevatorHyundaiResponse(String id, Object value, String name, String state){
+	public ElevatorHyundaiResponse(String id, Object value, String name, String state, Long interval){
 		this.id = id;
 		this.value = value;
 		this.name = name;
 		this.state = state;
+		this.interval = interval;
 	}
 	public String getId() {
 		return id;
@@ -45,10 +47,17 @@ public class ElevatorHyundaiResponse implements Serializable{
 	public void setState(String state) {
 		this.state = state;
 	}
+	public Long getInterval() {
+		return interval;
+	}
+	public void setInterval(Long interval) {
+		this.interval = interval;
+	}
 
 	@Override
 	public String toString() {
 		return "ElevatorHyundaiResponse [id=" + id + ", value=" + value
-				+ ", name=" + name + ", state=" + state + "]";
+				+ ", name=" + name + ", state=" + state + ", interval="
+				+ interval + "]";
 	}
 }

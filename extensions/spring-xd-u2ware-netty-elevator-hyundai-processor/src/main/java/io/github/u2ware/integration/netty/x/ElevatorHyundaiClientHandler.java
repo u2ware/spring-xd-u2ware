@@ -90,11 +90,11 @@ public class ElevatorHyundaiClientHandler extends MessageToMessageCodec<ByteBuf,
 			Map<String, Object> headers = Maps.newHashMap();
 			headers.put(NettyHeaders.REMOTE_ADDRESS, ctx.channel().remoteAddress().toString());
 
-			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_3", 운행,     동+"_"+호기+"호기 운행",     운행s.get(운행)));
-			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_4", 층수,     동+"_"+호기+"호기 층수",     null         ));
-			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_5", 방향,     동+"_"+호기+"호기 방향",     방향s.get(방향)));
-			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_6", 도어,     동+"_"+호기+"호기 도어",     도어s.get(도어)));
-			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_7", 정지예정층, 동+"_"+호기+"호기 정지예정층", null ));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_3", 운행,     동+"_"+호기+"호기 운행",     운행s.get(운행), 0l));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_4", 층수,     동+"_"+호기+"호기 층수",     null         , null));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_5", 방향,     동+"_"+호기+"호기 방향",     방향s.get(방향), null));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_6", 도어,     동+"_"+호기+"호기 도어",     도어s.get(도어), null));
+			result.add(new ElevatorHyundaiResponse(동+"_"+호기+"_7", 정지예정층, 동+"_"+호기+"호기 정지예정층", null        , null));
 		}
 
 		out.add(result);
