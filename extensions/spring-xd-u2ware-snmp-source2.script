@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "u2ware-snmp-source --localPort=10163 --fixedDelay=5000 --requestSupport=127.0.0.1:10162:1.3.6 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=snmp"
+stream create --name "testStream" --definition "u2ware-snmp-source --port=10163 --fixedDelay=5000 --requestSupport=127.0.0.1:10162:1.3.6 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=snmp"
 
 stream deploy --name "testStream"
 

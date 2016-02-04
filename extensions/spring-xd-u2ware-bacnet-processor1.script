@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "http | u2ware-bacnet-processor --localPort=47809 | log"
+stream create --name "testStream" --definition "http | u2ware-bacnet-processor --port=47809 | log"
 
 stream deploy --name "testStream"
 

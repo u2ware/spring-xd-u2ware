@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "http | u2ware-snmp-processor --localPort=10163 | log"
+stream create --name "testStream" --definition "http | u2ware-snmp-processor --port=10163 | log"
 
 stream deploy --name "testStream"
 

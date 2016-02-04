@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "u2ware-bacnet-source --localPort=47812 --fixedDelay=5000 --requestSupport=127.0.0.1:47808:47808 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=bacnet"
+stream create --name "testStream" --definition "u2ware-bacnet-source --port=47812 --fixedDelay=5000 --requestSupport=127.0.0.1:47808:47808 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=bacnet"
 
 stream deploy --name "testStream"
 

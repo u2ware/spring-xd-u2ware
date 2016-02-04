@@ -5,18 +5,24 @@
 /////////////////
 // 설비
 /////////////////
-stream create --name "hvac" --definition "u2ware-bacnet-source  --localPort=47808 --fixedDelay=1000 --requestSupport=0.0.0.0:5121:2001,0.0.0.0:5122:2002,0.0.0.0:5123:2003,0.0.0.0:5124:2004,0.0.0.0:5125:2005,0.0.0.0:5126:2006,0.0.0.0:5127:2007,0.0.0.0:5128:2008,0.0.0.0:5129:2009,0.0.0.0:5130:2010,0.0.0.0:5131:2011,0.0.0.0:5132:2012,0.0.0.0:5133:2013,0.0.0.0:5134:2014 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=hvac" --deploy
+stream create --name "hvac" --definition "u2ware-bacnet-source  --port=47808 --fixedDelay=1000 --requestSupport=0.0.0.0:5121:2001,0.0.0.0:5122:2002,0.0.0.0:5123:2003,0.0.0.0:5124:2004,0.0.0.0:5125:2005,0.0.0.0:5126:2006,0.0.0.0:5127:2007,0.0.0.0:5128:2008,0.0.0.0:5129:2009,0.0.0.0:5130:2010,0.0.0.0:5131:2011,0.0.0.0:5132:2012,0.0.0.0:5133:2013,0.0.0.0:5134:2014 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=hvac" --deploy
 
 /////////////////
 // 전력 
 /////////////////
-stream create --name "electric" --definition "u2ware-bacnet-source --localPort=47809 --fixedDelay=5000 --requestSupport=192.168.245.92:47808:4560   | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=electric" --deploy
+stream create --name "electric" --definition "u2ware-bacnet-source --port=47809 --fixedDelay=5000 --requestSupport=192.168.245.92:47808:4560   | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=electric" --deploy
+
+
+/////////////////
+// UPS 
+/////////////////
+stream create --name "ups" --definition "u2ware-snmp-source --port=10807 --fixedDelay=5000 --requestSupport=127.0.0.1:10162:1.3.6 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=ups"
+
 
 /////////////////
 // 조명 
 /////////////////
 stream create --name "lighting" --definition "queue:fire > u2ware-netty-lighting-jungho-processor --host=192.168.245.3 --port=10808 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=lighting" --deploy
-
 
 /////////////////
 // 엘리베이터 
@@ -27,6 +33,8 @@ stream create --name "elevator" --definition "queue:elevator > u2ware-netty-elev
 // 소방 
 /////////////////
 stream create --name "fire" --definition "queue:fire > u2ware-netty-fire-safesystem-processor --host=192.168.245.161 --port=2000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=fire" --deploy
+
+
 
 /////////////////
 // REST 

@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "u2ware-bacnet-source --localPort=47811 --fixedDelay=5000 --split=false --requestSupport=127.0.0.1:47808:47808  | log"
+stream create --name "testStream" --definition "u2ware-bacnet-source --port=47811 --fixedDelay=5000 --split=false --requestSupport=127.0.0.1:47808:47808  | log"
 
 stream deploy --name "testStream"
 
