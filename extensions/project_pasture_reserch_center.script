@@ -5,7 +5,7 @@
 /////////////////
 // 설비
 /////////////////
-stream create --name "hvac" --definition "u2ware-bacnet-source  --localPort=47808 --fixedDelay=1000 --requestSupport=0.0.0.0:5121:2001,0.0.0.0:5122:2002,0.0.0.0:5123:2003,0.0.0.0:5124:2004,0.0.0.0:5125:2005,0.0.0.0:5126:2006,0.0.0.0:5127:2007,0.0.0.0:5128:2008,0.0.0.0:5129:2009,0.0.0.0:5130:2010,0.0.0.0:5131:2011,0.0.0.0:5132:2012,0.0.0.0:5133:2013,0.0.0.0:5134:2014 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=hvac --idExpression=payload.id --valueExpression=payload.value" --deploy
+stream create --name "hvac" --definition "u2ware-bacnet-source  --localPort=47808 --fixedDelay=1000 --requestSupport=0.0.0.0:5121:2001,0.0.0.0:5122:2002,0.0.0.0:5123:2003,0.0.0.0:5124:2004,0.0.0.0:5125:2005,0.0.0.0:5126:2006,0.0.0.0:5127:2007,0.0.0.0:5128:2008,0.0.0.0:5129:2009,0.0.0.0:5130:2010,0.0.0.0:5131:2011,0.0.0.0:5132:2012,0.0.0.0:5133:2013,0.0.0.0:5134:2014 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=hvac" --deploy
 
 /////////////////
 // 전력 
