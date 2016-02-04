@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "u2ware-modbus-source --host=127.0.0.1 --port=10502 --unitId=0 --functionCode=4 --offset=0 --count=6 --fixedDelay=5000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=modbus --idExpression=payload.id --valueExpression=payload.value"
+stream create --name "testStream" --definition "u2ware-modbus-source --host=127.0.0.1 --port=10502 --fixedDelay=5000 --requestSupport=0:4:0:6 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=modbus"
 
 stream deploy --name "testStream"
 

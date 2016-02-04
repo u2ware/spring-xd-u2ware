@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "u2ware-bacnet-source  --remoteAddress=127.0.0.1:47808  --remoteInstanceNumber=47808  --localPort=47812 --fixedDelay=5000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=bacnet --idExpression=payload.id --valueExpression=payload.value"
+stream create --name "testStream" --definition "u2ware-bacnet-source --localPort=47812 --fixedDelay=5000 --requestSupport=127.0.0.1:47808:47808 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=bacnet"
 
 stream deploy --name "testStream"
 
@@ -7,3 +7,10 @@ stream deploy --name "testStream"
 
 //stream destroy --name "testStream"
 
+stream create --name "testRest" --definition "u2ware-data-mongodb-rest --httpPort=9897 --host=localhost --port=27017"
+
+stream deploy --name "testRest"
+
+//stream undeploy --name "testRest"
+
+//stream destroy --name "testRest"
