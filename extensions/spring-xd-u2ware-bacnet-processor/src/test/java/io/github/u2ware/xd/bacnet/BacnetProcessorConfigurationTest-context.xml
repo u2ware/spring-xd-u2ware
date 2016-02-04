@@ -8,7 +8,7 @@
 	<context:property-placeholder properties-ref="props"/>
 
 	<util:properties id="props">
-		<prop key="localPort">9991</prop>
+		<prop key="port">9991</prop>
 	</util:properties>
 
 	<import resource="classpath:config/bacnet-processor.xml"/>

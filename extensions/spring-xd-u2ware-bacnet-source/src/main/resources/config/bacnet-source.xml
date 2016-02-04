@@ -17,7 +17,7 @@
 	</bean>
 
 	<int-u2ware-bacnet:inbound-channel-adapter id="bacnetInboundChannelAdapter" 
-		local-port="${localPort:47808}"
+		port="${port:47808}"
 		request-support="bacnetRequest"
 
 		channel="bacnetResponse">

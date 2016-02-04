@@ -53,7 +53,7 @@ public class BacnetProcessorModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "bacnet-processor "
-				+ " --localPort=9992 ";
+				+ " --port=9992 ";
 
 		logger.debug(processingChainUnderTest);
 		

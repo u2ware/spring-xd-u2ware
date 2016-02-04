@@ -55,7 +55,7 @@ public class BacnetSourceModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "bacnet-source "
-				+ " --localPort=47808"
+				+ " --port=47808"
 				+ " --requestSupport=127.0.0.1:47909:47909 "
 				+ " --fixedDelay=5000"
 				+ " --jsonOutput=false ";
