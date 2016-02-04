@@ -73,16 +73,16 @@ public class MongodbSinkModuleIntegrationTest {
 		
 		Thread.sleep(3000);
 
-		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18, \"name\":\"가나다라\", \"strategy\":\"ALARM\" }");
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":18, \"interval\":2000}");
 		Thread.sleep(1000);
 
-		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"b\", \"age\":19 }");
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":19 }");
 		Thread.sleep(1000);
 		
-		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":20 }");
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":20 }");
 		Thread.sleep(1000);
 
-		chain.sendPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":21 }");
+		chain.sendPayload("{\"id\":\"Mina\", \"value\":21 }");
 		Thread.sleep(1000);
 		
 		
@@ -97,7 +97,7 @@ public class MongodbSinkModuleIntegrationTest {
 
 		r = template.findAll(DBObject.class, "Mina");
 		logger.debug("\tMina");
-		Assert.assertEquals(3, r.size());
+		Assert.assertEquals(2, r.size());
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}

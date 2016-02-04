@@ -51,21 +51,37 @@ public class MongodbSinkConfigurationTest {
 		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
 		template.createCollection("Mina");
 		
+		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18}").build());
+		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"interval\":2000}").build());
+		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"criteria\":\"value == 19\"}").build());
+		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"criteria\":\"value < 19\"}").build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"interval\":3000, \"criteria\":\"value > 19\"}").build());
+		Thread.sleep(1000);
 		
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"a\", \"age\":18, \"name\":\"가나다라\", \"strategy\":\"ALARM\" }").build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
 		Thread.sleep(1000);
 
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"b\", \"age\":19 }").build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
 		Thread.sleep(1000);
-
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":19 }").build());
-		Thread.sleep(1000);
-
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":\"c\", \"age\":21 }").build());
-		Thread.sleep(1000);
-
 		
-		//Thread.sleep(1000000);
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
+		Thread.sleep(1000);
+		
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18 }").build());
+		Thread.sleep(1000);
+		
 		
 		List<DBObject> r = null;
 		
@@ -82,7 +98,7 @@ public class MongodbSinkConfigurationTest {
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}
-		Assert.assertEquals(3, r.size());
+		Assert.assertEquals(6, r.size());
 		
 		
 	}

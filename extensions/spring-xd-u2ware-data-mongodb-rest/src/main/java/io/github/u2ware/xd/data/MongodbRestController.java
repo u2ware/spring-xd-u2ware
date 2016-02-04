@@ -1,9 +1,6 @@
 package io.github.u2ware.xd.data;
 
-import io.github.u2ware.xd.data.Entity.Strategy;
-import io.github.u2ware.xd.data.MongodbRestControllerSupport.Calculation;
-import io.github.u2ware.xd.data.MongodbRestControllerSupport.Interval;
-import io.github.u2ware.xd.data.MongodbRestControllerSupport.IntervalHandler;
+import io.github.u2ware.xd.data.DateTimeUtils.IntervalHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -70,10 +67,9 @@ public class MongodbRestController {
 	// RAW
 	//////////////////////////////
     @RequestMapping(value="/raw" , method=RequestMethod.GET)
-	public Page<DBObject> database() throws Exception{
+	public List<DBObject> database() throws Exception{
 		
     	List<DBObject> content = Lists.newArrayList();
-    	
     	
 		for(String databaseName : mongo.getDatabaseNames()){
 
@@ -91,11 +87,11 @@ public class MongodbRestController {
 			d.put("totalDocumentCount", totalDocumentCount);
 			content.add(d);
 		}
-		return new PageImpl<DBObject>(content);
+		return content;
 	}
     
     @RequestMapping(value="/raw/{databaseName}", method=RequestMethod.GET)
-	public Page<DBObject> collections(
+	public List<DBObject> collections(
 			@PathVariable("databaseName") String databaseName) throws Exception{
 
 		DB database = mongo.getDB(databaseName);
@@ -111,22 +107,15 @@ public class MongodbRestController {
 			content.add(obj);
 		}
 		
-		return new PageImpl<DBObject>(content);
+		return content;
 	}
     @RequestMapping(value="/raw/{databaseName}/{collectionName}", method=RequestMethod.GET)
-	public Page<Entity> documents(
+	public List<Entity> documents(
 			@PathVariable("databaseName") String databaseName, 
-			@PathVariable("collectionName") String collectionName, 
-			Pageable pageable) throws Exception{
-    	
-		MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
-		
-		BasicDBObject q = new BasicDBObject();
-		Query query = new BasicQuery(q).with(pageable);
+			@PathVariable("collectionName") String collectionName) throws Exception{
 
-		Long count = mongoTemplate.count(query, Entity.class, collectionName);
-		List<Entity> content = mongoTemplate.find(query, Entity.class, collectionName);
-		return new PageImpl<Entity>(content, pageable, count);
+    	MongoTemplate mongoTemplate = getMongoTemplate(databaseName);
+		return mongoTemplate.findAll(Entity.class, collectionName);
 	}
 
     @RequestMapping(value="/raw/{databaseName}/{collectionName}/{id}", method=RequestMethod.GET)
@@ -145,11 +134,18 @@ public class MongodbRestController {
 	// Monitor
 	//////////////////////////////
     @RequestMapping(value="/monitor/{entityName}", method=RequestMethod.GET)
-	public List<Entity> monitor(
-			@PathVariable("entityName") String entityName) throws Exception{
+	public Page<Entity> monitor(
+			@PathVariable("entityName") String entityName, 
+			Pageable pageable) throws Exception{
+    	
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+		
+		BasicDBObject q = new BasicDBObject();
+		Query query = new BasicQuery(q).with(pageable);
 
-    	MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-		return mongoTemplate.findAll(Entity.class, entityName);
+		Long count = mongoTemplate.count(query, Entity.class, entityName);
+		List<Entity> content = mongoTemplate.find(query, Entity.class, entityName);
+		return new PageImpl<Entity>(content, pageable, count);
 	}
 
     @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.GET)
@@ -175,7 +171,8 @@ public class MongodbRestController {
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id,
 			final @RequestParam(name="name", required=false) String name,
-			final @RequestParam(name="strategy", required=false) Strategy strategy) throws Exception{
+			final @RequestParam(name="criteria", required=false) String criteria,
+			final @RequestParam(name="interval", required=false) Long interval) throws Exception{
     
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 		Entity current = mongoTemplate.findById(id, Entity.class, entityName);
@@ -184,8 +181,11 @@ public class MongodbRestController {
 			if(name != null){
 				current.setName(name);
 			}
-			if(strategy != null){
-				current.setStrategy(strategy);
+			if(criteria != null){
+				current.setCriteria(criteria);
+			}
+			if(interval != null){
+				current.setInterval(interval);
 			}
 			mongoTemplate.save(current, entityName);
 		}
@@ -216,16 +216,16 @@ public class MongodbRestController {
 			DateTime x = datetime != null ? datetime : DateTime.now();
 
 	    	if(Interval.HOUR.equals(interval)){
-				s = MongodbRestControllerSupport.minimumHourOfDay(x);
-				e = MongodbRestControllerSupport.maximumHourOfDay(x);
+				s = DateTimeUtils.minimumHourOfDay(x);
+				e = DateTimeUtils.maximumHourOfDay(x);
 	    		
 	    	}else if(Interval.DAY.equals(interval)){
-				s = MongodbRestControllerSupport.minimumDayOfMonth(x);
-				e = MongodbRestControllerSupport.maximumDayOfMonth(x);
+				s = DateTimeUtils.minimumDayOfMonth(x);
+				e = DateTimeUtils.maximumDayOfMonth(x);
 
 	    	}else if(Interval.MONTH.equals(interval)){
-				s = MongodbRestControllerSupport.minimumMonthOfYear(x);
-				e = MongodbRestControllerSupport.maximumMonthOfYear(x);
+				s = DateTimeUtils.minimumMonthOfYear(x);
+				e = DateTimeUtils.maximumMonthOfYear(x);
 	    	}
 		}
 		
@@ -244,6 +244,15 @@ public class MongodbRestController {
     //////////////////////////////
 	// Chart
 	//////////////////////////////
+    public static enum Interval{
+    	HOUR, //24
+    	DAY, //total day of month
+    	MONTH //12
+    }
+    public static enum Calculation{
+    	LAST, MIN, MAX, AVG;
+    }
+    
     @RequestMapping(value="/chart/{entityName}/{id}", method=RequestMethod.GET)
 	public DBObject chart(
 			final @PathVariable("entityName") String entityName, 
@@ -267,7 +276,7 @@ public class MongodbRestController {
     	final List<Object> data = Lists.newArrayList();
     	
     	if(Interval.HOUR.equals(interval)){
-        	MongodbRestControllerSupport.hours(datetime, new IntervalHandler() {
+        	DateTimeUtils.hours(datetime, new IntervalHandler() {
         		private Object value;
         		public void interval(int index, DateTime min, DateTime max) {
     	    		value = chartValue(value, entityName, id, index, min, max, calculation);
@@ -276,7 +285,7 @@ public class MongodbRestController {
     		});
 
     	}else if(Interval.DAY.equals(interval)){
-        	MongodbRestControllerSupport.days(datetime, new IntervalHandler() {
+        	DateTimeUtils.days(datetime, new IntervalHandler() {
         		private Object value;
         		public void interval(int index, DateTime min, DateTime max) {
     	    		value = chartValue(value, entityName, id, index, min, max, calculation);
@@ -285,7 +294,7 @@ public class MongodbRestController {
     		});
         	
 		}else if(Interval.MONTH.equals(interval)){
-	    	MongodbRestControllerSupport.months(datetime, new IntervalHandler() {
+	    	DateTimeUtils.months(datetime, new IntervalHandler() {
 	    		private Object value;
 	    		public void interval(int index, DateTime min, DateTime max) {
 		    		value = chartValue(value, entityName, id, index, min, max, calculation);

@@ -4,11 +4,13 @@ package io.github.u2ware.xd.data;
 public class Entity {
 
 	private Object id;
-	private String name;
 	private Object value;
 	private String datetime;
 	private Object payload;
-	private Strategy strategy;
+
+	private String name;
+	private String criteria; //value == 1, value > 1111 , value < 111 , value < 111 && value < 111 //
+	private Long interval; // 0 , 1000, 60*60
 	
 	public Object getId() {
 		return id;
@@ -40,24 +42,27 @@ public class Entity {
 	public void setPayload(Object payload) {
 		this.payload = payload;
 	}
-	public Strategy getStrategy() {
-		return strategy;
+	public String getCriteria() {
+		return criteria;
 	}
-	public void setStrategy(Strategy strategy) {
-		this.strategy = strategy;
+	public void setCriteria(String criteria) {
+		this.criteria = criteria;
+	}
+	public Long getInterval() {
+		return interval;
+	}
+	public void setInterval(Long interval) {
+		this.interval = interval;
 	}
 	@Override
 	public String toString() {
 		return "Entity [id=" + id 
+				+ ", value=" + value 
 				+ ", datetime=" + datetime 
-				+ ", value=" + value
 				+ ", name=" + name 
-				+ ", strategy=" + strategy
-				+ ", payload=" + payload + "]";
-	}
-	public static enum Strategy{
-		NOMAL,
-		HISTORY,
-		ALARM
+				+ ", criteria=" + criteria
+				+ ", interval="+ interval 
+				+ ", payload=" + payload
+				+ "]";
 	}
 }

@@ -1,7 +1,5 @@
 package io.github.u2ware.xd.data;
 
-import io.github.u2ware.xd.data.Entity.Strategy;
-
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -32,7 +30,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 
 	//private volatile Expression idExpression;
 	//private volatile Expression valueExpression;
-	private boolean valueLogging;
+	//private boolean valueLogging;
 	
 	private MongoDbFactory mongoDbFactory;
 	private MongoTemplate mongoTemplate;
@@ -48,12 +46,6 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 	}
 	public void setMongoConverter(MongoConverter mongoConverter) {
 		this.mongoConverter = mongoConverter;
-	}
-	public boolean isValueLogging() {
-		return valueLogging;
-	}
-	public void setValueLogging(boolean valueLogging) {
-		this.valueLogging = valueLogging;
 	}
 
 	@Override
@@ -76,6 +68,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 			return spelExpressionParser.parseExpression(name).getValue(this.evaluationContext, rootObject, returnType);
 			
 		}catch(Exception e){
+			//e.printStackTrace();
 			return defaultValue;
 		}
 	}
@@ -102,7 +95,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		if(id == null || value == null) return;
 
 		long timestamp = requestMessage.getHeaders().get(MessageHeaders.TIMESTAMP, Long.class);
-		
+		String datetime = new DateTime(timestamp).toString();
 //		logger.info("id: "+id);
 //		logger.info("value: "+value);
 //		logger.info("timestamp: "+timestamp);
@@ -114,69 +107,69 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		//
 		///////////////////////
 		Entity entity = mongoTemplate.findById(id, Entity.class, collectionName);
-		if(entity != null){
-			entity.setValue(value);
-			entity.setDatetime(new DateTime(timestamp).toString());
-			entity.setPayload(payload);
-
-			//logger.debug("entity update: "+entity);
-			
-		}else{
-			String name = parseValue("name", payload, String.class, "");
-			String strategy = parseValue("strategy", payload, String.class, Strategy.NOMAL.toString());
+		if(entity == null){
+			String name = parseValue("name", payload, String.class, null);
+			String criteria = parseValue("criteria", payload, String.class, null);
+			Long interval = parseValue("interval", payload, Long.class, null);
 			
 			entity = new Entity();
 			entity.setId(id);
 			entity.setValue(value);
-			entity.setDatetime(new DateTime(timestamp).toString());
+			entity.setDatetime(datetime);
 			entity.setName(name);
-			entity.setStrategy(Strategy.valueOf(strategy));
+			entity.setCriteria(criteria);
+			entity.setInterval(interval);
 			entity.setPayload(payload);
-
-			//logger.debug("entity create: "+entity);
+			
+		}else{
+			entity.setValue(value);
+			entity.setDatetime(datetime);
+			entity.setPayload(payload);
 		}
-		mongoTemplate.save(entity, collectionName);
+
+		Entity record = new Entity();
+		record.setId(timestamp);
+		record.setValue(value);
+		record.setDatetime(datetime);
+		record.setName(id.toString());
 		
-
-		if( !Strategy.NOMAL.equals(entity.getStrategy())){
+		boolean isRecord = false;
+		
+		if( entity.getCriteria() != null 
+			&& parseValue(entity.getCriteria(), record, Boolean.class, false)){
 			
-			BasicDBObject q = new BasicDBObject();
-			Sort sort = new Sort(Direction.DESC, "id");
-			Query query = new BasicQuery(q).with(sort);
-			Entity post = mongoTemplate.findOne(query, Entity.class, id.toString());
-
-			Entity objectToSave = new Entity();
-			objectToSave.setId(timestamp);
-			objectToSave.setValue(value);
-			objectToSave.setDatetime(new DateTime(timestamp).toString());
+			isRecord = true;
+			//logger.debug("record {"+entity.getCriteria()+"}: "+record);
+		}
+		
+		if( isRecord == false  && entity.getInterval() != null){			
 			
-			if(post != null){
+			Query query = new BasicQuery(new BasicDBObject()).with(new Sort(Direction.DESC, "id"));
+			Entity beforeRecord = mongoTemplate.findOne(query, Entity.class, id.toString());
+			
+			if(beforeRecord != null){
+			
+				Long beforeRecordTimestamp = (Long)beforeRecord.getId();
 				
-				Object pastValue = post.getValue();
-				Long postTimestamp = (Long)post.getId();
-
-				if(Strategy.ALARM.equals(entity.getStrategy())){
-
-					if( ! pastValue.equals(value)){
-						//logger.debug("logging alarm: "+objectToSave);
-						mongoTemplate.save(objectToSave, id.toString());
-					}
-					
-				}else if(Strategy.HISTORY.equals(entity.getStrategy())){
-
-					if( !pastValue.equals(value) && timestamp - postTimestamp >= 60*60*1000){
-						//logger.debug("logging history: "+objectToSave);
-						mongoTemplate.save(objectToSave, id.toString());
-					}
+				if(! beforeRecord.getValue().equals(value)
+				  && timestamp - beforeRecordTimestamp >= entity.getInterval()){
+				
+					isRecord = true;
+					//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
 				}
-				
 			}else{
-				//logger.debug("logging first: "+objectToSave);
-				mongoTemplate.save(objectToSave, id.toString());
+				isRecord = true;
+				//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
 			}
 		}
+		
+		
+		mongoTemplate.save(entity, collectionName);
+		
+		if(isRecord){
+			mongoTemplate.save(record, id.toString());
+		}else{
+			//logger.debug("record ignore: "+record);
+		}
 	}
-
-	
-
 }

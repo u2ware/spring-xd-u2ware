@@ -37,37 +37,37 @@ public class MongodbRestConfigurationTest {
 		Thread.sleep(2000);
 		RestTemplate restTemplate = new RestTemplate();
 
-		Map database = restTemplate.getForObject("http://localhost:9898/raw/", Map.class);
+		List<Map> database = (List<Map>)restTemplate.getForObject("http://localhost:9898/raw/", List.class);
 		//logger.debug("database:"+database);
-		List<Map> databaseContent = (List<Map>)database.get("content");
 		
 		logger.debug("\t\t ");
 		logger.debug("\t\t ");
 		logger.debug("\t\t ");
-		for(Map db : databaseContent){
+		for(Map db : database){
 			logger.debug(db);
 			
-			Map collections = restTemplate.getForObject("http://localhost:9898/raw/{database}", Map.class, 
+			List<Map> collections = (List<Map>)restTemplate.getForObject("http://localhost:9898/raw/{database}", List.class, 
 											db.get("databaseName"));
 			//logger.debug("collections: "+collections);
-			List<Map> collectionsContent = (List<Map>)collections.get("content");
-			for(Map collection : collectionsContent){
+
+			for(Map collection : collections){
 				logger.debug("\t"+collection);
-			
-				Map entities = restTemplate.getForObject("http://localhost:9898/raw/{database}/{collectionName}?size=17", Map.class, 
+
+				List<Map> documents = restTemplate.getForObject("http://localhost:9898/raw/{database}/{collectionName}", List.class, 
 										db.get("databaseName"), 
 										collection.get("collectionName"));
-				//logger.debug("entities: "+entities);
-				List<Map> entitiesContent = (List<Map>)entities.get("content");
-				for(Map e : entitiesContent){
-					
-					//logger.debug("entity: "+e);
+				//logger.debug("documents: "+documents);
+				
+				for(Map document : documents){
+					//logger.debug("document: "+document);
+
 					String entity = restTemplate.getForObject("http://localhost:9898/raw/{database}/{collectionName}/{id}", String.class, 
 							db.get("databaseName"), 
 							collection.get("collectionName"),
-							e.get("id"));
-
-					logger.debug("\t\t"+entity);
+							document.get("id"));
+					if(entity != null){
+						logger.debug("\t\t"+entity);
+					}
 				}
 			}
 		}

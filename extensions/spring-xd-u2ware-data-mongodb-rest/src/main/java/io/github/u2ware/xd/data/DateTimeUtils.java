@@ -1,26 +1,10 @@
 package io.github.u2ware.xd.data;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 
-public class MongodbRestControllerSupport {
+public class DateTimeUtils {
 
-    protected static Log logger = LogFactory.getLog(MongodbRestControllerSupport.class);
-	
-    public static enum Interval{
-    	HOUR, //24
-    	DAY, //total day of month
-    	MONTH //12
-    }
-    public static enum Calculation{
-    	LAST, MIN, MAX, AVG;
-    }
-	
-	public interface IntervalHandler {
-    	void interval(int index, DateTime min, DateTime max);
-    }
-
+    //protected static Log logger = LogFactory.getLog(MongodbRestControllerSupport.class);
 	public static DateTime maximumMinuteOfHour(DateTime d){
 		return d.minuteOfHour().withMaximumValue()
 				.secondOfMinute().withMaximumValue()
@@ -54,6 +38,10 @@ public class MongodbRestControllerSupport {
 	}
 	
 	
+	public interface IntervalHandler {
+    	void interval(int index, DateTime min, DateTime max);
+    }
+	
 	public static void months(DateTime d, IntervalHandler handler){
 
     	DateTime x = d.monthOfYear().withMinimumValue();
@@ -65,7 +53,7 @@ public class MongodbRestControllerSupport {
     		min = minimumDayOfMonth(x);
     		max = maximumDayOfMonth(x);
   
-    		logger.debug("months: "+index+": "+min+"~~~"+max);
+    		//logger.debug("months: "+index+": "+min+"~~~"+max);
     		handler.interval(index, min, max);
     		
     		x = x.plusMonths(1);
