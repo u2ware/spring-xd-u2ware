@@ -15,7 +15,7 @@ public class FireSafesystemServerMock extends AbstractTcpServer {
 
 	public static void main(String[] args) throws Exception{
 		
-		int port = 12000;
+		int port = 12001;
 		try{
 			port = Integer.parseInt(args[0]);
 		}catch(Exception e){
