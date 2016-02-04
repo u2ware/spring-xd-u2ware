@@ -29,7 +29,7 @@ public class SnmpProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		SnmpAgent.startup(10163);
+		SnmpAgent.startup(10165);
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
 		
@@ -43,25 +43,30 @@ public class SnmpProcessorModuleIntegrationTest {
 	@AfterClass
 	public static void afterClass() throws Exception{
 		application.close();
-		SnmpAgent.shutdown(10163);
+		SnmpAgent.shutdown(10165);
 	}
 	
 
 	@Test
 	public void test() throws InterruptedException {
 
+		Thread.sleep(3000);
+
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "snmp-processor "
-				+ " --port=10164 ";
+				+ " --port=10166 ";
 
 		logger.debug(processingChainUnderTest);
 		
 		//SingleNodeProcessingChainConsumer chain = SingleNodeProcessingChainSupport.chainConsumer(application, streamName, processingChainUnderTest);
 		SingleNodeProcessingChain chain = SingleNodeProcessingChainSupport.chain(application, streamName, processingChainUnderTest);
 		//SingleNodeProcessingChainProducer chain = SingleNodeProcessingChainSupport.chainProducer(application, streamName, processingChainUnderTest);
+
+		Thread.sleep(3000);
 		
-		chain.sendPayload("{\"host\":\"127.0.0.1\", \"port\":10163, \"rootOid\":\"1.3.6\"}");
+		chain.sendPayload("{\"host\":\"127.0.0.1\", \"port\":10165, \"rootOid\":\"1.3.6\"}");
+		
 		
 		Object payload = chain.receivePayload(RECEIVE_TIMEOUT);
 		logger.debug(payload);

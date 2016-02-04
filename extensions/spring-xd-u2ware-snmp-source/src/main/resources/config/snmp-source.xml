@@ -19,7 +19,7 @@
 	</bean>
 
 	<int-u2ware-snmp:inbound-channel-adapter id="snmpInboundChannelAdapter" 
-		port="${localPort:10162}"
+		port="${port:10162}"
 		mib-file="${mibFile: }"
 		request-support="snmpRequest"
 		channel="snmpResponse">
