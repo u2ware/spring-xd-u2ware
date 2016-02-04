@@ -8,7 +8,7 @@
 	<context:property-placeholder properties-ref="props"/>
 
 	<util:properties id="props">
-		<prop key="localPort">10161</prop>
+		<prop key="port">10161</prop>
 		<prop key="requestSupport">
 				127.0.0.1:10162:1.3.6,
 				127.0.0.1:10163:1.3.6

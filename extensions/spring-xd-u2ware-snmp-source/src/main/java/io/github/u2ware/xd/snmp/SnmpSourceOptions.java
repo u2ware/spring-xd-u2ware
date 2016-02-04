@@ -12,7 +12,7 @@ public class SnmpSourceOptions implements ProfileNamesProvider{
 	private static final String use_json_output = "use_json_output";
 	private static final String dont_use_json_output = "dont_use_json_output";
 
-	private int localPort;
+	private int port;
 	private String mibFile;
 	private String requestSupport;
 	
@@ -20,12 +20,12 @@ public class SnmpSourceOptions implements ProfileNamesProvider{
 	private boolean split = true;
 	private boolean jsonOutput = true;
 	
-	public int getLocalPort() {
-		return localPort;
+	public int getPort() {
+		return port;
 	}
-	@ModuleOption("setLocalPort")
-	public void setLocalPort(int localPort) {
-		this.localPort = localPort;
+	@ModuleOption("setPort")
+	public void setPort(int port) {
+		this.port = port;
 	}
 	public String getMibFile() {
 		return mibFile;

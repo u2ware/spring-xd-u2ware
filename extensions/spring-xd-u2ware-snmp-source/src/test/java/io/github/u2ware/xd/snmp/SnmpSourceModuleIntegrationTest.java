@@ -54,7 +54,7 @@ public class SnmpSourceModuleIntegrationTest {
 		String streamName = "streamTest";
 
 		String processingChainUnderTest = "snmp-source "
-				+ " --localPort=10165 "
+				+ " --port=10165 "
 				+ " --requestSupport=127.0.0.1:10164:1.3.6 "
 				+ " --jsonOutput=false ";
 
