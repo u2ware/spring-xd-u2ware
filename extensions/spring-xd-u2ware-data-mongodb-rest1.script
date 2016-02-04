@@ -4,7 +4,7 @@ stream create --name "testStream" --definition "u2ware-data-mongodb-rest --httpP
 
 stream deploy --name "testStream"
 
-http get --target http://localhost:9897
+http get --target http://localhost:9897/raw
 
 stream undeploy --name "testStream"
 
