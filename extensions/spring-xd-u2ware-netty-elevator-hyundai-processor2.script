@@ -1,5 +1,5 @@
 
-stream create --name "testStream" --definition "queue:elevator > u2ware-netty-elevator-hyundai-processor --host=127.0.0.1 --port=10901 --messagingTimeout=3000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=elevator --idExpression=payload.id --valueExpression=payload.value --valueLogging=false"
+stream create --name "testStream" --definition "queue:elevator > u2ware-netty-elevator-hyundai-processor --host=127.0.0.1 --port=10901 --messagingTimeout=3000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=elevator"
 
 stream deploy --name "testStream"
 
