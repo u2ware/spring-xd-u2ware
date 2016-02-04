@@ -180,25 +180,13 @@ public class MongodbRestController {
 
 		if(current != null){			
 			if(StringUtils.hasText(name)){
-				if("null".equals(criteria)){
-					current.setName(null);
-				}else{
-					current.setName(name);
-				}
+				current.setName("null".equals(name) ? null : name);
 			}
 			if(StringUtils.hasText(criteria)){
-				if("null".equals(criteria)){
-					current.setCriteria(null);
-				}else{
-					current.setCriteria(criteria);
-				}
+				current.setCriteria("null".equals(criteria) ? null : criteria);
 			}
 			if(interval != null){
-				if(interval < 0l){
-					current.setInterval(null);
-				}else{
-					current.setInterval(interval);
-				}
+				current.setInterval(interval < 0l ? null : interval);
 			}
 			mongoTemplate.save(current, entityName);
 		}
