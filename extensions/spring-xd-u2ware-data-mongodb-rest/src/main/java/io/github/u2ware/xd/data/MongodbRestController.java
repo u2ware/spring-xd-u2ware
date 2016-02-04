@@ -26,6 +26,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -178,14 +179,26 @@ public class MongodbRestController {
 		Entity current = mongoTemplate.findById(id, Entity.class, entityName);
 
 		if(current != null){			
-			if(name != null){
-				current.setName(name);
+			if(StringUtils.hasText(name)){
+				if("null".equals(criteria)){
+					current.setName(null);
+				}else{
+					current.setName(name);
+				}
 			}
-			if(criteria != null){
-				current.setCriteria(criteria);
+			if(StringUtils.hasText(criteria)){
+				if("null".equals(criteria)){
+					current.setCriteria(null);
+				}else{
+					current.setCriteria(criteria);
+				}
 			}
 			if(interval != null){
-				current.setInterval(interval);
+				if(interval < 0l){
+					current.setInterval(null);
+				}else{
+					current.setInterval(interval);
+				}
 			}
 			mongoTemplate.save(current, entityName);
 		}
