@@ -29,7 +29,7 @@ public class MongodbRestConfigurationTest {
 	
     protected Log logger = LogFactory.getLog(getClass());
 
-
+    
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void test() throws Exception{

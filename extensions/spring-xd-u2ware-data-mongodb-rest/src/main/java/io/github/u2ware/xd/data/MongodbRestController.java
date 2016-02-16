@@ -262,7 +262,8 @@ public class MongodbRestController {
 			final @RequestParam(name="interval", required=false, defaultValue="HOUR") Interval interval,
 			final @RequestParam(name="calculation", required=false, defaultValue="LAST") Calculation calculation) throws Exception{
     	
-    	List<Object> data = chartValue(entityName, id, datetime, interval, calculation);
+		DateTime x = datetime != null ? datetime : DateTime.now();
+    	List<Object> data = chartValue(entityName, id, x, interval, calculation);
     	
     	final BasicDBObject result = new BasicDBObject();
     	result.put("chartName", id);
