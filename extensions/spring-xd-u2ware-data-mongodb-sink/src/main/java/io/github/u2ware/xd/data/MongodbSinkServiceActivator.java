@@ -106,72 +106,65 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		///////////////////////
 		//
 		///////////////////////
-		Entity entity = mongoTemplate.findById(id, Entity.class, collectionName);
-		if(entity == null){
+		Entity current = mongoTemplate.findById(id, Entity.class, collectionName);
+		if(current == null){
 			String name = parseValue("name", payload, String.class, null);
 			String criteria = parseValue("criteria", payload, String.class, null);
 			Long interval = parseValue("interval", payload, Long.class, null);
 			
-			entity = new Entity();
-			entity.setId(id);
-			entity.setValue(value);
-			entity.setDatetime(datetime);
-			entity.setName(name);
-			entity.setCriteria(criteria);
-			entity.setInterval(interval);
-			entity.setPayload(payload);
-			
-		}else{
-			entity.setValue(value);
-			entity.setDatetime(datetime);
-			entity.setPayload(payload);
-		}
-		
-		Entity record = new Entity();
-		record.setId(timestamp);
-		record.setValue(value);
-		record.setDatetime(datetime);
-		record.setName(id.toString());
-		
-		boolean isRecord = false;
-
-		if( entity.getCriteria() != null ){
-			if(parseValue(entity.getCriteria(), record, Boolean.class, false)){
-				record.setPayload("criteria");
-				isRecord = true;
-				//logger.debug("record {"+entity.getCriteria()+"}: "+record);
-			}
+			current = new Entity();
+			current.setId(id);
+			current.setValue(value);
+			current.setDatetime(datetime);
+			current.setName(name);
+			current.setCriteria(criteria);
+			current.setInterval(interval);
+			current.setPayload(payload);
 		}	
 		
-		if( isRecord == false && entity.getInterval() != null){			
-			
-			Query query = new BasicQuery(new BasicDBObject()).with(new Sort(Direction.DESC, "id"));
-			Entity beforeRecord = mongoTemplate.findOne(query, Entity.class, id.toString());
-			
-			if(beforeRecord != null){
+		Query query = new BasicQuery(new BasicDBObject()).with(new Sort(Direction.DESC, "id"));
+		Entity before = mongoTemplate.findOne(query, Entity.class, id.toString());
+		if(before == null){
+			before = new Entity();
+		}
+		
+		Entity after = new Entity();
+		after.setId(timestamp);
+		after.setValue(value);
+		after.setDatetime(datetime);
+		after.setName(id.toString());
+		
 
-				if(! beforeRecord.getValue().equals(value)){
+		
+		if(current.getInterval() != null){			
+			Object beforeValue = before.getValue();
+					
+			if(! value.equals(beforeValue)){
 
-					Long beforeRecordTimestamp = (Long)beforeRecord.getId();
-					if(timestamp - beforeRecordTimestamp >= entity.getInterval()){
-						//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
-						record.setPayload("interval");
-						isRecord = true;
-					}
+				Long beforeTimestamp = (Long)before.getId();
+				if(beforeTimestamp == null || timestamp - beforeTimestamp >= current.getInterval()){
+					after.setPayload("interval");
+					mongoTemplate.save(after, id.toString());
 				}
-			}else{
-				//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
-				record.setPayload("interval");
-				isRecord = true;
+			}
+		}
+		if( current.getCriteria() != null ){
+			
+			Object currentValue = current.getValue();
+
+			if(! value.equals(currentValue)){
+				
+				if(parseValue(current.getCriteria(), after, Boolean.class, false)){
+					after.setPayload("criteria");
+					mongoTemplate.save(after, id.toString());
+				}	
 			}
 		}
 		
-		mongoTemplate.save(entity, collectionName);
 		
-		if(isRecord){
-			mongoTemplate.save(record, id.toString());
-		}else{
-			//logger.debug("record ignore: "+record);
-		}
+		current.setValue(value);
+		current.setDatetime(datetime);
+		current.setPayload(payload);
+		mongoTemplate.save(current, collectionName);
 	}
 }

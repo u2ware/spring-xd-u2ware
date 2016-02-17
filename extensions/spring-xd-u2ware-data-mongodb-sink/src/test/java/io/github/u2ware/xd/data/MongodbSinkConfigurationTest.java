@@ -58,15 +58,18 @@ public class MongodbSinkConfigurationTest {
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
 		Thread.sleep(1000);
 
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
 		Thread.sleep(1000);
 
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
 		Thread.sleep(1000);
 		
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
 		Thread.sleep(1000);
 
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
+		Thread.sleep(1000);
+		
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
 		Thread.sleep(1000);
 
@@ -100,38 +103,46 @@ public class MongodbSinkConfigurationTest {
 		Entity e = new Entity();
 		e.setId("Mina");
 		template.save(e, "MyDatabase");
+		asserts(template, 0);
 		
 		///////////////////
-		asserts(template, 0);
+		e.setInterval(0l);
+		template.save(e, "MyDatabase");
+		asserts(template, 8);
+		
 		
 		///////////////////
 		e.setInterval(2000l);
 		template.save(e, "MyDatabase");
-		asserts(template, 5);
+		asserts(template, 8 + 5);
 
 		///////////////////
 		e.setInterval(null);
 		e.setCriteria("value == 19");
 		template.save(e, "MyDatabase");
-		asserts(template, 5 + 3);
+		asserts(template, 8 + 5 + 2);
 		
 		///////////////////
 		e.setCriteria("value > 19");
 		template.save(e, "MyDatabase");
-		asserts(template, 5 + 3 + 4);
+		asserts(template, 8 + 5 + 2 + 4);
 
 		
 		///////////////////
 		e.setCriteria("value < 19");
 		template.save(e, "MyDatabase");
-		asserts(template, 5 + 3 + 4 + 2);
+		asserts(template, 8 + 5 + 2 + 4 + 2);
 		
-
 		///////////////////
-		e.setInterval(3000l);
-		e.setCriteria("value > 19");
+		e.setInterval(0l);
+		e.setCriteria("value == 19");
 		template.save(e, "MyDatabase");
-		asserts(template, 5 + 3 + 4 + 2 + 6);
+		asserts(template, 8 + 5 + 2 + 4 + 2 + 8);
+
+		e.setInterval(2000l);
+		e.setCriteria("value == 19");
+		template.save(e, "MyDatabase");
+		asserts(template, 8 + 5 + 2 + 4 + 2 + 8 + 5);
 	}
 }
 
