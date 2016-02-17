@@ -44,63 +44,94 @@ public class MongodbSinkConfigurationTest {
     @Autowired @Qualifier("input")
     MessageChannel input;
     
-	@Test
-	public void test() throws Exception{
-
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
-		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
-		template.createCollection("Mina");
-		
-		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18}").build());
-		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"interval\":2000}").build());
-		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"criteria\":\"value == 19\"}").build());
-		//input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"criteria\":\"value < 19\"}").build());
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18, \"interval\":3000, \"criteria\":\"value > 19\"}").build());
-		Thread.sleep(1000);
-		
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
-		Thread.sleep(1000);
-
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
-		Thread.sleep(1000);
-		
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
-		Thread.sleep(1000);
-
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
-		Thread.sleep(1000);
-
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
-		Thread.sleep(1000);
-		
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
-		Thread.sleep(1000);
-
-		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
-		Thread.sleep(1000);
+    private void asserts(MongoTemplate template, long value) throws Exception{
 
 		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":18 }").build());
 		Thread.sleep(1000);
 		
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
+		Thread.sleep(1000);
 		
-		List<DBObject> r = null;
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":21 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":20 }").build());
+		Thread.sleep(1000);
 		
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":19 }").build());
+		Thread.sleep(1000);
+
+		input.send(MessageBuilder.withPayload("{\"id\":\"Mina\", \"value\":17 }").build());
+		Thread.sleep(1000);
+    	
+    	List<DBObject> r = null;
 		r= template.findAll(DBObject.class, "MyDatabase");
 		Assert.assertEquals(1, r.size());
 		logger.debug("\tMyDatabase");
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}
-
-		
 		r = template.findAll(DBObject.class, "Mina");
 		logger.debug("\tMina");
 		for(DBObject e : r){
 			logger.debug("\t\t"+e);
 		}
-		Assert.assertEquals(6, r.size());
+		Assert.assertEquals(value, r.size());
 		
+		//template.dropCollection("Mina");
+		Thread.sleep(1000);
+    }
+  
+	@Test
+	public void test() throws Exception{
+
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		MongoTemplate template = new MongoTemplate(mongoClient, "MyDatabase");
+
+		Entity e = new Entity();
+		e.setId("Mina");
+		template.save(e, "MyDatabase");
 		
+		///////////////////
+		asserts(template, 0);
+		
+		///////////////////
+		e.setInterval(2000l);
+		template.save(e, "MyDatabase");
+		asserts(template, 5);
+
+		///////////////////
+		e.setInterval(null);
+		e.setCriteria("value == 19");
+		template.save(e, "MyDatabase");
+		asserts(template, 5 + 3);
+		
+		///////////////////
+		e.setCriteria("value > 19");
+		template.save(e, "MyDatabase");
+		asserts(template, 5 + 3 + 4);
+
+		
+		///////////////////
+		e.setCriteria("value < 19");
+		template.save(e, "MyDatabase");
+		asserts(template, 5 + 3 + 4 + 2);
+		
+
+		///////////////////
+		e.setInterval(3000l);
+		e.setCriteria("value > 19");
+		template.save(e, "MyDatabase");
+		asserts(template, 5 + 3 + 4 + 2 + 6);
 	}
 }
 

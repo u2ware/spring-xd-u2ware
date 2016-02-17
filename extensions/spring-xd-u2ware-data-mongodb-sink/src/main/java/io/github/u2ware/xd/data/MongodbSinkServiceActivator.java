@@ -126,7 +126,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 			entity.setDatetime(datetime);
 			entity.setPayload(payload);
 		}
-
+		
 		Entity record = new Entity();
 		record.setId(timestamp);
 		record.setValue(value);
@@ -134,35 +134,37 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		record.setName(id.toString());
 		
 		boolean isRecord = false;
+
+		if( entity.getCriteria() != null ){
+			if(parseValue(entity.getCriteria(), record, Boolean.class, false)){
+				record.setPayload("alarm");
+				isRecord = true;
+				//logger.debug("record {"+entity.getCriteria()+"}: "+record);
+			}
+		}	
 		
-		if( entity.getCriteria() != null 
-			&& parseValue(entity.getCriteria(), record, Boolean.class, false)){
-			
-			isRecord = true;
-			//logger.debug("record {"+entity.getCriteria()+"}: "+record);
-		}
-		
-		if( isRecord == false  && entity.getInterval() != null){			
+		if( isRecord == false && entity.getInterval() != null){			
 			
 			Query query = new BasicQuery(new BasicDBObject()).with(new Sort(Direction.DESC, "id"));
 			Entity beforeRecord = mongoTemplate.findOne(query, Entity.class, id.toString());
 			
 			if(beforeRecord != null){
-			
-				Long beforeRecordTimestamp = (Long)beforeRecord.getId();
-				
-				if(! beforeRecord.getValue().equals(value)
-				  && timestamp - beforeRecordTimestamp >= entity.getInterval()){
-				
-					isRecord = true;
-					//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
+
+				if(! beforeRecord.getValue().equals(value)){
+
+					Long beforeRecordTimestamp = (Long)beforeRecord.getId();
+					if(timestamp - beforeRecordTimestamp >= entity.getInterval()){
+						//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
+						record.setPayload("history");
+						isRecord = true;
+					}
 				}
 			}else{
-				isRecord = true;
 				//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
+				record.setPayload("history");
+				isRecord = true;
 			}
 		}
-		
 		
 		mongoTemplate.save(entity, collectionName);
 		

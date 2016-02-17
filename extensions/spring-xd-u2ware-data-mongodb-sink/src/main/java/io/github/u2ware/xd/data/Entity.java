@@ -9,8 +9,8 @@ public class Entity {
 	private Object payload;
 
 	private String name;
-	private String criteria; //value == 1, value > 1111 , value < 111 , value < 111 && value < 111 //
-	private Long interval; // 0 , 1000, 60*60
+	private String criteria; //value == 1, value > 1111 , value < 111 , value > 111 && value < 222 
+	private Long interval; //1000, 60*60
 	
 	public Object getId() {
 		return id;

@@ -26,13 +26,13 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.WebAsyncTask;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -42,7 +42,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
-@RestController
+@Controller
 public class MongodbRestController {
 
     protected Log logger = LogFactory.getLog(getClass());
@@ -68,6 +68,7 @@ public class MongodbRestController {
 	// RAW
 	//////////////////////////////
     @RequestMapping(value="/raw" , method=RequestMethod.GET)
+    @ResponseBody
 	public List<DBObject> database() throws Exception{
 		
     	List<DBObject> content = Lists.newArrayList();
@@ -92,6 +93,7 @@ public class MongodbRestController {
 	}
     
     @RequestMapping(value="/raw/{databaseName}", method=RequestMethod.GET)
+    @ResponseBody
 	public List<DBObject> collections(
 			@PathVariable("databaseName") String databaseName) throws Exception{
 
@@ -111,6 +113,7 @@ public class MongodbRestController {
 		return content;
 	}
     @RequestMapping(value="/raw/{databaseName}/{collectionName}", method=RequestMethod.GET)
+    @ResponseBody
 	public List<Entity> documents(
 			@PathVariable("databaseName") String databaseName, 
 			@PathVariable("collectionName") String collectionName) throws Exception{
@@ -120,6 +123,7 @@ public class MongodbRestController {
 	}
 
     @RequestMapping(value="/raw/{databaseName}/{collectionName}/{id}", method=RequestMethod.GET)
+    @ResponseBody
 	public Entity document(
 			@PathVariable("databaseName") String databaseName, 
 			@PathVariable("collectionName") String collectionName, 
@@ -131,44 +135,29 @@ public class MongodbRestController {
 		return result;
 	}
     
+    
     //////////////////////////////
-	// Monitor
+	// Setting
 	//////////////////////////////
-    @RequestMapping(value="/monitor/{entityName}", method=RequestMethod.GET)
-	public Page<Entity> monitor(
-			@PathVariable("entityName") String entityName, 
-			Pageable pageable) throws Exception{
-    	
-		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-		
-		BasicDBObject q = new BasicDBObject();
-		Query query = new BasicQuery(q).with(pageable);
-
-		Long count = mongoTemplate.count(query, Entity.class, entityName);
-		List<Entity> content = mongoTemplate.find(query, Entity.class, entityName);
-		return new PageImpl<Entity>(content, pageable, count);
-	}
-
-    @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.GET)
-	public WebAsyncTask<Entity> monitor(
-			final @PathVariable("entityName") String entityName, 
-			final @PathVariable("id") String id) throws Exception{
-    	
-		Callable<Entity> callable =  new Callable<Entity>() {
-			public Entity call() throws Exception {
-				
-				Thread.sleep(3000);
-
-				MongoTemplate mongoTemplate = getMongoTemplate(entityName);
-				Entity current = mongoTemplate.findById(id, Entity.class, entityName);
-				return current;
-			}};
-		return new WebAsyncTask<>(4000, callable);
-	}
+    /*
+    @RequestMapping(value="/setting/{entityName}", method=RequestMethod.GET)
+	public View setting(
+			final @PathVariable("entityName") String entityName) throws Exception{
     
+    	return null;
+    }
+    @RequestMapping(value="/setting/{entityName}", method=RequestMethod.POST)
+    @ResponseBody
+	public Entity setting(
+			final @PathVariable("entityName") String entityName,
+    		final MultipartFile xls) throws Exception{
     
-    @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.POST)
-	public Entity monitorUpdate(
+    	return null;
+    }
+    */
+    @RequestMapping(value="/setting/{entityName}/{id}", method=RequestMethod.POST)
+    @ResponseBody
+	public Entity setting(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id,
 			final @RequestParam(name="name", required=false) String name,
@@ -193,11 +182,55 @@ public class MongodbRestController {
     	return current;
     }    
     
+    //////////////////////////////
+	// Monitor
+	//////////////////////////////
+    @RequestMapping(value="/monitor/{entityName}", method=RequestMethod.GET)
+    @ResponseBody
+	public Page<Entity> monitor(
+			@PathVariable("entityName") String entityName, 
+			@RequestParam(name="payload", required=false) String payload,
+			Pageable pageable) throws Exception{
+    	
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+
+		Criteria criteria = null;
+		if("alarm".equals(payload)){
+			criteria = Criteria.where("criteria").ne(null);		
+		}else if("history".equals(payload)){
+			criteria = Criteria.where("interval").gte(new Long(0));
+		}
+		
+		Query query = (criteria !=null) ? new Query(criteria): new Query();
+		query.with(pageable);
+
+		Long count = mongoTemplate.count(query, Entity.class, entityName);
+		List<Entity> content = mongoTemplate.find(query, Entity.class, entityName);
+		return new PageImpl<Entity>(content, pageable, count);
+	}
+
+    @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.GET)
+    @ResponseBody
+	public Callable<Entity> monitor(
+			final @PathVariable("entityName") String entityName, 
+			final @PathVariable("id") String id) throws Exception{
+    	
+		Callable<Entity> callable =  new Callable<Entity>() {
+			public Entity call() throws Exception {
+				Thread.sleep(1000);
+				MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+				Entity current = mongoTemplate.findById(id, Entity.class, entityName);
+				return current;
+			}};
+		return callable;
+	}
+    
 
     //////////////////////////////
 	// History
 	//////////////////////////////
     @RequestMapping(value="/history/{entityName}/{id}", method=RequestMethod.GET)
+    @ResponseBody
 	public Page<Entity> history(
 			@PathVariable("entityName") String entityName, 
 			@PathVariable("id") String id,
@@ -205,6 +238,7 @@ public class MongodbRestController {
 			final @RequestParam(name="max", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime max, 
 			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime datetime, 
 			final @RequestParam(name="interval", required=false) Interval interval,
+			final @RequestParam(name="payload", required=false) String payload,
 			Pageable pageable) throws Exception{
 		
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
@@ -230,13 +264,22 @@ public class MongodbRestController {
 	    	}
 		}
 		
-		Query query = null;
-		if(s != null && e != null){
-			query = new Query(Criteria.where("_id").gte(s.getMillis()).lte(e.getMillis())).with(pageable);
+		Criteria criteria = null;
+		if(s != null && e != null){	
+			if(payload != null){
+				criteria = Criteria.where("_id").gte(s.getMillis()).lte(e.getMillis()).and("payload").is(payload);
+			}else{
+				criteria = Criteria.where("_id").gte(s.getMillis()).lte(e.getMillis());
+			}
 		}else{
-			query = new Query();
+			if(payload != null){
+				criteria = Criteria.where("payload").is(payload);
+			}
 		}
 
+		Query query = criteria == null ? new Query() : new Query(criteria);
+		query.with(pageable);
+		
 		Long count = mongoTemplate.count(query, Entity.class, id);
 		List<Entity> content = mongoTemplate.find(query, Entity.class, id);
 		return new PageImpl<Entity>(content, pageable, count);
@@ -255,6 +298,7 @@ public class MongodbRestController {
     }
     
     @RequestMapping(value="/chart/{entityName}/{id}", method=RequestMethod.GET)
+    @ResponseBody
 	public DBObject chart(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id,
