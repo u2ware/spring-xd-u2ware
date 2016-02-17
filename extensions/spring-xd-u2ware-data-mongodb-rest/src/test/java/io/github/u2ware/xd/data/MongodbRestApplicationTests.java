@@ -68,11 +68,14 @@ public class MongodbRestApplicationTests {
 		//
 		//////////////////////////////
 		MvcResult mvcResult = this.mvc.perform(
-					get("/monitor/person/Mina")
+					get("/current/person/Mina")
+				).andDo(
+						print()
 				).andExpect(
 					request().asyncStarted()
 				).andReturn();
-
+		
+		logger.debug("---------------------------------");
 		this.mvc.perform(
 				asyncDispatch(mvcResult)
 		).andDo(
@@ -81,9 +84,13 @@ public class MongodbRestApplicationTests {
 				status().isOk()
 		);
 		
+		//////////////////////////////
+		//
+		//////////////////////////////
 		this.mvc.perform(
-				get("/history/person/Mina")
+				get("/record/person/Mina")
 				.param("sort", "id,desc")
+				//.param("payload", "criteria")
 
 				//.param("min", "2016-01-03 00:00:00")
 				//.param("max", "2016-01-05 00:00:00")
@@ -97,8 +104,11 @@ public class MongodbRestApplicationTests {
 		);
 
 		
+		//////////////////////////////
+		//
+		//////////////////////////////
 		this.mvc.perform(
-				get("/chart/person/Mina")
+				get("/recordChart/person/Mina")
 //				.param("datetime", "2016-01-03 00:00:00")
 //				.param("interval", "DAY")
 //				.param("calculation", "AVG")
@@ -107,5 +117,11 @@ public class MongodbRestApplicationTests {
 		).andExpect(
 				status().isOk()
 		);
+
+		
+		//////////////////////////////
+		//
+		//////////////////////////////
+		
     }    
 }

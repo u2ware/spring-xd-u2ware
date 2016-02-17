@@ -1,6 +1,7 @@
 package io.github.u2ware.xd.data;
 
-import io.github.u2ware.xd.data.DateTimeUtils.IntervalHandler;
+import io.github.u2ware.xd.data.support.DateTimeUtils;
+import io.github.u2ware.xd.data.support.DateTimeUtils.IntervalHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,7 +43,7 @@ import com.mongodb.Mongo;
 @Controller
 public class MongodbRestController {
 
-    protected Log logger = LogFactory.getLog(getClass());
+    //protected Log logger = LogFactory.getLog(getClass());
 
 	private @Autowired Mongo mongo;
     private Map<String, MongoTemplate> mongoTemplates = Maps.newHashMap();
@@ -135,7 +133,6 @@ public class MongodbRestController {
 		return result;
 	}
     
-    
     //////////////////////////////
 	// Setting
 	//////////////////////////////
@@ -168,26 +165,20 @@ public class MongodbRestController {
 		Entity current = mongoTemplate.findById(id, Entity.class, entityName);
 
 		if(current != null){			
-			if(StringUtils.hasText(name)){
-				current.setName("null".equals(name) ? null : name);
-			}
-			if(StringUtils.hasText(criteria)){
-				current.setCriteria("null".equals(criteria) ? null : criteria);
-			}
-			if(interval != null){
-				current.setInterval(interval < 0l ? null : interval);
-			}
+			current.setName( ("null".equals(name) || name == null) ? null : name);
+			current.setCriteria( ("null".equals(criteria) || name == null) ? null : criteria);
+			current.setInterval( (interval < 0l || interval == null) ? null : interval);
 			mongoTemplate.save(current, entityName);
 		}
     	return current;
     }    
     
     //////////////////////////////
-	// Monitor
+	// current
 	//////////////////////////////
-    @RequestMapping(value="/monitor/{entityName}", method=RequestMethod.GET)
+    @RequestMapping(value="/current/{entityName}", method=RequestMethod.GET)
     @ResponseBody
-	public Page<Entity> monitor(
+	public Page<Entity> current(
 			@PathVariable("entityName") String entityName, 
 			@RequestParam(name="payload", required=false) String payload,
 			Pageable pageable) throws Exception{
@@ -209,9 +200,9 @@ public class MongodbRestController {
 		return new PageImpl<Entity>(content, pageable, count);
 	}
 
-    @RequestMapping(value="/monitor/{entityName}/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/current/{entityName}/{id}", method=RequestMethod.GET)
     @ResponseBody
-	public Callable<Entity> monitor(
+	public Callable<Entity> current(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id) throws Exception{
     	
@@ -227,11 +218,11 @@ public class MongodbRestController {
     
 
     //////////////////////////////
-	// History
+	// record
 	//////////////////////////////
-    @RequestMapping(value="/history/{entityName}/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/record/{entityName}/{id}", method=RequestMethod.GET)
     @ResponseBody
-	public Page<Entity> history(
+	public Page<Entity> record(
 			@PathVariable("entityName") String entityName, 
 			@PathVariable("id") String id,
 			final @RequestParam(name="min", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime min, 
@@ -286,7 +277,7 @@ public class MongodbRestController {
 	}
     
     //////////////////////////////
-	// Chart
+	// recordChart
 	//////////////////////////////
     public static enum Interval{
     	HOUR, //24
@@ -297,9 +288,9 @@ public class MongodbRestController {
     	LAST, MIN, MAX, AVG;
     }
     
-    @RequestMapping(value="/chart/{entityName}/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/recordChart/{entityName}/{id}", method=RequestMethod.GET)
     @ResponseBody
-	public DBObject chart(
+	public DBObject recordChart(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id,
 			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime datetime, 
@@ -307,7 +298,7 @@ public class MongodbRestController {
 			final @RequestParam(name="calculation", required=false, defaultValue="LAST") Calculation calculation) throws Exception{
     	
 		DateTime x = datetime != null ? datetime : DateTime.now();
-    	List<Object> data = chartValue(entityName, id, x, interval, calculation);
+    	List<Object> data = recordChartValue(entityName, id, x, interval, calculation);
     	
     	final BasicDBObject result = new BasicDBObject();
     	result.put("chartName", id);
@@ -317,7 +308,7 @@ public class MongodbRestController {
     }
 
     
-	private List<Object> chartValue(final String entityName, final String id, final DateTime datetime, final Interval interval, final Calculation calculation) {
+	private List<Object> recordChartValue(final String entityName, final String id, final DateTime datetime, final Interval interval, final Calculation calculation) {
 		
     	final List<Object> data = Lists.newArrayList();
     	
@@ -325,7 +316,7 @@ public class MongodbRestController {
         	DateTimeUtils.hours(datetime, new IntervalHandler() {
         		private Object value;
         		public void interval(int index, DateTime min, DateTime max) {
-    	    		value = chartValue(value, entityName, id, index, min, max, calculation);
+    	    		value = recordChartValue(value, entityName, id, index, min, max, calculation);
     				data.add(value);
     			}
     		});
@@ -334,7 +325,7 @@ public class MongodbRestController {
         	DateTimeUtils.days(datetime, new IntervalHandler() {
         		private Object value;
         		public void interval(int index, DateTime min, DateTime max) {
-    	    		value = chartValue(value, entityName, id, index, min, max, calculation);
+    	    		value = recordChartValue(value, entityName, id, index, min, max, calculation);
     				data.add(value);
     			}
     		});
@@ -343,7 +334,7 @@ public class MongodbRestController {
 	    	DateTimeUtils.months(datetime, new IntervalHandler() {
 	    		private Object value;
 	    		public void interval(int index, DateTime min, DateTime max) {
-		    		value = chartValue(value, entityName, id, index, min, max, calculation);
+		    		value = recordChartValue(value, entityName, id, index, min, max, calculation);
 					data.add(value);
 				}
 			});
@@ -352,9 +343,9 @@ public class MongodbRestController {
 	}
     
     
-	private Object chartValue(Object beforeValue, String entityName, String id, int index, DateTime min, DateTime max, Calculation calculation) {
+	private Object recordChartValue(Object beforeValue, String entityName, String id, int index, DateTime min, DateTime max, Calculation calculation) {
 		if(min.isAfterNow()){
-			logger.info(index+": "+min+" ~ "+max+": isAfterNow=null");
+			//logger.info(index+": "+min+" ~ "+max+": isAfterNow=null");
     		return null;
 		}
 
@@ -384,7 +375,7 @@ public class MongodbRestController {
 //		logger.info(index+" "+obj);
 		
 		if(obj != null) {
-    		logger.info(index+": "+min+" ~ "+max+": calculationValue="+obj.get("calculation"));
+    		//logger.info(index+": "+min+" ~ "+max+": calculationValue="+obj.get("calculation"));
 			return obj.get("calculation");
 
 		}else{
@@ -396,15 +387,13 @@ public class MongodbRestController {
 
 				Entity entity = mongoTemplate.findOne(query, Entity.class, id);
 				Object value = (entity != null) ? entity.getValue() : null;
-				logger.info(index+": "+min+" ~ "+max+": guessValue="+value);
+				//logger.info(index+": "+min+" ~ "+max+": guessValue="+value);
 				return value;
 
 			}else{
-				logger.info(index+": "+min+" ~ "+max+": beforeValue="+beforeValue);
+				//logger.info(index+": "+min+" ~ "+max+": beforeValue="+beforeValue);
 				return beforeValue;
 			}
 		}
-
-		
 	}
 }

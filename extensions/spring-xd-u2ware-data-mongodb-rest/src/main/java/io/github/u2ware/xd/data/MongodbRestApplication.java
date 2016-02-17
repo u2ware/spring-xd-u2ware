@@ -47,6 +47,7 @@ import org.springframework.boot.autoconfigure.social.TwitterAutoConfiguration;
 import org.springframework.boot.autoconfigure.solr.SolrAutoConfiguration;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.autoconfigure.velocity.VelocityAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.MultipartAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration;
 import org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration;
@@ -158,6 +159,8 @@ import org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfigurati
 		XADataSourceAutoConfiguration.class,
 })
 public class MongodbRestApplication {
+	
+	//DispatcherServletAutoConfiguration f;
 	
 	public static void main(String[] args) {
         SpringApplication.run(MongodbRestApplication.class, args);

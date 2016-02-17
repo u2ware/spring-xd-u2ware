@@ -1,4 +1,4 @@
-package io.github.u2ware.xd.data;
+package io.github.u2ware.xd.data.support;
 
 import org.joda.time.DateTime;
 

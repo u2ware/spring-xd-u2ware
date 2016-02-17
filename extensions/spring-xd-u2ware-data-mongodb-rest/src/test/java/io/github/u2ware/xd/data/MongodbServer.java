@@ -69,13 +69,13 @@ public class MongodbServer implements Runnable{
 		MongoClient mongoClient = new MongoClient("localhost", port);
 		MongoTemplate template = new MongoTemplate(mongoClient, "person");
 
-		template.save(history(new DateTime(2016, 1, 3, 8, 3, 5), new Person("Mina",  56)), "Mina");
-		template.save(history(new DateTime(2016, 1, 3, 10, 2, 5), new Person("Mina",   11)), "Mina");
-		template.save(history(new DateTime(2016, 1, 3, 12, 1, 5), new Person("Mina", 23)), "Mina");		
+		template.save(history(new DateTime(2016, 1, 3, 8, 3, 5),  new Person("Mina",  56), "interval"), "Mina");
+		template.save(history(new DateTime(2016, 1, 3, 10, 2, 5), new Person("Mina",  11), "criteria"), "Mina");
+		template.save(history(new DateTime(2016, 1, 3, 12, 1, 5), new Person("Mina",  23), "interval"), "Mina");		
 
-		template.save(history(new DateTime(2016, 1, 11, 7, 3, 5), new Person("Mina",  40)), "Mina");
-		template.save(history(new DateTime(2016, 1, 11, 11, 2, 5), new Person("Mina",   7)), "Mina");
-		template.save(history(new DateTime(2016, 1, 11, 15, 1, 5), new Person("Mina", 13)), "Mina");		
+		template.save(history(new DateTime(2016, 1, 11, 7, 3, 5),  new Person("Mina", 40), "interval"), "Mina");
+		template.save(history(new DateTime(2016, 1, 11, 11, 2, 5), new Person("Mina",  7), "criteria"), "Mina");
+		template.save(history(new DateTime(2016, 1, 11, 15, 1, 5), new Person("Mina", 13), "interval"), "Mina");		
 		
 		template.save(base(new DateTime(2016, 1, 7, 13, 1, 5), new Person("Mina", 13)), "person");
 		template.save(base(new DateTime(2016, 1, 7, 13, 2, 5), new Person("Yok",  14)), "person");
@@ -87,7 +87,7 @@ public class MongodbServer implements Runnable{
 		
 		AggregationOperation operation1 = TypedAggregation.match(Criteria.where("_id").gte(min).lte(max));
 		System.err.println(operation1);
-		AggregationOperation operation2 = TypedAggregation.group("payload").avg("value").as("avg");
+		AggregationOperation operation2 = TypedAggregation.group("name").avg("value").as("avg");
 		System.err.println(operation2);
 		Aggregation aggregation = TypedAggregation.newAggregation(operation1, operation2);	
 		AggregationResults<DBObject> result = template.aggregate(aggregation, "Mina", DBObject.class);
@@ -109,7 +109,7 @@ public class MongodbServer implements Runnable{
 		System.err.println(entity);
 	}
 	
-	private static Entity history(DateTime datetime, Person payload){
+	private static Entity history(DateTime datetime, Person payload, String usage){
 		
 		Long timestamp = datetime.getMillis();//.currentTimeMillis();
 		
@@ -117,7 +117,7 @@ public class MongodbServer implements Runnable{
 		objectToSave.setId(timestamp);
 		objectToSave.setValue(payload.getValue());
 		objectToSave.setDatetime(new DateTime(timestamp).toString());
-		//objectToSave.setPayload(payload);
+		objectToSave.setPayload(usage);
 		return objectToSave;
 	}
 	private static Entity base(DateTime datetime, Person payload){
