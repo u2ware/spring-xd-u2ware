@@ -195,9 +195,9 @@ public class MongodbRestController {
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 
 		Criteria criteria = null;
-		if("alarm".equals(payload)){
+		if("criteria".equals(payload)){
 			criteria = Criteria.where("criteria").ne(null);		
-		}else if("history".equals(payload)){
+		}else if("interval".equals(payload)){
 			criteria = Criteria.where("interval").gt(new Long(0));
 		}
 		
