@@ -137,7 +137,7 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 
 		if( entity.getCriteria() != null ){
 			if(parseValue(entity.getCriteria(), record, Boolean.class, false)){
-				record.setPayload("alarm");
+				record.setPayload("criteria");
 				isRecord = true;
 				//logger.debug("record {"+entity.getCriteria()+"}: "+record);
 			}
@@ -155,13 +155,13 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 					Long beforeRecordTimestamp = (Long)beforeRecord.getId();
 					if(timestamp - beforeRecordTimestamp >= entity.getInterval()){
 						//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
-						record.setPayload("history");
+						record.setPayload("interval");
 						isRecord = true;
 					}
 				}
 			}else{
 				//logger.debug("record {"+entity.getInterval()+"ms}: "+record);
-				record.setPayload("history");
+				record.setPayload("interval");
 				isRecord = true;
 			}
 		}

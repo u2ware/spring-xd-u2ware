@@ -198,7 +198,7 @@ public class MongodbRestController {
 		if("alarm".equals(payload)){
 			criteria = Criteria.where("criteria").ne(null);		
 		}else if("history".equals(payload)){
-			criteria = Criteria.where("interval").gte(new Long(0));
+			criteria = Criteria.where("interval").gt(new Long(0));
 		}
 		
 		Query query = (criteria !=null) ? new Query(criteria): new Query();
