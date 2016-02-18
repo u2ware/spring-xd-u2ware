@@ -1,5 +1,7 @@
 package io.github.u2ware.xd.data;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -22,7 +24,7 @@ import com.mongodb.BasicDBObject;
 
 public class MongodbSinkServiceActivator implements InitializingBean, BeanFactoryAware{
 
-	//private Log logger = LogFactory.getLog(getClass());
+	private Log logger = LogFactory.getLog(getClass());
 
 	private BeanFactory beanFactory;
 	private volatile StandardEvaluationContext evaluationContext;
@@ -119,8 +121,8 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 			current.setName(name);
 			current.setCriteria(criteria);
 			current.setInterval(interval);
-			current.setPayload(payload);
-		}	
+			current.setStatus(payload);
+		}		
 		
 		Query query = new BasicQuery(new BasicDBObject()).with(new Sort(Direction.DESC, "id"));
 		Entity before = mongoTemplate.findOne(query, Entity.class, id.toString());
@@ -133,8 +135,8 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 		after.setValue(value);
 		after.setDatetime(datetime);
 		after.setName(id.toString());
-		
-
+		after.setInterval(current.getInterval());
+		after.setCriteria(current.getCriteria());
 		
 		if(current.getInterval() != null){			
 			Object beforeValue = before.getValue();
@@ -143,7 +145,8 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 
 				Long beforeTimestamp = (Long)before.getId();
 				if(beforeTimestamp == null || timestamp - beforeTimestamp >= current.getInterval()){
-					after.setPayload("interval");
+					after.setStatus("interval");
+					logger.info("interval: "+after);
 					mongoTemplate.save(after, id.toString());
 				}
 			}
@@ -155,16 +158,16 @@ public class MongodbSinkServiceActivator implements InitializingBean, BeanFactor
 			if(! value.equals(currentValue)){
 				
 				if(parseValue(current.getCriteria(), after, Boolean.class, false)){
-					after.setPayload("criteria");
+					after.setStatus("criteria");
+					logger.info("criteria: "+after);
 					mongoTemplate.save(after, id.toString());
-				}	
+				}
 			}
 		}
-		
-		
+				
 		current.setValue(value);
 		current.setDatetime(datetime);
-		current.setPayload(payload);
+		current.setStatus(after.getStatus());
 		mongoTemplate.save(current, collectionName);
 	}
 }

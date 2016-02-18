@@ -6,11 +6,11 @@ public class Entity {
 	private Object id;
 	private Object value;
 	private String datetime;
-	private Object payload;
+	private Object status;
 
 	private String name;
-	private String criteria; //value == 1, value > 1111 , value < 111 , value < 111 && value < 111 //
-	private Long interval; // 0 , 1000, 60*60
+	private String criteria; //value == 1, value > 1111 , value < 111 , value > 111 && value < 222 
+	private Long interval; //1000, 60*60
 	
 	public Object getId() {
 		return id;
@@ -36,11 +36,11 @@ public class Entity {
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
-	public Object getPayload() {
-		return payload;
+	public Object getStatus() {
+		return status;
 	}
-	public void setPayload(Object payload) {
-		this.payload = payload;
+	public void setStatus(Object status) {
+		this.status = status;
 	}
 	public String getCriteria() {
 		return criteria;
@@ -57,12 +57,12 @@ public class Entity {
 	@Override
 	public String toString() {
 		return "Entity [id=" + id 
-				+ ", value=" + value 
 				+ ", datetime=" + datetime 
+				+ ", value=" + value 
+				+ ", status=" + status
 				+ ", name=" + name 
 				+ ", criteria=" + criteria
 				+ ", interval="+ interval 
-				+ ", payload=" + payload
 				+ "]";
 	}
 }

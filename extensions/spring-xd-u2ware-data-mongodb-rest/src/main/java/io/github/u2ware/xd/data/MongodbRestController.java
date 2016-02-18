@@ -6,9 +6,10 @@ import io.github.u2ware.xd.data.support.DateTimeUtils.IntervalHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,7 @@ import com.mongodb.Mongo;
 @Controller
 public class MongodbRestController {
 
-    //protected Log logger = LogFactory.getLog(getClass());
+    protected Log logger = LogFactory.getLog(getClass());
 
 	private @Autowired Mongo mongo;
     private Map<String, MongoTemplate> mongoTemplates = Maps.newHashMap();
@@ -56,7 +57,8 @@ public class MongodbRestController {
 		}
 		return mongoTemplate;
 	}
-//	private static HttpServletRequest request(){
+
+//	private HttpServletRequest request(){
 //		return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 //	}
 
@@ -164,10 +166,10 @@ public class MongodbRestController {
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 		Entity current = mongoTemplate.findById(id, Entity.class, entityName);
 
-		if(current != null){			
-			current.setName( ("null".equals(name) || name == null) ? null : name);
-			current.setCriteria( ("null".equals(criteria) || name == null) ? null : criteria);
-			current.setInterval( (interval < 0l || interval == null) ? null : interval);
+		if(current != null){
+			current.setName(     (name == null     || "null".equals(name)  ) ? null : name);
+			current.setCriteria( (criteria == null || "null".equals(criteria) ) ? null : criteria);
+			current.setInterval( (interval == null || interval < 0l) ? null : interval);
 			mongoTemplate.save(current, entityName);
 		}
     	return current;
@@ -180,15 +182,15 @@ public class MongodbRestController {
     @ResponseBody
 	public Page<Entity> current(
 			@PathVariable("entityName") String entityName, 
-			@RequestParam(name="payload", required=false) String payload,
+			@RequestParam(name="status", required=false) String status,
 			Pageable pageable) throws Exception{
     	
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 
 		Criteria criteria = null;
-		if("criteria".equals(payload)){
+		if("criteria".equals(status)){
 			criteria = Criteria.where("criteria").ne(null);		
-		}else if("interval".equals(payload)){
+		}else if("interval".equals(status)){
 			criteria = Criteria.where("interval").gt(new Long(0));
 		}
 		
@@ -202,20 +204,33 @@ public class MongodbRestController {
 
     @RequestMapping(value="/current/{entityName}/{id}", method=RequestMethod.GET)
     @ResponseBody
+	public Entity current(
+			final @PathVariable("entityName") String entityName, 
+			final @PathVariable("id") String id) throws Exception{
+
+    	MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+		Entity current = mongoTemplate.findById(id, Entity.class, entityName);
+		return current;
+	}
+    
+/*
 	public Callable<Entity> current(
 			final @PathVariable("entityName") String entityName, 
 			final @PathVariable("id") String id) throws Exception{
-    	
+
+    	final long hashCode = request().hashCode();
 		Callable<Entity> callable =  new Callable<Entity>() {
 			public Entity call() throws Exception {
+				logger.debug("current started: "+hashCode);
 				Thread.sleep(1000);
 				MongoTemplate mongoTemplate = getMongoTemplate(entityName);
 				Entity current = mongoTemplate.findById(id, Entity.class, entityName);
+				logger.debug("current finished: "+hashCode);
 				return current;
 			}};
 		return callable;
 	}
-    
+*/    
 
     //////////////////////////////
 	// record
@@ -229,7 +244,7 @@ public class MongodbRestController {
 			final @RequestParam(name="max", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime max, 
 			final @RequestParam(name="datetime", required=false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") DateTime datetime, 
 			final @RequestParam(name="interval", required=false) Interval interval,
-			final @RequestParam(name="payload", required=false) String payload,
+			final @RequestParam(name="status", required=false) String status,
 			Pageable pageable) throws Exception{
 		
 		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
@@ -257,14 +272,14 @@ public class MongodbRestController {
 		
 		Criteria criteria = null;
 		if(s != null && e != null){	
-			if(payload != null){
-				criteria = Criteria.where("_id").gte(s.getMillis()).lte(e.getMillis()).and("payload").is(payload);
+			if(status != null){
+				criteria = Criteria.where("_id").gte(s.getMillis()).lte(e.getMillis()).and("status").is(status);
 			}else{
 				criteria = Criteria.where("_id").gte(s.getMillis()).lte(e.getMillis());
 			}
 		}else{
-			if(payload != null){
-				criteria = Criteria.where("payload").is(payload);
+			if(status != null){
+				criteria = Criteria.where("status").is(status);
 			}
 		}
 

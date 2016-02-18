@@ -1,8 +1,10 @@
 package io.github.u2ware.xd.data;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
 
@@ -64,6 +66,8 @@ public class MongodbRestApplicationTests {
 		}
 
 
+		
+
 		//////////////////////////////
 		//
 		//////////////////////////////
@@ -74,10 +78,28 @@ public class MongodbRestApplicationTests {
 				).andExpect(
 					request().asyncStarted()
 				).andReturn();
+
+		logger.debug("---------------------------------");
+		
+		MvcResult mvcResult2 = this.mvc.perform(
+				get("/current/person/Mina")
+			).andDo(
+					print()
+			).andExpect(
+				request().asyncStarted()
+			).andReturn();
 		
 		logger.debug("---------------------------------");
 		this.mvc.perform(
 				asyncDispatch(mvcResult)
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		);
+		logger.debug("---------------------------------");
+		this.mvc.perform(
+				asyncDispatch(mvcResult2)
 		).andDo(
 				print()
 		).andExpect(
@@ -122,6 +144,5 @@ public class MongodbRestApplicationTests {
 		//////////////////////////////
 		//
 		//////////////////////////////
-		
     }    
 }

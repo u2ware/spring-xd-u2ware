@@ -1,5 +1,6 @@
 package io.github.u2ware.xd.data;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +10,15 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.client.AsyncClientHttpRequest;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import org.springframework.web.client.AsyncRequestCallback;
+import org.springframework.web.client.AsyncRestTemplate;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -72,6 +80,74 @@ public class MongodbRestConfigurationTest {
 			}
 		}
 	}
+	
+	//@Test
+	public <T> void test2() throws Exception{
+
+
+		AsyncRestTemplate restTemplate = new AsyncRestTemplate();
+		
+		for(int i=0 ; i < 2; i++){
+			final int index = i;
+
+			/*
+			RestTemplate restTemplate = new RestTemplate();
+			restTemplate.execute("http://localhost:9898/current/person/Mina", HttpMethod.GET,
+					new RequestCallback(){
+
+						@Override
+						public void doWithRequest(ClientHttpRequest request)
+								throws IOException {
+							logger.debug("RequestCallback: "+index);
+							
+						}
+					}, 
+					new ResponseExtractor<T>(){
+
+						@Override
+						public T extractData(ClientHttpResponse response) throws IOException {
+							logger.debug("ResponseExtractor: "+index);
+							return null;
+						}
+					}
+			);			
+			*/
+
+			restTemplate.execute("http://localhost:9898/current/person/Mina", HttpMethod.GET,
+					new AsyncRequestCallback(){
+
+						@Override
+						public void doWithRequest(AsyncClientHttpRequest request) throws IOException {
+							logger.debug("AsyncRequestCallback: "+index);
+						}
+					}, 
+					new ResponseExtractor<T>(){
+
+						@Override
+						public T extractData(ClientHttpResponse response) throws IOException {
+							logger.debug("ResponseExtractor: "+index);
+							return null;
+						}
+					}
+			).addCallback(new ListenableFutureCallback<T>(){
+
+				@Override
+				public void onSuccess(Object result) {
+					logger.debug("onSuccess: "+index);
+				}
+
+				@Override
+				public void onFailure(Throwable ex) {
+					logger.debug("onFailure: "+index);
+				}				
+			});
+
+		}
+		
+		Thread.sleep(12000);
+	}
+	
+	
 }
 
 

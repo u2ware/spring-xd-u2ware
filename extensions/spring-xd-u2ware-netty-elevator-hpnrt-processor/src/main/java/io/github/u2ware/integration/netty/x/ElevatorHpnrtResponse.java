@@ -9,18 +9,16 @@ public class ElevatorHpnrtResponse implements Serializable{
 	private String id;
 	private Object value;
 	private String name;
-	private String state;
 	private Long interval;
 	
 	public ElevatorHpnrtResponse(){
 		
 	}
 
-	public ElevatorHpnrtResponse(String id, Object value, String name, String state, Long interval){
+	public ElevatorHpnrtResponse(String id, Object value, String name, Long interval){
 		this.id = id;
 		this.value = value;
 		this.name = name;
-		this.state = state;
 		this.interval = interval;
 	}
 	public String getId() {
@@ -41,12 +39,6 @@ public class ElevatorHpnrtResponse implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
 	public Long getInterval() {
 		return interval;
 	}
@@ -57,7 +49,7 @@ public class ElevatorHpnrtResponse implements Serializable{
 	@Override
 	public String toString() {
 		return "ElevatorHpnrtResponse [id=" + id + ", value=" + value
-				+ ", name=" + name + ", state=" + state + ", interval="
+				+ ", name=" + name + ", interval="
 				+ interval + "]";
 	}
 

@@ -109,7 +109,7 @@ public class MongodbServer implements Runnable{
 		System.err.println(entity);
 	}
 	
-	private static Entity history(DateTime datetime, Person payload, String usage){
+	private static Entity history(DateTime datetime, Person payload, String status){
 		
 		Long timestamp = datetime.getMillis();//.currentTimeMillis();
 		
@@ -117,7 +117,7 @@ public class MongodbServer implements Runnable{
 		objectToSave.setId(timestamp);
 		objectToSave.setValue(payload.getValue());
 		objectToSave.setDatetime(new DateTime(timestamp).toString());
-		objectToSave.setPayload(usage);
+		objectToSave.setStatus(status);
 		return objectToSave;
 	}
 	private static Entity base(DateTime datetime, Person payload){
@@ -128,7 +128,7 @@ public class MongodbServer implements Runnable{
 		objectToSave.setId(payload.getId());
 		objectToSave.setValue(payload.getValue());
 		objectToSave.setDatetime(new DateTime(timestamp).toString());
-		objectToSave.setPayload(payload);
+		objectToSave.setStatus(payload);
 		return objectToSave;
 	}
 
