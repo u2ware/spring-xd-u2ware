@@ -77,9 +77,9 @@ public class MongodbServer implements Runnable{
 		template.save(history(new DateTime(2016, 1, 11, 11, 2, 5), new Person("Mina",  7), "criteria"), "Mina");
 		template.save(history(new DateTime(2016, 1, 11, 15, 1, 5), new Person("Mina", 13), "interval"), "Mina");		
 		
-		template.save(base(new DateTime(2016, 1, 7, 13, 1, 5), new Person("Mina", 13)), "person");
-		template.save(base(new DateTime(2016, 1, 7, 13, 2, 5), new Person("Yok",  14)), "person");
-		template.save(base(new DateTime(2016, 1, 7, 13, 3, 5), new Person("Joe",  15)), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 1, 5), new Person("Mina", 13), null), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 2, 5), new Person("Yok",  14), 1000l), "person");
+		template.save(base(new DateTime(2016, 1, 7, 13, 3, 5), new Person("Joe",  15), 1000l), "person");
 		
 
 		Long min = new DateTime(2016, 1, 1, 7, 0).getMillis();
@@ -120,7 +120,7 @@ public class MongodbServer implements Runnable{
 		objectToSave.setStatus(status);
 		return objectToSave;
 	}
-	private static Entity base(DateTime datetime, Person payload){
+	private static Entity base(DateTime datetime, Person payload, Long interval){
 		
 		Long timestamp = datetime.getMillis();//.currentTimeMillis();
 		
@@ -129,6 +129,7 @@ public class MongodbServer implements Runnable{
 		objectToSave.setValue(payload.getValue());
 		objectToSave.setDatetime(new DateTime(timestamp).toString());
 		objectToSave.setStatus(payload);
+		objectToSave.setInterval(interval);
 		return objectToSave;
 	}
 

@@ -1,9 +1,8 @@
 package io.github.u2ware.xd.data;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -71,6 +71,7 @@ public class MongodbRestApplicationTests {
 		//////////////////////////////
 		//
 		//////////////////////////////
+		/*
 		MvcResult mvcResult = this.mvc.perform(
 					get("/current/person/Mina")
 				).andDo(
@@ -105,6 +106,30 @@ public class MongodbRestApplicationTests {
 		).andExpect(
 				status().isOk()
 		);
+		*/
+
+		
+		//////////////////////////////
+		//
+		//////////////////////////////
+		this.mvc.perform(
+				get("/current/person")
+				.param("name", "k")
+				.param("status", "interval")
+			).andDo(
+				print()
+			).andExpect(
+				status().isOk()
+			);
+		
+		
+		this.mvc.perform(
+				get("/current/person/Mina")
+			).andDo(
+				print()
+			).andExpect(
+				status().isOk()
+			);
 		
 		//////////////////////////////
 		//
@@ -140,9 +165,25 @@ public class MongodbRestApplicationTests {
 				status().isOk()
 		);
 
-		
 		//////////////////////////////
 		//
 		//////////////////////////////
+		MvcResult r = this.mvc.perform(
+				get("/setting/person")
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		).andReturn();
+		
+		MockMultipartFile file = new MockMultipartFile("file", "data.text", "text/html", r.getResponse().getContentAsByteArray());
+		this.mvc.perform(
+				fileUpload("/setting/person")
+				.file(file)
+		).andDo(
+				print()
+		).andExpect(
+				status().isOk()
+		);
     }    
 }

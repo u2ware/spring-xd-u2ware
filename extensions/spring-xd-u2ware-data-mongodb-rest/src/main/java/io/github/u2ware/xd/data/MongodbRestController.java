@@ -7,9 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,11 +32,15 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -44,7 +53,7 @@ import com.mongodb.Mongo;
 @Controller
 public class MongodbRestController {
 
-    protected Log logger = LogFactory.getLog(getClass());
+    //protected Log logger = LogFactory.getLog(getClass());
 
 	private @Autowired Mongo mongo;
     private Map<String, MongoTemplate> mongoTemplates = Maps.newHashMap();
@@ -138,22 +147,105 @@ public class MongodbRestController {
     //////////////////////////////
 	// Setting
 	//////////////////////////////
-    /*
     @RequestMapping(value="/setting/{entityName}", method=RequestMethod.GET)
-	public View setting(
+	public ModelAndView setting(
 			final @PathVariable("entityName") String entityName) throws Exception{
-    
-    	return null;
+
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+		final List<Entity> entities = mongoTemplate.findAll(Entity.class, entityName);
+    	
+    	return new ModelAndView(new AbstractXlsxView(){
+
+    		protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    			Sheet sheet = workbook.createSheet(entityName);
+    			Row row = sheet.createRow(0);
+    			
+    			row.createCell(0).setCellValue("id");
+    			row.createCell(1).setCellValue("name");
+    			row.createCell(2).setCellValue("criteria");
+    			row.createCell(3).setCellValue("interval");
+    			
+    			int r = 1;
+    			for(Entity entity : entities){
+
+    				row = sheet.createRow(r);
+    				
+    				row.createCell(0).setCellValue(entity.getId().toString());
+    				if(entity.getName() != null)
+    					row.createCell(1).setCellValue(entity.getName().toString());
+    				if(entity.getCriteria() != null)
+    					row.createCell(2).setCellValue(entity.getCriteria().toString());
+    				if(entity.getInterval() != null)
+    					row.createCell(3).setCellValue(entity.getInterval().toString());
+
+    				r++;
+    			}
+			}
+    	});
     }
+    
     @RequestMapping(value="/setting/{entityName}", method=RequestMethod.POST)
     @ResponseBody
-	public Entity setting(
+	public Map<String,Object> setting(
 			final @PathVariable("entityName") String entityName,
-    		final MultipartFile xls) throws Exception{
+			final @RequestParam("file") MultipartFile file) throws Exception{
     
-    	return null;
+    	Map<String, Object> result = Maps.newHashMap();
+    	int success = 0;
+    	int failure = 0;
+    	List<String> errors = Lists.newArrayList();
+    	
+		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+    	
+		try{
+	    	XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+	    	Sheet sheet = workbook.getSheetAt(0);
+	    	
+	    	for(int r = sheet.getFirstRowNum() + 1; r <= sheet.getLastRowNum(); r++){
+	    		
+	    		Row row = sheet.getRow(r);
+	    		
+	    		String id       = row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null;
+	    		String name     = row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null;
+	    		String criteria = row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null;
+	    		String interval = row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null;
+
+	    		if(StringUtils.hasText(id)){
+	    			
+	    			Entity current = mongoTemplate.findById(id, Entity.class, entityName);
+	    			if(current != null){
+					
+	    				try{
+	        				current.setName(   StringUtils.hasText(name) ? name : null);
+	        				current.setCriteria( StringUtils.hasText(criteria) ? name : null );
+	        				current.setInterval( NumberUtils.isNumber(interval)? NumberUtils.toLong(interval) : null);
+	        				mongoTemplate.save(current, entityName);
+
+	        				success++;
+	    				}catch(Exception e){
+	            			failure++;
+	            			errors.add(r+": "+e.getMessage());
+	    				}
+	    			}else{
+	        			failure++;
+	        			errors.add(r+": entity not found");
+	    			}
+	    		}else{
+	    			failure++;
+	    			errors.add(r+": entity not found");
+	    		}
+	    	}
+		}catch(Exception e){
+			errors.add(e.getMessage());
+		}
+		
+    	result.put("success", success);
+    	result.put("failure", failure);
+    	result.put("errors", errors);
+		return result;
     }
-    */
+
     @RequestMapping(value="/setting/{entityName}/{id}", method=RequestMethod.POST)
     @ResponseBody
 	public Entity setting(
@@ -183,15 +275,32 @@ public class MongodbRestController {
 	public Page<Entity> current(
 			@PathVariable("entityName") String entityName, 
 			@RequestParam(name="status", required=false) String status,
+			@RequestParam(name="name", required=false) String name,
 			Pageable pageable) throws Exception{
-    	
-		MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+
+    	MongoTemplate mongoTemplate = getMongoTemplate(entityName);
+
+		Criteria statusCriteria = null;
+		if("criteria".equals(status)){
+			statusCriteria = Criteria.where("criteria").ne(null);	
+		}else if("interval".equals(status)){
+			statusCriteria = Criteria.where("interval").gt(new Long(0));
+		}
+
+		Criteria nameCriteria = null; 
+		if(StringUtils.hasText(name)){
+			Criteria criteria1 = Criteria.where("name").regex(name);
+			Criteria criteria2 = Criteria.where("id").regex(name);
+			nameCriteria = new Criteria().orOperator(criteria1, criteria2);
+		}
 
 		Criteria criteria = null;
-		if("criteria".equals(status)){
-			criteria = Criteria.where("criteria").ne(null);		
-		}else if("interval".equals(status)){
-			criteria = Criteria.where("interval").gt(new Long(0));
+		if(nameCriteria != null && statusCriteria != null){
+			criteria = new Criteria().andOperator(statusCriteria, nameCriteria);
+		}else if(statusCriteria != null){
+			criteria = statusCriteria;
+		}else if(nameCriteria != null){
+			criteria = nameCriteria;
 		}
 		
 		Query query = (criteria !=null) ? new Query(criteria): new Query();
