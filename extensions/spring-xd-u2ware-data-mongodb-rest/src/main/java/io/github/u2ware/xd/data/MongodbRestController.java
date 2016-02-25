@@ -285,6 +285,8 @@ public class MongodbRestController {
 			statusCriteria = Criteria.where("criteria").ne(null);	
 		}else if("interval".equals(status)){
 			statusCriteria = Criteria.where("interval").gt(new Long(0));
+		}else if("status".equals(status)){
+			statusCriteria = Criteria.where("status").is("criteria");
 		}
 
 		Criteria nameCriteria = null; 
