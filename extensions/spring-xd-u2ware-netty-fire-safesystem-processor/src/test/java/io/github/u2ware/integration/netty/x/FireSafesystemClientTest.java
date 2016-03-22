@@ -21,7 +21,7 @@ public class FireSafesystemClientTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		FireSafesystemServerMock.startup(12001);
+		FireSafesystemServerMock.startup(12002);
 	}
 	@AfterClass
 	public static void afterClass() throws Exception{

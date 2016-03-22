@@ -30,7 +30,7 @@ public class FireSafesystemProcessorModuleIntegrationTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		FireSafesystemServerMock.startup(12003);
+		FireSafesystemServerMock.startup(12004);
 		
 		//RandomConfigurationSupport randomConfigSupport = new RandomConfigurationSupport();
 		application = new SingleNodeApplication().run();
@@ -56,7 +56,7 @@ public class FireSafesystemProcessorModuleIntegrationTest {
 
 		String processingChainUnderTest = "fire-safesystem-processor "
 				+ " --host=127.0.0.1 "
-				+ " --port=12003 ";
+				+ " --port=12004 ";
 
 		logger.debug(processingChainUnderTest);
 		

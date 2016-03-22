@@ -9,7 +9,7 @@
 
 	<util:properties id="props">
 		<prop key="host">127.0.0.1</prop>
-		<prop key="port">12002</prop>
+		<prop key="port">12003</prop>
 	</util:properties>
 
 	<import resource="classpath:config/netty-fire-safesystem-processor.xml"/>

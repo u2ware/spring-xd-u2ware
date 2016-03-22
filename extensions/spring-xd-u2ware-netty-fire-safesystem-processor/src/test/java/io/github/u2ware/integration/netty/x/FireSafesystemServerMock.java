@@ -72,7 +72,8 @@ public class FireSafesystemServerMock extends AbstractTcpServer {
     	    	
     	    	ByteBuf buf = Unpooled.buffer();
     	    	buf.writeBytes(msg.getBytes());
-    	    	buf.writeByte((byte)0x0D);
+    	    	buf.writeByte((byte)0x0A);
+    	    	buf.writeByte((byte)0x0A);
     	    	
     	    	return buf;
     	    }
