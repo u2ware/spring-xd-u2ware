@@ -25,7 +25,7 @@ stream create --name "elevator" --definition "queue:elevator > u2ware-netty-elev
 /////////////////
 // 소방 
 /////////////////
-stream create --name "fire" --definition "queue:fire > u2ware-netty-fire-safesystem-processor --host=192.168.245.161 --port=2000 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=fire" --deploy
+stream create --name "fire" --definition "queue:fire > u2ware-netty-fire-safesystem-processor --host=192.168.245.161 --port=2002 | u2ware-data-mongodb-sink --host=127.0.0.1 --port=27017 --databaseName=fire" --deploy
 
 /////////////////
 // UPS 
